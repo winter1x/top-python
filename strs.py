@@ -1,3 +1,11 @@
+someStr = '123z121saf253'
+length1 = len([1, 2, 3])
+length2 = len(someStr)
+
+sorted1 = sorted(someStr)
+print(sorted1)
+print(''.join(sorted1))
+
 """# 0x00 - 0
 
 msg = 'qakhbqvbhf'

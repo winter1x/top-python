@@ -13,6 +13,8 @@ print(flag2, type(flag2).__name__)
 """
 from math import trunc
 
+from listGuide import list1
+
 """qwd
 qwwwww"""
 """
@@ -90,6 +92,10 @@ finally:
 """name = input()
 print('Hello, ' + name + '!')"""
 """print('!' * 10)"""
+"""print(1, 2, 3)
+print(1, 2, 3)
+print(1, 2, 3, sep='', end='')
+print(1, 2, 3, sep='', end='')"""
 # min
 # max
 # abs
@@ -97,7 +103,23 @@ print('Hello, ' + name + '!')"""
 # pow
 # hex
 # round
-print(1, 2, 3)
-print(1, 2, 3)
-print(1, 2, 3, sep='', end='')
-print(1, 2, 3, sep='', end='')
+import math
+sum1 = sum([1, 2, 3, 4, 5, 6, 7])
+max1 = max(1, 2, 3, 4)
+min1 = min(1, 2, 4, 5)
+abs1 = abs(-1)
+someStr = '123z121saf253'
+length1 = len([1, 2, 3])
+length2 = len(someStr)
+
+sorted1 = sorted(someStr)
+print(''.join(sorted1))
+sorted2 = sorted([1, 2, 3])
+
+print(any([True, False, False])) # или во множестве
+print(all([True, True, True]))  # и во множестве
+
+list1 = []
+for i in range(10):
+    list1.append(i)
+print(list1)
