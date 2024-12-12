@@ -104,7 +104,7 @@ print(1, 2, 3, sep='', end='')"""
 # hex
 # round
 import math
-sum1 = sum([1, 2, 3, 4, 5, 6, 7])
+"""sum1 = sum([1, 2, 3, 4, 5, 6, 7])
 max1 = max(1, 2, 3, 4)
 min1 = min(1, 2, 4, 5)
 abs1 = abs(-1)
@@ -122,4 +122,21 @@ print(all([True, True, True]))  # и во множестве
 list1 = []
 for i in range(10):
     list1.append(i)
-print(list1)
+print(list1)"""
+
+import time
+import time as t
+from time import *
+list1 = [1, 2, 3]
+start = time()
+for i in range(100000):
+    list1.extend([5, 5])
+end = time()
+print(end - start)
+list2 = [1, 2, 3]
+start = time()
+for i in range(100000):
+    list2 += [5, 5]
+end = time()
+print(end - start)
+# на выборке из 100 определить какой из методов работает быстрее с указанием количества раз для каждого
