@@ -123,20 +123,38 @@ list1 = []
 for i in range(10):
     list1.append(i)
 print(list1)"""
-
+"""
 import time
 import time as t
 from time import *
 list1 = [1, 2, 3]
-start = time()
-for i in range(100000):
-    list1.extend([5, 5])
-end = time()
-print(end - start)
-list2 = [1, 2, 3]
-start = time()
-for i in range(100000):
-    list2 += [5, 5]
-end = time()
-print(end - start)
+first = 0
+second = 0
+for _ in range(10):
+    start = time()
+    for _ in range(100000):
+        list1.extend([5, 5])
+    end = time()
+    firstTime = start - end
+    list2 = [1, 2, 3]
+    start = time()
+    for _ in range(100000):
+        list2 += [5, 5]
+    end = time()
+    secondTime = start - end
+    if secondTime > firstTime:
+        second += 1
+    else:
+        first += 1
+print(f"{first}\n{second}")
+print(first)
+print(second)"""
 # на выборке из 100 определить какой из методов работает быстрее с указанием количества раз для каждого
+list1 = list(range(2, 200, 20))
+print(list1)
+print(list1[0:6:2])
+list1 = list(range(200, -9, -10))
+print(list1)
+print(list1[::-1])
+msg = '123r'
+print(msg.count('r', 5, 10))

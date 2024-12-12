@@ -22,8 +22,11 @@ print(id(msg))
 msg.capitalize()  # перевод первого сивола строки в верхний регистр
 print(msg)
 print(msg.capitalize())
-
+msg = 'qakhbqvbhf'
+msg = 'Qakhbqvbhf'
 msg.upper() # все в верхний регистр
+msg = 'все заглавные'
+
 print(msg.upper())
 msg.lower()  # все в нижний регистр
 print(msg.upper().lower())
@@ -38,9 +41,8 @@ print(msg.swapcase()) # меняет в обе стороны
 
 print(msg.count('r', 5, 10))
 #считает количество вхождений подстроки
-print(msg.find('r', 5, 10))
+print(msg.find('r', 5, 10)) # возвращает индекс первого вхожденич подстроки
 msg = 'rt  rttt rttrrtrt куаукаук уккуак укукаку'
-# возвращает индекс первого вхожденич подстроки
 msg = 'rt  rttt Rttrrtrt куаукаук уTкуак укукаку'
 #print(msg.index('r', 5, 10))
 # аналогично .fing, но возвращает ValueError, если подстроки нет
@@ -69,7 +71,7 @@ print(msg.ljust(len(msg) + 11))
 print(msg.rjust(len(msg) + 11, '*'))
 msg = '123'
 print(msg.zfill(9))
-msg = '++++123'
+msg = '+123'
 print(msg.zfill(9))
 msg = '-0.123'
 print(msg.zfill(9))
