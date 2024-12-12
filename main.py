@@ -24,7 +24,8 @@ qwd
 qwd
 dw
 '''"""
-"""num = int(input())
+"""
+num = int(input())
 num = str(num)
 num = float(num)
 num = bool(num)
@@ -46,7 +47,6 @@ else:
     print(False)
     if True:
         print(True)"""
-
 """if False:
     print()
 elif False:
@@ -64,7 +64,7 @@ else:
 """str1 = 'vfj2'
 numbers = '1234567890'
 list1 = [0, 4, 6, 74, '2', True]
-for i in list1:
+for elem in list1:
     if type(i) != int:
         print(i, 'это не число')"""
 """i = 0 
@@ -78,7 +78,8 @@ for i in range(10):
         continue
     print(i)"""
 
-"""try:
+"""
+try:
     print(1 / 0)
 except Exception as ex:
     print(ex)
@@ -150,11 +151,30 @@ print(f"{first}\n{second}")
 print(first)
 print(second)"""
 # на выборке из 100 определить какой из методов работает быстрее с указанием количества раз для каждого
-list1 = list(range(2, 200, 20))
+"""list1 = list(range(2, 200, 20))
 print(list1)
 print(list1[0:6:2])
 list1 = list(range(200, -9, -10))
 print(list1)
 print(list1[::-1])
 msg = '123r'
-print(msg.count('r', 5, 10))
+print(msg.count('r', 5, 10))"""
+# print(hex(199))
+"""
+console.log(Math.round(num)); //до ближайшего целого
+console.log(Math.floor(num)); //округление вниз до ближайшего целого
+console.log(Math.ceil(num)); //вверх до ближайшего целого
+console.log(Math.trunc(num)); //убрать дробную часть
+console.log(num.toFixed(2)); //определенное количество знаков после запятой"""
+print(round(1.4))
+import math
+print(math.floor(1.3))
+msg = ' 3 4 '
+print(msg.strip())
+print(msg.strip())
+
+def customSum(a, b=0):
+    return a + b, 10
+result, ok = customSum(7)
+print(result)
+print(ok)

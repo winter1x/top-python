@@ -5,7 +5,9 @@ length2 = len(someStr)
 sorted1 = sorted(someStr)
 print(sorted1)
 print(''.join(sorted1))
-
+msg = ' 3 4 456  456456    6 5'
+print(msg.split())
+print(msg.strip())
 """# 0x00 - 0
 
 msg = 'qakhbqvbhf'
