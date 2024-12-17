@@ -5,7 +5,7 @@ def sqr1(number):
     return number * number
 
 def printf(some_list, func):
-    for i in some_list:
+    for _ in some_list:
         print(func(i))
 
 
@@ -15,7 +15,7 @@ printf(list1, sqr1)
 printf(list1, lambda x : x * x)
 
 
-sqr = lambda x : x * x + 5
+sqr = lambda x : x * x
 
 print(sqr(5))
 

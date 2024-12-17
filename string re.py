@@ -1,11 +1,13 @@
 from gettext import textdomain
-from random import sample, choice
+from pdb import runctx
+from random import sample, choice, shuffle
 from re import match
 from string import *
 from re import *
 import re
 
-from PIL.ImagePalette import random
+from listGuide import list1
+from main import result
 
 print(ascii_letters)
 print(ascii_lowercase)
@@ -16,6 +18,7 @@ print(octdigits)
 
 print(whitespace)
 print("".join('12123123123'))
+print("".join(['12123123123', 'er']))
 
 str = 'ffrfijin2342311&^$%$%#$@'
 str = 'f'
@@ -53,7 +56,26 @@ password += ''.join(choice(punctuation))
 password += ''.join(choices(ascii_lowercase, k=10))
 print(login)
 print(password)
+a = randint(1, 10)
+# перемешать сиволы в пароле
+# random
+# random() [0.0, 1.0) float случайное числе
+# randint(1, 10) случайное int от а до б
+# choise случайный элемент из последовательности
+# sample список из k уникальных элементов из последовательности
+# uniform() случайное с плавающей запятой от а до б
+# randrange
+# choises
+# shuffle - перемешивает
+password2 = password
+result = ''
+for i in range(len(password)):
+    randNum = randint(0, len(password))
+    result += password[randNum]
+    password = password[:randNum] + password[randNum + 1:]
 
+password2 = list(password2)
+shuffle(password2)
 
 pattern = r'.' # один любой символ
 print(bool(match(pattern, '..')))
@@ -77,7 +99,7 @@ pattern = r'ab{5}' # заданное количество повторений 
 print(bool(match(pattern, 'abbbbb')))
 
 pattern = r'[123]$' # вхождение любого одного из [внутри]
-print(bool(match(pattern, '2')))
+print(bool(match(pattern, '3')))
 
 pattern = r'[^b]$' # кроме вхождение любого одного из [внутри]
 print(bool(match(pattern, 'a')))
@@ -123,8 +145,10 @@ print(bool(match(pattern, 'qrtyq')))
 pattern = r'\d{}' # 11 цифр
 print(bool(match(pattern, str)))
 
-str = 'qweqw@tu.riu'
+pattern = r'[a-zA-Z5-7]' # 11 цифр
+print(bool(match(pattern, str)))
 
+str = 'qweqw@tu.riu'
 str = '+7(123)123-23-23'
 
 pattern = r'^\w+[\.\w-]*@\w+[\.\w-]*\.\w+[\.\w-]*$' # 11 цифр
