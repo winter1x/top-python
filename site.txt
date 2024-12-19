@@ -2,3 +2,4 @@ https://code-basics.com/ru/languages/python
 все кроме 61
 pythontutor.ru
 все без рекурсий, множеств, словарей
+https://developer.mozilla.org/ru/docs/Learn/Server-side/Django
