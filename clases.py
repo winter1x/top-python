@@ -19,12 +19,18 @@ class Person:
     def print_health(cls):
         print(cls.health)
 
+Person.print_health()
+print(Person.health)
+
+num = 1
 Matvey = Person('name', 18)
+Matvey2 = Person('name', 18)
+Matvey2 = Person('name', 18)
 print(Matvey.is_student)
 Matvey.invert_is_student()
 print(Matvey.is_student)
 Matvey.to_learn()
-Person.print_health()
+
 
 # создать математический класс с атрибутом количества
 # несколько методов cls которые возвращают генератор
