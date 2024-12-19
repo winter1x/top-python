@@ -53,3 +53,23 @@ print(MClass.gen1())
 print(MClass.gen2())
 MyMath = MClass(['sum', 'pow'])
 MyMath.print_func()
+# MClass от него унаследовать в тригонометрию
+# в триг мат функции
+# иниц предыдущее и 1 новое
+# из триг вызвать методы MClass
+from math import *
+class Trig(MClass):
+
+    def __init__(self, func, inp):
+        super().__init__(func)
+        self.inp = inp
+
+    def trig_sin(self):
+        return sin(self.inp)
+
+    def trig_cos(self):
+        return cos(self.inp)
+
+    def greet(self):
+        super().print_func()
+
