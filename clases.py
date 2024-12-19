@@ -41,9 +41,15 @@ class MClass:
         print(self.func)
 
     @classmethod
-    def print_gen1(cls):
+    def gen1(cls):
         return [i for i in range(cls.length)]
 
     @classmethod
-    def print_gen2(cls):
+    def gen2(cls):
         return [i**2 for i in range(cls.length)]
+
+print(MClass.length)
+print(MClass.gen1())
+print(MClass.gen2())
+MyMath = MClass(['sum', 'pow'])
+MyMath.print_func()
