@@ -3,3 +3,5 @@ https://code-basics.com/ru/languages/python
 pythontutor.ru
 все без рекурсий, множеств, словарей
 https://developer.mozilla.org/ru/docs/Learn/Server-side/Django
+https://sky.pro/wiki/python/prakticheskie-zadaniya-po-oop-na-python/
+https://smartiqa.ru/python-workbook/class
