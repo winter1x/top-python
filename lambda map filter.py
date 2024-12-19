@@ -53,7 +53,7 @@ numlist = list(map(lambda s: sum(map(int, s.split())), numlist))
 strlist = ['121', 'fsd1231', 'fsd1231', 'Rsd1231', 'Rsd1231']
 """список слов с заглавной буквы, сделать их прописными filter
 strlist = ['rsd1231', 'rsd1231']"""
-strlist = list(map(lambda x : x.lower(), ))
+strlist = list(map(lambda x : x.lower(), filter(lambda x : x.istitle(), strlist)))
 
 strlist = ['121', '123321', 'fsd1231', 'Rsd1231', 'Rsd1231']
 """одинаково слева направоstrlist = ['121', '123321']"""
