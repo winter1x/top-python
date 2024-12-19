@@ -30,3 +30,20 @@ Person.print_health()
 # несколько методов cls которые возвращают генератор
 # init принимает список строк с желаемыми функциями
 # метод который их выводит
+
+class MClass:
+    length = 5
+
+    def __init__(self, func):
+        self.func = func
+
+    def print_func(self):
+        print(self.func)
+
+    @classmethod
+    def print_gen1(cls):
+        return [i for i in range(cls.length)]
+
+    @classmethod
+    def print_gen2(cls):
+        return [i**2 for i in range(cls.length)]
