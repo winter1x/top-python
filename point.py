@@ -43,19 +43,41 @@ class Point:
             return False
         return self._x == other._x and self._y == other._y
 
-    def __mul__(self, other):
-        pass
+    def __sub__(self, other):
+        if not isinstance(other, Point):
+            return False
+        return Point(self._x - other._x, self._y - other._y)
 
-    def __truediv__(self, other):
-        pass
+    def __mul__(self, scalar):
+        if not isinstance(scalar, (int, float)):
+            raise ValueError('scalar must be (int, float)')
+        return Point(self._x * scalar, self._y * scalar)
+
+
+    def __truediv__(self, scalar):
+        if not isinstance(scalar, (int, float)):
+            raise ValueError('scalar must be (int, float)')
+        if scalar == 0:
+            raise ZeroDivisionError('нельзя 0')
+        return Point(self._x / scalar, self._y / scalar)
 
     def __len__(self):
-        pass
+        if self._x is None and self._y is None:
+            return 2
+        elif self._x is None or self._y is None:
+            return 1
+        else:
+            return 0
+    def __getitem__(self, index):
+        if index == 0:
+            return self._x
+        elif index == 1:
+            return self._y
+        else:
+            raise IndexError('out of range')
 
-    def __getitem__(self, item):
-        pass
-
-
+class CoordinateDescriptor:
+    pass
 p1 = Point(1, 2)
 print(p1.x)
 print(p1.y)
