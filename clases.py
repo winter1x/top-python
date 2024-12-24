@@ -131,3 +131,11 @@ MyCat.make_voice()
 MyCat.walk()
 MyCat.print_owner()
 Cat.info()
+from abst import MClass
+class Alg(MClass):
+    @classmethod
+    def add(cls):
+        return 5
+    @classmethod
+    def substruct(cls):
+        return 7

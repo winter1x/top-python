@@ -11,3 +11,16 @@ class Animal(ABC):
     def walk(self):
         pass
 
+class MClass(ABC):
+
+
+    @classmethod
+    @abstractmethod
+    def add(cls):
+        pass
+
+    @classmethod
+    @abstractmethod
+    def substruct(cls):
+        pass
+
