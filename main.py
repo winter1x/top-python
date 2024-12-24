@@ -166,7 +166,7 @@ console.log(Math.floor(num)); //округление вниз до ближай�
 console.log(Math.ceil(num)); //вверх до ближайшего целого
 console.log(Math.trunc(num)); //убрать дробную часть
 console.log(num.toFixed(2)); //определенное количество знаков после запятой"""
-print(round(1.4))
+"""print(round(1.4))
 import math
 print(math.floor(1.3))
 msg = ' 3 4 '
@@ -177,4 +177,4 @@ def customSum(a, b=0):
     return a + b, 10
 result, ok = customSum(7)
 print(result)
-print(ok)
+print(ok)"""
