@@ -1,5 +1,7 @@
-"""
-экземпляр - конкретный объект созданный на основе класса
+""""""
+from abc import ABC
+
+"""экземпляр - конкретный объект созданный на основе класса
 атрибут(поле) класса - принадлежит самому классу и разделяется всеми экземплярами
 атрибут(поле) экземпляра - принадлежит конкретному объекту  и уникален для каждого экземпляра
 метод экземпляра def - функция конкретного объекта
@@ -22,7 +24,7 @@ MRO - порядок поиска методов в иерархии насле�
 делитер - метод удаляет атрибут
 приватный атрибут - не предназначен для доступа извне
 
-
+"""
 """
 
 class Person:
@@ -107,3 +109,33 @@ class Trig(MClass):
         super().print_func()
 
 import collections
+"""
+from abst import Animal
+class Cat(Animal):
+    def __init__(self, name):
+        self.name = name
+        self.__owner = 'me'
+    def make_voice(self):
+        print(f'{self.name} maked voice')
+
+    def walk(self):
+        print(f'{self.name} walked')
+
+    def print_owner(self):
+        print(self.__owner)
+    @classmethod
+    def info(cls):
+        print(super().info)
+MyCat = Cat('cat')
+MyCat.make_voice()
+MyCat.walk()
+MyCat.print_owner()
+Cat.info()
+from abst import MClass
+class Alg(MClass):
+    @classmethod
+    def add(cls):
+        return 5
+    @classmethod
+    def substruct(cls):
+        return 7
