@@ -77,7 +77,24 @@ class Point:
             raise IndexError('out of range')
 
 class CoordinateDescriptor:
-    pass
+    def __get__(self, instance, owner):
+        if instance is None:
+            return self
+        print(f'getting {self.name}')
+        return instance.__dict__.get(self.name)
+
+    def __set__(self, instance, value):
+        if not isinstance(value, (int, float)):
+            raise ValueError('value should be (int, float)')
+        print(f'setting {self.name} to {value}')
+        instance.__dict__[self.name] = value
+
+    def __delete__(self, instance):
+        print(f'deleting {self.name}')
+        del instance.__dict__[self.name]
+
+    def __set_name__(self, owner, name):
+        self.name = name
 p1 = Point(1, 2)
 print(p1.x)
 print(p1.y)
