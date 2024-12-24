@@ -1,31 +1,36 @@
-class Point:
+from dataclasses import dataclass
+from functools import total_ordering
+
+
+class CoordinateDescriptor:
+    def __get__(self, instance, owner):
+        if instance is None:
+            return self
+        print(f'getting {self.name}')
+        return instance.__dict__.get(self.name)
+
+    def __set__(self, instance, value):
+        if not isinstance(value, (int, float)):
+            raise ValueError('value should be (int, float)')
+        print(f'setting {self.name} to {value}')
+        instance.__dict__[self.name] = value
+
+    def __delete__(self, instance):
+        print(f'deleting {self.name}')
+        del instance.__dict__[self.name]
+
+    def __set_name__(self, owner, name):
+        self.name = name
+
+
+@total_ordering
+@dataclass
+class Point(CoordinateDescriptor):
+    x = CoordinateDescriptor()
+    y = CoordinateDescriptor()
     def __init__(self, x=None, y=None):
         self._x = x
         self._y = y
-
-    @property
-    def x(self):
-        print('getting x')
-        return self._x
-
-    @x.setter
-    def x(self, value):
-        if not isinstance(value, (int, float)):
-            raise ValueError('must be (int, float)')
-        print(f'setting x {value}')
-        self._x = value
-
-    @property
-    def y(self):
-        print('getting y')
-        return self._y
-
-    @y.setter
-    def y(self, value):
-        if not isinstance(value, (int, float)):
-            raise ValueError('must be (int, float)')
-        print(f'setting y {value}')
-        self._y = value
 
     def point_print(self):
         print(f'Point x={self._x}, y={self._y}')
@@ -53,7 +58,6 @@ class Point:
             raise ValueError('scalar must be (int, float)')
         return Point(self._x * scalar, self._y * scalar)
 
-
     def __truediv__(self, scalar):
         if not isinstance(scalar, (int, float)):
             raise ValueError('scalar must be (int, float)')
@@ -68,6 +72,7 @@ class Point:
             return 1
         else:
             return 0
+
     def __getitem__(self, index):
         if index == 0:
             return self._x
@@ -76,25 +81,7 @@ class Point:
         else:
             raise IndexError('out of range')
 
-class CoordinateDescriptor:
-    def __get__(self, instance, owner):
-        if instance is None:
-            return self
-        print(f'getting {self.name}')
-        return instance.__dict__.get(self.name)
 
-    def __set__(self, instance, value):
-        if not isinstance(value, (int, float)):
-            raise ValueError('value should be (int, float)')
-        print(f'setting {self.name} to {value}')
-        instance.__dict__[self.name] = value
-
-    def __delete__(self, instance):
-        print(f'deleting {self.name}')
-        del instance.__dict__[self.name]
-
-    def __set_name__(self, owner, name):
-        self.name = name
 p1 = Point(1, 2)
 print(p1.x)
 print(p1.y)
