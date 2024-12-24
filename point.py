@@ -1,5 +1,5 @@
 class Point:
-    def __init__(self, x, y):
+    def __init__(self, x=None, y=None):
         self._x = x
         self._y = y
 
@@ -43,6 +43,19 @@ class Point:
             return False
         return self._x == other._x and self._y == other._y
 
+    def __mul__(self, other):
+        pass
+
+    def __truediv__(self, other):
+        pass
+
+    def __len__(self):
+        pass
+
+    def __getitem__(self, item):
+        pass
+
+
 p1 = Point(1, 2)
 print(p1.x)
 print(p1.y)
@@ -54,3 +67,4 @@ p2 = Point(1, 2)
 p1 += p2
 print(p1)
 print(p1 == Point(6, 10))
+p3 = Point()
