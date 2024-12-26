@@ -81,3 +81,5 @@ result3 = tuple(
     x for i, x in enumerate(data1)
     if x == data2[i] == data3[i]
 )
+for i, x in enumerate(data1):
+    print(i, x)

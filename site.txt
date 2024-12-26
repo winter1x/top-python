@@ -5,3 +5,4 @@ pythontutor.ru
 https://developer.mozilla.org/ru/docs/Learn/Server-side/Django
 https://sky.pro/wiki/python/prakticheskie-zadaniya-po-oop-na-python/
 https://smartiqa.ru/python-workbook/class
+https://github.com/tsenturion/top-python

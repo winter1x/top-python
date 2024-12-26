@@ -32,3 +32,31 @@ a = {
         "zip": '10101'
     }
 }
+basketball_players = {}
+
+def add_player(name, height):
+    if name in basketball_players:
+        print(f"{name} уже есть")
+    else:
+        basketball_players[name] = height
+        print(f'{name} добавлен')
+
+def remove_player(name):
+    if name in basketball_players:
+        del basketball_players[name]
+    else:
+        print(f'{name} нет')
+
+def find_player(name):
+    if name in basketball_players:
+        print(f'{name} {basketball_players[name]}')
+    else:
+        print(f'{name} нет')
+
+def update_player(name, new_height):
+    if name in basketball_players:
+        basketball_players[name] = new_height
+        print(f'{name} {basketball_players[name]}')
+    else:
+        print(f'{name} нет')
+
