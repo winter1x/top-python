@@ -73,9 +73,11 @@ result2 = unique1 | unique2 | unique3
 result2 = tuple(result2)
 
 # enumerate возвращает пару с индексом и элементом
+
 data1 = (1312, 12132, 3133, 1231233, 1234, 1236, 7123123, 123123129)
 data2 = (1122, 12132, 3133, 1231233, 1234, 1236, 7123123, 123123129)
 data3 = (1212, 12132, 3133, 1231233, 1234, 1236, 7123123, 123123129)
 result3 = tuple(
-
+    x for i, x in enumerate(data1)
+    if x == data2[i] == data3[i]
 )
