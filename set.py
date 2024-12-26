@@ -1,5 +1,5 @@
 inp = [1, 1, 2, 2]
-print(set(inp))
+print(set(inp)) # делает множество уникальных значений
 some_set = {1, 2, 3, 3}
 print(some_set)
 zero2_set = set()
