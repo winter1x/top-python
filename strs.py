@@ -1,4 +1,5 @@
 someStr = '123z121saf253'
+someStr.replace()
 length1 = len([1, 2, 3])
 length2 = len(someStr)
 
@@ -37,6 +38,7 @@ new_msg = msg.upper()
 print(new_msg)
 
 msg = 'rt  rttt rttrrtrt куаукаук уккуак укукаку'
+
 print(msg.title()) # первые буквы слов в верхний регистр
 
 print(msg.swapcase()) # меняет в обе стороны

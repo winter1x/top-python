@@ -8,6 +8,7 @@ from encodings.utf_7 import encode
 list1 = [1, 2, 3]
 list1.append(1)  # добавление в конец
 # list1 = [1, 2, 3, 1]
+print(list1.append(1))
 list1.extend([5, 5])  # увеличение списка, list1 += [5, 5]
 # list1 = [1, 2, 3, 1, 5, 5]
 list1.insert(1, 9)  #вставка на позицию
