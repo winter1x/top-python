@@ -2,19 +2,12 @@ N = int(input())
 M = int(input())
 x = int(input())
 y = int(input())
-result = min(x, y)
-short = result
-long = result
-if y == result:
-    short = min(N, M) - y
-if x == result and max(N, M) - x < short:
-    long = max(N, M) - x
-if max(N, M) / 2 < x:
-    long = max(N, M) - x
-if long < 0:
-    long += 100000
-if short < 0:
-    short += 100000
-result = min(result, long, short)
+short = min(N, M)
+long = max(N, M)
+
+short2 = min(short - x, short - (short - x))
+long2 = min(long - y, long - (long - y))
+
+result = min(short2, long2)
 
 print(result)
