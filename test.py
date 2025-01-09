@@ -1,6 +1,5 @@
-P = int(input())
-X = int(input())
-Y = int(input())
-X = X + Y * 0.01
-X = X * (1 + P * 0.01)
-print(int(X), int(X * 100 % 100))
+N = int(input())
+cards = set()
+for _ in range(N - 1):
+    cards.add(int(input()))
+print(sum(set(list(range(1, N + 1))) - cards))
