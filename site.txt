@@ -1,6 +1,7 @@
 https://github.com/tsenturion/top-python
 
 https://code-basics.com/ru/languages/python
+не делаем 13 14 16 26 27 28 29 32 34 и далее не делаем
 все кроме 61
 
 pythontutor.ru
