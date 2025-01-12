@@ -1,7 +1,7 @@
 https://github.com/tsenturion/top-python
 
 https://code-basics.com/ru/languages/python
-делаем до 39 не включительно
+делаем 61 включительно
 все кроме 61
 
 pythontutor.ru

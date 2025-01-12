@@ -161,3 +161,14 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from offline.main import list1
 print(list1)
+
+"""
+12
+12
+"""
+'''
+34
+34
+'''
+# 213
+# 123
