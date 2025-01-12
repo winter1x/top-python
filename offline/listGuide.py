@@ -1,9 +1,6 @@
 """
-методы list
+методы и функции list
 """
-from webbrowser import Error
-
-from encodings.utf_7 import encode
 
 list1 = [1, 2, 3]
 list1.append(1)  # добавление в конец
@@ -24,6 +21,7 @@ number = list1.count(5)  # количество вхождений
 list1.sort()  # сортировка
 # list1 = [1, 2, 3, 5, 5]
 list1.reverse()  # переворачивает
+list1 = list1[::-1]  # переворачивает
 # list1 = [5, 5, 3, 2, 1]
 list1.clear()  # очищает
 print(list1)
