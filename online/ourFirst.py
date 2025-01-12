@@ -94,4 +94,9 @@ list1 = []
 for _ in range(length):
     list1.append(int(input()))
 
+for index, element in enumerate(list1):
+    print(index, element)
+
 print(f'длина: {length}\nсписок: {list1}')
+
+
