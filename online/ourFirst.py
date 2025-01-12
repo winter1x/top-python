@@ -100,3 +100,4 @@ for index, element in enumerate(list1):
 print(f'длина: {length}\nсписок: {list1}')
 
 
+
