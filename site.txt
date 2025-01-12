@@ -1,7 +1,7 @@
 https://github.com/tsenturion/top-python
 
 https://code-basics.com/ru/languages/python
-не делаем 16 27 28 29 32 34 и далее не делаем
+делаем до 39 не включительно
 все кроме 61
 
 pythontutor.ru
