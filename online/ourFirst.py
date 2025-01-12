@@ -88,7 +88,7 @@ chetnie = [i for i in list3 if i % 2 == 0]
 b = None
 print(type(b).__name__)
 print(chetnie)"""
-
+"""
 length = int(input())
 list1 = []
 for _ in range(length):
@@ -97,9 +97,67 @@ for _ in range(length):
 for index, element in enumerate(list1):
     print(index, element)
 
-print(f'длина: {length}\nсписок: {list1}')
+print(f'длина: {length}\nсписок: {list1}')"""
 
+"""
+chr() символ по юникод коду
+hex() 16x
+len() длина 
+abs() модуль
+max()
+min()
+sum()
 
+in
+"""
 
+"""print(chr(65))
+print(chr(97))
 
+print(hex(255))"""
+"""
+str1 = '1234'
+str2 = '235'"""
+"""list1 = list(range(5))
+print(len(str1), len(list1))
+print(1, abs(-1))
 
+print(max(list1), min(list1), sum(list1))"""
+"""for c in str2:
+    if c not in str1:
+        print(c)"""
+
+"""
+console.log(Math.round(num)); //до ближайшего целого
+console.log(Math.floor(num)); //округление вниз до ближайшего целого
+console.log(Math.ceil(num)); //вверх до ближайшего целого
+console.log(Math.trunc(num)); //убрать дробную часть
+console.log(num.toFixed(2)); //определенное количество знаков после запятой"""
+
+"""import math
+from math import *
+from math import pi, ceil, trunc, floor"""
+"""
+import math as m
+from math import *
+from math import pi as p, ceil as c, trunc, floor
+
+print(list1)
+print(custom_add(1, 2))
+
+print(m.pi)
+print(round(pi))
+print(round(pi, 2))
+print(f'{pi:.3}')
+print(ceil(pi))
+print(trunc(pi))
+print(floor(pi))
+
+print(c(p))
+"""
+import sys
+import os
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from offline.main import list1
+print(list1)

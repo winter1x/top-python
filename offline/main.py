@@ -11,9 +11,7 @@ print(flag2, type(flag2).__name__)
 
 # 8093454
 """
-from math import trunc
 
-from listGuide import list1
 
 """qwd
 qwwwww"""
@@ -178,3 +176,4 @@ def customSum(a, b=0):
 result, ok = customSum(7)
 print(result)
 print(ok)"""
+list1 = [1, 2]
