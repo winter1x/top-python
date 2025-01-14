@@ -11,7 +11,7 @@ print(flag2, type(flag2).__name__)
 
 # 8093454
 """
-
+from functools import reduce
 
 """qwd
 qwwwww"""
@@ -177,3 +177,24 @@ result, ok = customSum(7)
 print(result)
 print(ok)"""
 list1 = [1, 2]
+
+from functions import *
+
+print(reduce(lambda x, y: x + y, [1, 2, 3, 4]))
+print(reduce(lambda x, y: x * y, [1, 2, 3, 4]))
+print(reduce(lambda x, y: x + y, ['1', '2', '3', '4']))
+
+"""
+собрать все оценки всеъ студентов в один список
+средний балл по всем 
+"""
+
+students = [
+    {'name': 'matvey', 'age': 23, 'grades': [1, 2, 3, 4]},
+    {'name': 'matvey', 'age': 23, 'grades': [1, 2, 3, 4]},
+    {'name': 'matvey', 'age': 23, 'grades': [1, 2, 3, 4]},
+    {'name': 'matvey', 'age': 23, 'grades': [1, 2, 3, 4]},
+    {'name': 'matvey', 'age': 23, 'grades': [1, 2, 3, 4]},
+]
+for i, e in enumerate(list(range(4, 10))):
+    print(i, e)
