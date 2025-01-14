@@ -1,20 +1,18 @@
-N = int(input())
-dictionary = {}
-for _ in range(N):
-    word = input().strip()
-    lowercase_word = word.lower()
-    if lowercase_word not in dictionary:
-        dictionary[lowercase_word] = set()
-    dictionary[lowercase_word].add(word)
-text = input().strip().split()
-errors = 0
-for word in text:
-    lowercase_word = word.lower()
-    if lowercase_word in dictionary:
-        if word not in dictionary[lowercase_word]:
-            errors += 1
-    else:
-        uppercase_count = sum(1 for char in word if char.isupper())
-        if uppercase_count != 1:
-            errors += 1
-print(errors)
+students = [('alice', 20), ('alice', 20), ('alice', 20)]
+grades = [[1, 2, 3], [1, 2, 3], [1, 2, 4]]
+
+combined_data = list(zip(students, grades))
+student_averages = []
+
+for (name, age), student_grades in combined_data:
+    average_grade = sum(student_grades) / len(student_grades)
+    student_averages.append((name, age, student_grades, average_grade))
+    print(f"'{name}', {age}, {student_grades}, {average_grade:.2f}")
+
+all_grades = [grade for student_grades in grades for grade in student_grades]
+overall_average = sum(all_grades) / len(all_grades)
+
+best_student = max(student_averages, key=lambda x: x[3])
+
+print(round(overall_average, 2))
+print(best_student[0], best_student[1], best_student[2], round(best_student[3], 2))
