@@ -196,5 +196,10 @@ students = [
     {'name': 'matvey', 'age': 23, 'grades': [1, 2, 3, 4]},
     {'name': 'matvey', 'age': 23, 'grades': [1, 2, 3, 4]},
 ]
+# reduce собрать все оценки в один список
+# reduce найти средний балл
+#all_grades = reduce(lambda acc, student: acc + student['grades'], students, [])
+all_grades = [? for ? in ?]
+print(all_grades)
 for i, e in enumerate(list(range(4, 10))):
     print(i, e)
