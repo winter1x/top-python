@@ -1,8 +1,13 @@
+https://github.com/tsenturion/top-python
+
 https://code-basics.com/ru/languages/python
+делаем 61 включительно
 все кроме 61
+
 pythontutor.ru
-все без рекурсий, множеств, словарей
+
 https://developer.mozilla.org/ru/docs/Learn/Server-side/Django
+
+ООП
 https://sky.pro/wiki/python/prakticheskie-zadaniya-po-oop-na-python/
 https://smartiqa.ru/python-workbook/class
-https://github.com/tsenturion/top-python
