@@ -177,7 +177,7 @@ result, ok = customSum(7)
 print(result)
 print(ok)"""
 list1 = [1, 2]
-
+"""
 from functools import *
 
 print(reduce(lambda x, y: x + y, [1, 2, 3, 4]))
@@ -185,8 +185,8 @@ print(reduce(lambda x, y: x * y, [1, 2, 3, 4]))
 print(reduce(lambda x, y: x + y, ['1', '2', '3', '4']))
 
 """
-собрать все оценки всеъ студентов в один список
-средний балл по всем 
+"""собрать все оценки всеъ студентов в один список
+средний балл по всем """
 """
 
 students = [
@@ -199,7 +199,44 @@ students = [
 # reduce собрать все оценки в один список
 # reduce найти средний балл
 #all_grades = reduce(lambda acc, student: acc + student['grades'], students, [])
-all_grades = [? for ? in ?]
+all_grades = [grade for student 
+              in students for grade in student['grades']]
+all_grades = []
+for student in students:
+    for grade in student['grades']:
+        all_grades.append(grade)
+total_sum = 0
+total_len = 0
+for student in students:
+    total_len += len(student["grades"])
+    total_sum += sum(student["grades"])
+
 print(all_grades)
 for i, e in enumerate(list(range(4, 10))):
-    print(i, e)
+    print(i, e)"""
+list1 = [1, 2, 3]
+list2 = [1, 2, 3]
+zipped = zip(list1, list2)
+print(list(zipped))
+list4, list5 = zip(*zipped)
+
+list1 = [1, 2, 3]
+list2 = [1, 2, 3, 4, 5]
+zipped = zip(list1, list2)
+print(list(zipped))
+print(list(zip(*zipped)))
+
+list1 = [1, 2, 3]
+list2 = [1, 2, 3, 4, 5]
+list3 = [1, 2, 3, 4, 5, 6, 7]
+zipped = zip(list1, list2, list3)
+print(list(zipped))
+print(list(zip(*zipped)))
+"""
+объеденить чтобы по студенту, для каждого
+были доступны имя возраст оценки
+найти средний балл по всем
+с самым высоким
+"""
+students = [('alice', 20), ('alice', 20), ('alice', 20)]
+grades  = [[1, 2, 3], [1, 2, 3], [1, 2, 4]]
