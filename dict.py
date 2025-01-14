@@ -60,3 +60,7 @@ def update_player(name, new_height):
     else:
         print(f'{name} нет')
 
+def
+    if not dict
+        print пуст
+    for слово слово dict.items()
