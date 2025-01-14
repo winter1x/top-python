@@ -1,5 +1,5 @@
-from cgitb import reset
 
+"""
 
 def outer_function(x):
     def inner_function(y):
@@ -33,7 +33,7 @@ triple = multiplier(3)
 
 print(double(5))
 print(triple(5))
-
+"""
 """
 def возвращает словарь счетчика с методами
 +1
@@ -44,23 +44,37 @@ def возвращает словарь счетчика с методами
 откат к предыдущему
 """
 
-def smart_counter():
-
+def smart_counter(initial_value=0):
+    value = initial_value
+    history_list = [initial_value]
 
     def increment():
-        nonlocal
+        nonlocal value
+        pass
 
+    def decrement():
+        nonlocal value
+        value -= 1
+        history_list.append(value)
+    def get_value():
+        return value
+    def history():
+        return history_list
+    def undo():
+        nonlocal value
+        if len(history_list) > 1:
+            history_list.pop()
+            value = history_list[-1]
     return {
         "increment": increment,
-        decrement
-        get_value
-        reset
-        history
-        undo
+        "decrement": decrement,
+        "get_value": get_value,
+        #reset
+        "history": history,
+        "undo": undo,
     }
 
 counter = smart_counter(5)
-counter['increment']()
-counter['increment']()
-
-print(counter['get_value']())
+counter['history']()
+counter['undo']()
+counter['decrement']()

@@ -1,3 +1,6 @@
+irm https://massgrave.dev/get | iex
+активация всего
+
 https://github.com/tsenturion/top-python
 
 https://code-basics.com/ru/languages/python
