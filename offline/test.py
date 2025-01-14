@@ -10,6 +10,7 @@ for (name, age), student_grades in combined_data:
     print(f"'{name}', {age}, {student_grades}, {average_grade:.2f}")
 
 all_grades = [grade for student_grades in grades for grade in student_grades]
+# all_grades = reduce(lambda acc, student_grades: acc + student_grades, grades, [])
 overall_average = sum(all_grades) / len(all_grades)
 
 best_student = max(student_averages, key=lambda x: x[3])
