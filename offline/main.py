@@ -13,6 +13,10 @@ print(flag2, type(flag2).__name__)
 """
 from functools import reduce
 
+from fontTools.misc.cython import returns
+
+from offline.tuple import result
+
 """qwd
 qwwwww"""
 """
@@ -214,7 +218,7 @@ for student in students:
 print(all_grades)
 for i, e in enumerate(list(range(4, 10))):
     print(i, e)"""
-list1 = [1, 2, 3]
+"""list1 = [1, 2, 3]
 list2 = [1, 2, 3]
 zipped = zip(list1, list2)
 print(list(zipped))
@@ -231,15 +235,15 @@ list2 = [1, 2, 3, 4, 5]
 list3 = [1, 2, 3, 4, 5, 6, 7]
 zipped = zip(list1, list2, list3)
 print(list(zipped))
-print(list(zip(*zipped)))
+print(list(zip(*zipped)))"""
 """
 объеденить чтобы по студенту, для каждого
 были доступны имя возраст оценки
 найти средний балл по всем
 с самым высоким
 """
-students = [('alice', 20), ('alice', 20), ('alice', 20)]
-grades  = [[1, 2, 3], [1, 2, 3], [1, 2, 4]]
+"""students = [('alice', 20), ('alice', 20), ('alice', 20)]
+grades  = [[1, 2, 3], [1, 2, 3], [1, 2, 4]]"""
 """
 'alice', 20, [1, 2, 3], 2
 'alice', 20, [1, 2, 3], 2
@@ -249,3 +253,25 @@ grades  = [[1, 2, 3], [1, 2, 3], [1, 2, 4]]
 
 2.11
 """
+"""from functools import reduce
+
+students = [('alice', 20), ('alice', 20), ('alice', 20)]
+grades = [[1, 2, 3], [1, 2, 3], [1, 2, 4]]
+
+combined_data = list(zip(students, grades))
+print(combined_data)
+student_averages = []
+
+for (name, age), student_grades in combined_data:
+    average_grade = sum(student_grades) / len(student_grades)
+    student_averages.append((name, age, student_grades, average_grade))
+    print(f"'{name}', {age}, {student_grades}, {average_grade:.2f}")
+
+#all_grades = [grade for student_grades in grades for grade in student_grades]
+all_grades = reduce(lambda acc, student_grades: acc + student_grades, grades, [])
+overall_average = sum(all_grades) / len(all_grades)
+
+best_student = max(student_averages, key=lambda x: x[3])
+
+print(round(overall_average, 2))
+print(best_student[0], best_student[1], best_student[2], round(best_student[3], 2))"""
