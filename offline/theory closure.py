@@ -117,7 +117,7 @@ subtract
 multiply
 divide"""
 from functools import partial
-def operation(a):
+"""def operation(a):
     def inner(b):
         def oper(op):
             try:
@@ -141,12 +141,41 @@ def operation(a):
                 return ex
         return oper
     return inner
-
-result = operation(10)(5)('add')
+"""
+"""result = operation(10)(5)('add')
 print(result)
 result = operation(10)(0)('divide')
 print(result)
 print(result is None)
 result = operation(10)(5)('adde')
 print(result)
-print(result is None)
+print(result is None)"""
+
+def operation(a, b, op):
+    try:
+        if op == 'add':
+            return a + b
+        elif op == "subtract":
+            return a - b
+        elif op == "divide":
+            if b == 0:
+                raise ZeroDivisionError('123')
+            return a / b
+        elif op == 'multiply':
+            return a * b
+        else:
+            raise ValueError('1234')
+    except ValueError as e:
+        return str(e)
+    except ZeroDivisionError as e:
+        return str(e)
+    except Exception as ex:
+        return ex
+
+add = partial(operation, op='add')
+add_10 = partial(partial(operation, a=10), op='add')
+divide = partial(operation, op='divide')
+print(add(10, 2))
+print(add_10(b=2))
+print(divide(10, 2))
+print(divide(10, 0))
