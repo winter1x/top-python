@@ -43,7 +43,7 @@ def возвращает словарь счетчика с методами
 история изменений
 откат к предыдущему
 """
-
+"""
 def smart_counter(initial_value=0):
     value = initial_value
     history_list = [initial_value]
@@ -78,3 +78,45 @@ counter = smart_counter(5)
 counter['history']()
 counter['undo']()
 counter['decrement']()
+"""
+"""def add(a, b):
+    return a + b
+
+def add_curried(a):
+    def inner(b):
+        return a + b
+    return inner
+
+result = add_curried(2)(3)
+print(result)
+
+from functools import partial
+add_two = partial(add, 2)
+result = add_two(3)
+print(result)
+
+def curry(func):
+    def curried(*args):
+        if len(args) >= func.__code__.co_argcount:
+            return func(*args)
+        return lambda *more_args: curried(*(args + more_args))
+    return curried
+
+@curry
+def add(a, b, c):
+    return a + b + c
+
+result = add(1)(2)(3)
+print(result)"""
+
+"""
+add
+subtract
+multiply
+divide"""
+from functools import partial
+def c(a):
+    def i(b):
+        def ope(op):
+            try:
+                if
