@@ -38,3 +38,32 @@ difference_set = {1, 2, 3}.difference({3, 4, 5})
 difference2_set = {1, 2, 3} - {3, 4, 5}
 print(difference_set)
 print(difference2_set)
+
+fs1 = frozenset([1, 2, 3])
+fs2 = frozenset([3, 4, 5])
+
+print(fs1 | fs2)
+print(fs1 & fs2)
+print(fs1 - fs2)
+print(fs1 ^ fs2)
+print(fs1 <= fs2)
+print(fs1 >= fs2)
+
+d = {
+    frozenset([1, 2, 3]): "value1",
+    frozenset([4, 5, 6]): "value2",
+}
+
+"""
+на вход города
+сгруппировать по уникальным наборам букв без учета регистра и повторений
+возврщаем словарь по ключу из букв города
+значение список городов с таким же набором букв
+"""
+cities = ['Moskov', 'Tokyo', 'Kyoto']
+"""
+{
+    frozenset({'m', 's', 'c', 'o', 'w'}): ['Moskov'],
+    frozenset({'t', 'k', 'y', 'o'}): ['Tokyo', 'Kyoto']
+}
+"""
