@@ -34,6 +34,8 @@ triple = multiplier(3)
 print(double(5))
 print(triple(5))
 """
+from numpy.ma.core import subtract
+
 """
 def возвращает словарь счетчика с методами
 +1
@@ -115,8 +117,36 @@ subtract
 multiply
 divide"""
 from functools import partial
-def c(a):
-    def i(b):
-        def ope(op):
+def operation(a):
+    def inner(b):
+        def oper(op):
             try:
-                if
+                if op == 'add':
+                    return a + b
+                elif op == "subtract":
+                    return a - b
+                elif op == "divide":
+                    if b == 0:
+                        raise ZeroDivisionError('123')
+                    return a / b
+                elif op == 'multiply':
+                    return a * b
+                else:
+                    raise ValueError('1234')
+            except ValueError as e:
+                return str(e)
+            except ZeroDivisionError as e:
+                return str(e)
+            except Exception as ex:
+                return ex
+        return oper
+    return inner
+
+result = operation(10)(5)('add')
+print(result)
+result = operation(10)(0)('divide')
+print(result)
+print(result is None)
+result = operation(10)(5)('adde')
+print(result)
+print(result is None)
