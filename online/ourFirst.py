@@ -84,10 +84,10 @@ for e in list3:
     if e % 2 == 0:
         print(e)
 
-chetnie = [i for i in list3 if i % 2 == 0]
+even = [i for i in list3 if i % 2 == 0]
 b = None
 print(type(b).__name__)
-print(chetnie)"""
+print(even)"""
 """
 length = int(input())
 list1 = []
