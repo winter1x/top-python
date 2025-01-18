@@ -38,4 +38,4 @@ for word in reserved_words:
     text = text.replace(word.upper(), word)  # Меняем на верхний регистр в тексте
 
 # Вывод измененного текста
-print("Измененный текст:", text)
+print("Измененный текст:", text) 1
