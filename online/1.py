@@ -32,4 +32,4 @@ reserved_words = [word.strip().upper() for word in reserved_words]
 
 for word in reserved_words:
     text = text.replace(word.upper(), word)
-print("Измененный текст:", text) 1
+print("Измененный текст:", text)
