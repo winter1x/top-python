@@ -24,18 +24,12 @@ from numpy.ma.core import append
 #     print("wrong")
 
 
-# Ввод текста
 text = input("Введите текст: ")
 
-# Ввод списка зарезервированных слов
 reserved_words = input("Введите зарезервированные слова через запятую: ").split(',')
 
-# Убираем лишние пробелы у слов и меняем регистр на верхний
 reserved_words = [word.strip().upper() for word in reserved_words]
 
-# Изменение регистра зарезервированных слов в тексте
 for word in reserved_words:
-    text = text.replace(word.upper(), word)  # Меняем на верхний регистр в тексте
-
-# Вывод измененного текста
+    text = text.replace(word.upper(), word)
 print("Измененный текст:", text)
