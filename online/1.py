@@ -24,12 +24,14 @@ from numpy.ma.core import append
 #     print("wrong")
 
 
-text = input("Введите текст: ")
+# text = input("Введите текст: ")
+#
+# reserved_words = input("Введите зарезервированные слова через запятую: ").split(',')
+#
+# reserved_words = [word.strip().upper() for word in reserved_words]
+#
+# for word in reserved_words:
+#     text = text.replace(word.upper(), word)
+# print("Измененный текст:", text)
 
-reserved_words = input("Введите зарезервированные слова через запятую: ").split(',')
 
-reserved_words = [word.strip().upper() for word in reserved_words]
-
-for word in reserved_words:
-    text = text.replace(word.upper(), word)
-print("Измененный текст:", text)
