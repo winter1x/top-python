@@ -155,12 +155,12 @@ print(floor(pi))
 
 print(c(p))
 """
-import sys
+"""import sys
 import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from offline.main import list1
-print(list1)
+print(list1)"""
 
 """
 12
@@ -172,3 +172,84 @@ print(list1)
 '''
 # 213
 # 123
+
+"""x = None
+if x is None:
+    print(True)"""
+
+"""x = Null было раньше
+x = Nil в go
+"""
+
+"""list1 = [False, True, False]
+if any(list1):
+    print(True)
+list1 = [True, True, True]
+if all(list1):
+    print(True)
+"""
+""""x = 8 if 5 > 2 else 5
+"""""""значение если правда условие значение если ложь"""
+"""print(x)
+"""
+"""number = 0
+match number:
+    case 0:
+        print(0)
+    case 2:
+        print(2)
+    case _:
+        print('другое число')
+number = str(number)
+match number:
+    case int():
+        print('int')
+    case str():
+        print('str')
+    case _:
+        print('другой тип')
+tuple1 = 2, 3
+
+match tuple1:
+    case (0, 0):
+        print('начало координат')
+    case (2, 3):
+        print(f'точка {tuple1}')
+    case _:
+        print('другая точка')
+list1 = [1, 2, 3]
+match list1:
+    case []:
+        print(None)
+    case [1, 2, 3]:
+        print(list1)
+    case _:
+        print("other")
+
+"""
+"""для js
+loop1: for(,,)
+    loop2: for(,,)
+        break loop2"""
+"""
+for i in range(5):
+    if i == 1:
+        print(f'прерывание {i}')
+        continue
+    print(i)
+    if i == 2:
+        print(f'остановка {i}')
+        break
+
+str1 = '123'"""
+print('frffr', 'ererferfer', 'erfr')
+print()
+print()
+print('frffr', 'ererferfer', 'erfr', sep='0123')
+print('frffr', 'ererferfer', 'erfr', sep='\t')
+print('frffr', 'ererferfer', 'erfr', sep=' ')
+print('frffr', 'ererferfer', 'erfr', sep='??')
+print('frffr', 'ererferfer', 'erfr', end='\n')
+print('frffr', 'ererferfer', 'erfr', end='\t')
+print('frffr', 'ererferfer', 'erfr', end=' ')
+print('frffr', 'ererferfer', 'erfr', end='??')
