@@ -7,7 +7,6 @@ from re import *
 import re
 
 from listGuide import list1
-from main import result
 
 print(ascii_letters)
 print(ascii_lowercase)
@@ -67,15 +66,15 @@ a = randint(1, 10)
 # randrange
 # choises
 # shuffle - перемешивает
-password2 = password
+"""password2 = password
 result = ''
-for i in range(len(password)):
+for i in range(len(password) - 1):
     randNum = randint(0, len(password))
     result += password[randNum]
     password = password[:randNum] + password[randNum + 1:]
 
 password2 = list(password2)
-shuffle(password2)
+shuffle(password2)"""
 
 pattern = r'.' # один любой символ
 print(bool(match(pattern, '..')))
@@ -149,8 +148,29 @@ pattern = r'[a-zA-Z5-7]' # 11 цифр
 print(bool(match(pattern, str)))
 
 str = 'qweqw@tu.riu'
-str = '+7(123)123-23-23'
+str1 = '+7(123)123-23-23'
+str2 = '+7(666)666-66-66'
+str3 = '+7(66)666-66-66'
+"""
+создать паттерн для номеров телефона, такой, чтобы для
+r''
+Добавить:
 
+начало
+перве символов +7(
+три случайных числа
+)
+три случайных числа
+-
+два случайных числа
+-
+два случайных числа
+конец
+
+str1 True
+str2 True
+str3 False
+"""
 pattern = r'^\w+[\.\w-]*@\w+[\.\w-]*\.\w+[\.\w-]*$' # 11 цифр
 print(bool(match(r'^\w+[.\w-]*@\w+[.\w-]*\.\w+[.\w-]*$', 'e....6...------@')))
 
