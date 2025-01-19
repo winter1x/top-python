@@ -38,8 +38,11 @@ import re
 
 def count_sentences(text):
     sentences = re.split(r'[.!?]', text)
-    sentences = [s for s in sentences if s.strip()]
-    return len(sentences)
+    count = 0
+    for s in sentences:
+        if s.strip():
+            count += 1
+    return count
 
 text = input()
 sentence_count = count_sentences(text)
@@ -90,16 +93,11 @@ else:
 ратор он звонит. Вывести стоимость на экран
 """
 cost = float(input())
-operators = {
-    1: "Оператор A",
-    2: "Оператор B",
-    3: "Оператор C"
-}
 
 from_operator = int(input())
 to_operator = int(input())
 
-if from_operator in operators and to_operator in operators:
+if 1 <= from_operator <= 3 and 1 <= to_operator <= 3:
     print(cost)
 else:
     print("Ошибка: выбран неверный оператор.")
@@ -120,10 +118,23 @@ def calculate_salary(sales):
     else:
         return 200 + sales * 0.08
 
-manager_sales = [float(input()) for _ in range(3)]
-salaries = [calculate_salary(sales) for sales in manager_sales]
+manager_sales = []
+for _ in range(3):
+    sales = float(input())
+    manager_sales.append(sales)
 
-best_manager_index = salaries.index(max(salaries))
+salaries = []
+for sales in manager_sales:
+    salary = calculate_salary(sales)
+    salaries.append(salary)
+
+best_manager_index = 0
+max_salary = salaries[0]
+for i in range(1, len(salaries)):
+    if salaries[i] > max_salary:
+        max_salary = salaries[i]
+        best_manager_index = i
+
 salaries[best_manager_index] += 200
 
 for salary in salaries:
