@@ -75,4 +75,7 @@ print(sorted1)
 print(''.join(sorted1))
 msg = ' 3 4 456  456456 6 5 '
 print(msg.split())
-print(msg.strip())
+print(msg.strip(' '))
+print(msg.strip(' '))
+print(msg.strip(' '))
+
