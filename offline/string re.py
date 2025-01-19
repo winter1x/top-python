@@ -170,6 +170,8 @@ r''
 str1 True
 str2 True
 str3 False
+pattern = r'^\+7\(\d{3}\)\d{3}-\d{2}-\d{2}$'
+
 """
 pattern = r'^\w+[\.\w-]*@\w+[\.\w-]*\.\w+[\.\w-]*$' # 11 цифр
 print(bool(match(r'^\w+[.\w-]*@\w+[.\w-]*\.\w+[.\w-]*$', 'e....6...------@')))
@@ -206,10 +208,6 @@ class Cat():
 
     def meow(self):
         print('meow')
-
-
-
-
 
 cat = Cat()
 cat.meow()
