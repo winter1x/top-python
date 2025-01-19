@@ -34,4 +34,23 @@ from numpy.ma.core import append
 #     text = text.replace(word.upper(), word)
 # print("Измененный текст:", text)
 
+from gettext import textdomain
+from pdb import runctx
+from random import sample, choice, shuffle
+from re import match
+from string import *
+from re import *
+import re
 
+email = 'qweqw@tu.riu'
+phone1 = '+7(123)123-23-23'
+phone2 = '+7(666)666-66-66'
+phone3 = '+7(123)123-23'
+
+pattern_email = r'^\w+[\.\w-]*@\w+[\.\w-]*\.\w+[\.\w-]*$'
+pattern_phone = r'^\+?\d{1}[\s-]?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{2}[\s-]?\d{2}$'
+
+print(bool(re.match(pattern_email, email)))
+print(bool(re.match(pattern_phone, phone1)))
+print(bool(re.match(pattern_phone, phone2)))
+print(bool(re.match(pattern_phone, phone3)))
