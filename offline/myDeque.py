@@ -190,3 +190,30 @@ k = 3
 [3, 6, 7]  7
 
 [3, 3, 5, 5, 6, 7]"""
+
+from collections import deque
+
+def max_in_sliding_window(nums, k):
+    if not nums or k == 0:
+        return []
+
+    result = []
+    d = deque()
+
+    for i, num in enumerate(nums):
+        while d and d[0] < i - k + 1:
+            d.popleft()
+
+        while d and nums[d[-1]] < num:
+            d.pop()
+
+        d.append(i)
+
+        if i >= k - 1:
+            result.append(nums[d[0]])
+
+    return result
+
+nums = [1, 3, -1, -3, 5, 3, 6, 7]
+k = 3
+print(max_in_sliding_window(nums, k))
