@@ -34,6 +34,22 @@ str2 = "([{}])" # True
 str3 = "(]" # False
 str4 = "([)]" # False
 
+def is_valid_brackets(s):
+    stack = []
+    brackets_map = {')': '(', ']': '[', '}': '{'}
+    for char in s:
+        if char in brackets_map.values():
+            stack.append(char)
+        elif char in brackets_map:
+            if not stack or stack.pop() != brackets_map[char]:
+                return False
+    return not stack
+
+print(is_valid_brackets(str1))
+print(is_valid_brackets(str2))
+print(is_valid_brackets(str3))
+print(is_valid_brackets(str4))
+
 queue = deque()
 
 queue.append(1)
