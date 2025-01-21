@@ -73,3 +73,63 @@ if not queue:
 использовать deque 
 """
 
+class SimpleMinMaxQueue:
+    def __init__(self):
+        self.queue = deque()
+
+    def enqueue(self, x):
+        self.queue.append(x)
+
+    def dequeue(self):
+        if not self.queue:
+            return None
+        return self.queue.popleft()
+
+    def get_max(self):
+        if not self.queue:
+            return None
+        return max(self.queue)
+
+    def get_min(self):
+        if not self.queue:
+            return None
+        return min(self.queue)
+
+smq = SimpleMinMaxQueue()
+smq.enqueue(3)
+smq.enqueue(1)
+smq.enqueue(5)
+print(smq.get_max())
+print(smq.get_min())
+print()
+smq.dequeue()
+print(smq.get_max())
+print(smq.get_min())
+print()
+smq.dequeue()
+print(smq.get_max())
+print(smq.get_min())
+print()
+smq.dequeue()
+print(smq.get_max())
+print(smq.get_min())
+"""
+добавление
+append(x)
+appendleft(x)
+
+удаление
+pop()
+popleft()
+
+методы
+extend(iterable) — добавляет все элементы из итерируемого объекта в конец deque
+extendleft(iterable) — добавляет все элементы из итерируемого объекта в начало deque (элементы добавляются в обратном порядке)
+rotate(n) — циклически сдвигает элементы deque на n шагов. Если n положительное, сдвиг происходит вправо, если отрицательное — влево
+clear()  полностью очистить
+count(x)  возвращает количество элементов, равных x
+remove(x)  удаляет первый найденный элемент, равный x
+
+свойство
+maxlen  максимальный размер deque (если задан). Если при добавлении элементов размер превышает maxlen, элементы с противоположного конца автоматически удаляются
+"""
