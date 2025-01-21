@@ -142,12 +142,12 @@ print(bool(match(pattern, 'qrtyq')))
 
 
 pattern = r'\d{}' # 11 цифр
-print(bool(match(pattern, str)))
+print(bool(match(pattern, "str")))
 
 pattern = r'[a-zA-Z5-7]' # 11 цифр
-print(bool(match(pattern, str)))
+print(bool(match(pattern, "str")))
 
-str = 'qweqw@tu.riu'
+str4 = 'qweqw@tu.riu'
 str1 = '+7(123)123-23-23'
 str2 = '+7(666)666-66-66'
 str3 = '+7(66)666-66-66'
@@ -157,7 +157,7 @@ r''
 Добавить:
 
 начало
-перве символов +7(
+первые символов +7(
 три случайных числа
 )
 три случайных числа

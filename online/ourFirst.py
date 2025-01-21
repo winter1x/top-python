@@ -242,7 +242,7 @@ for i in range(5):
         break
 
 str1 = '123'"""
-print('frffr', 'ererferfer', 'erfr')
+"""print('frffr', 'ererferfer', 'erfr')
 print()
 print()
 print('frffr', 'ererferfer', 'erfr', sep='0123')
@@ -253,3 +253,22 @@ print('frffr', 'ererferfer', 'erfr', end='\n')
 print('frffr', 'ererferfer', 'erfr', end='\t')
 print('frffr', 'ererferfer', 'erfr', end=' ')
 print('frffr', 'ererferfer', 'erfr', end='??')
+"""
+def custom_add_print(a, b):
+    print(a + b)
+
+def custom_add_return(a, b):
+    return a + b
+
+def get_user_info():
+    name = "matvey"
+    age = 23
+    return name, age
+
+myName, myAge = get_user_info()
+print(myAge, myName)
+
+custom_add_print(1, 2)
+a = custom_add_return(1, 2)
+print(a)
+
