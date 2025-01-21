@@ -67,3 +67,16 @@ cities = ['Moskov', 'Tokyo', 'Kyoto']
     frozenset({'t', 'k', 'y', 'o'}): ['Tokyo', 'Kyoto']
 }
 """
+def group_cities_by_unique_letters(cities):
+    result = {}
+    for city in cities:
+        unique_letters = frozenset(city.lower())
+        if unique_letters in result:
+            result[unique_letters].append(city)
+        else:
+            result[unique_letters] = [city]
+    return result
+
+cities = ['Moskov', 'Tokyo', 'Kyoto']
+grouped_cities = group_cities_by_unique_letters(cities)
+print(grouped_cities)
