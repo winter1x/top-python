@@ -1,23 +1,10 @@
 """
-print_list -> __str__ для строкового представления списка
-length -> __len__ для получения длины списка
-get_at_index -> __getitem__ для доступа по индексу
-find -> __contains__ для проверки наличия элемента
-is_empty -> __bool__
-
-убрать лишние методы
-
-добавить
-__iter__ для итерации по списку
-__add__ для объединения двух списков
-__eq__ для сравнения двух списков на равенство
-__bool__ для проверки, пуст ли список
+сделать двусвязный
 """
 class Node:
     def __init__(self, data):
         self.data = data
         self.next = None
-
 
 class LinkedList:
     def __init__(self):
@@ -37,6 +24,9 @@ class LinkedList:
         while last.next:
             last = last.next
         last.next = new_node
+
+    def remove_from_tail(self):
+        pass
 
     def remove_from_head(self):
         if self.head:
