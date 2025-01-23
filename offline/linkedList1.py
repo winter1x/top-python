@@ -1,3 +1,18 @@
+"""
+print_list -> __str__ для строкового представления списка
+length -> __len__ для получения длины списка
+get_at_index -> __getitem__ для доступа по индексу
+find -> __contains__ для проверки наличия элемента
+is_empty -> __bool__
+
+убрать лишние методы
+
+добавить
+__iter__ для итерации по списку
+__add__ для объединения двух списков
+__eq__ для сравнения двух списков на равенство
+__bool__ для проверки, пуст ли список
+"""
 class Node:
     def __init__(self, data):
         self.data = data
@@ -24,9 +39,8 @@ class LinkedList:
         last.next = new_node
 
     def remove_from_head(self):
-        if not self.head:
-            return
-        self.head = self.head.next
+        if self.head:
+            self.head = self.head.next
 
     def remove_by_value(self, data):
         if not self.head:
@@ -40,22 +54,6 @@ class LinkedList:
                 current.next = current.next.next
                 return
             current = current.next
-
-    def find(self, data):
-        current = self.head
-        while current:
-            if current.data == data:
-                return True
-            current = current.next
-        return False
-
-    def length(self):
-        count = 0
-        current = self.head
-        while current:
-            count += 1
-            current = current.next
-        return count
 
     def insert_after(self, target_data, new_data):
         current = self.head
@@ -81,18 +79,6 @@ class LinkedList:
     def clear(self):
         self.head = None
 
-    def get_at_index(self, index):
-        if index < 0:
-            raise IndexError("Index cannot be negative")
-        current = self.head
-        count = 0
-        while current:
-            if count == index:
-                return current.data
-            current = current.next
-            count += 1
-        raise IndexError("Index out of range")
-
     def remove_at_index(self, index):
         if index < 0:
             raise IndexError("Index cannot be negative")
@@ -100,112 +86,78 @@ class LinkedList:
             self.remove_from_head()
             return
         current = self.head
-        count = 0
-        while current:
-            if count == index - 1:
-                if current.next:
-                    current.next = current.next.next
-                else:
-                    raise IndexError("Index out of range")
-                return
+        for _ in range(index - 1):
+            if not current:
+                raise IndexError("Index out of range")
             current = current.next
-            count += 1
+        if current and current.next:
+            current.next = current.next.next
+        else:
+            raise IndexError("Index out of range")
+
+    def __str__(self):
+        return " -> ".join(str(item) for item in self) + " -> None"
+
+    def __len__(self):
+        return sum(1 for _ in self)
+
+    def __getitem__(self, index):
+        if index < 0:
+            raise IndexError("Index cannot be negative")
+        for i, item in enumerate(self):
+            if i == index:
+                return item
         raise IndexError("Index out of range")
 
-    def is_empty(self):
-        return self.head is None
+    def __contains__(self, data):
+        return any(item == data for item in self)
 
-    def print_list(self):
+    def __iter__(self):
         current = self.head
         while current:
-            print(current.data, end=" -> ")
+            yield current.data
             current = current.next
-        print("None")
 
-    def merge(self, other):
-        if not self.head:
-            self.head = other.head
-            return
-        last = self.head
-        while last.next:
-            last = last.next
-        last.next = other.head
+    def __add__(self, other):
+        new_list = LinkedList()
+        for item in self:
+            new_list.add_to_tail(item)
+        for item in other:
+            new_list.add_to_tail(item)
+        return new_list
+
+    def __eq__(self, other):
+        return len(self) == len(other) and all(a == b for a, b in zip(self, other))
+
+    def __bool__(self):
+        return self.head is not None
 
 
-ll = LinkedList()
-
-ll.add_to_tail(10)
-ll.add_to_tail(20)
-ll.add_to_tail(30)
-
-print("Список после добавления элементов:")
-ll.print_list()
-
-ll.add_to_head(5)
-print("\nСписок после добавления в начало:")
-ll.print_list()
-
-ll.remove_from_head()
-print("\nСписок после удаления из начала:")
-ll.print_list()
-
-ll.remove_by_value(20)
-print("\nСписок после удаления значения 20:")
-ll.print_list()
-
-print("\nПоиск элемента 10:")
-print(ll.find(10))
-print("Поиск элемента 15:")
-print(ll.find(15))
-
-print("\nДлина списка:")
-print(ll.length())
-
-ll.insert_after(10, 15)
-print("\nСписок после вставки 15 после 10:")
-ll.print_list()
-
-ll.reverse()
-print("\nСписок после реверсирования:")
-ll.print_list()
-
-ll.clear()
-print("\nСписок после очистки:")
-ll.print_list()
-
-ll.add_to_tail(100)
-ll.add_to_tail(200)
-ll.add_to_tail(300)
-
-print("\nЭлемент с индексом 1:")
-print(ll.get_at_index(1))
-
-ll.remove_at_index(1)
-print("\nСписок после удаления элемента с индексом 1:")
-ll.print_list()
-
-print("\nСписок пуст?")
-print(ll.is_empty())
+ll1 = LinkedList()
+ll1.add_to_tail(10)
+ll1.add_to_tail(20)
+ll1.add_to_tail(30)
 
 ll2 = LinkedList()
-ll2.add_to_tail(400)
-ll2.add_to_tail(500)
-ll.merge(ll2)
-print("\nСписок после объединения:")
-ll.print_list()
+ll2.add_to_tail(40)
+ll2.add_to_tail(50)
 
-"""
-print_list -> __str__ для строкового представления списка
-length -> __len__ для получения длины списка
-get_at_index -> __getitem__ для доступа по индексу
-find -> __contains__ для проверки наличия элемента
-is_empty -> __bool__
+print("Список 1:", ll1)
+print("Длина списка 1:", len(ll1))
+print("Элемент с индексом 1:", ll1[1])
+print("Есть ли 20 в списке 1?", 20 in ll1)
 
-убрать лишние методы
+print("Итерация по списку 1:")
+for item in ll1:
+    print(item, end=" ")
+print()
 
-добавить
-__iter__ для итерации по списку
-__add__ для объединения двух списков
-__eq__ для сравнения двух списков на равенство
-__bool__ для проверки, пуст ли список
-"""
+ll3 = ll1 + ll2
+print("Объединенный список:", ll3)
+
+print("Списки 1 и 2 равны?", ll1 == ll2)
+print("Список 1 пуст?", not ll1)
+
+ll1.clear()
+print("Список 1 после очистки:", ll1)
+print("Список 1 пуст?", not ll1)
