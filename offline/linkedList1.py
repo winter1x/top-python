@@ -16,6 +16,10 @@ class LinkedList:
         while last.next:
             last = last.next
         last.next = new_node
+
+    def __str__(self):
+        pass
+
     def print_list(self):
         current = self.head
         while current:
