@@ -5,28 +5,42 @@ class Node:
     def __init__(self, data):
         self.data = data
         self.next = None
+        self.prev = None
 
 class LinkedList:
     def __init__(self):
         self.head = None
+        self.tail = None
 
     def add_to_head(self, data):
         new_node = Node(data)
-        new_node.next = self.head
-        self.head = new_node
+        if not self.head:
+            self.head = new_node
+            self.tail = new_node
+        else:
+            new_node.next = self.head
+            self.head.prev = new_node
+            self.head = new_node
 
     def add_to_tail(self, data):
         new_node = Node(data)
         if not self.head:
             self.head = new_node
-            return
-        last = self.head
-        while last.next:
-            last = last.next
-        last.next = new_node
+            self.tail = new_node
+        else:
+            new_node.prev = self.tail
+            self.tail.next = new_node
+            self.tail = new_node
 
     def remove_from_tail(self):
-        pass
+        if not self.tail:
+            return
+        if self.head == self.tail:
+            self.head = None
+            self.tail = None
+        else:
+            self.tail = self.tail.prev
+            self.tail.next = None
 
     def remove_from_head(self):
         if self.head:
@@ -36,7 +50,10 @@ class LinkedList:
         if not self.head:
             return
         if self.head.data == data:
-            self.head = self.head.next
+            self.remove_from_head()
+            return
+        if self.tail.data == data:
+            self.remove_from_tail()
             return
         current = self.head
         while current.next:
@@ -51,20 +68,22 @@ class LinkedList:
             if current.data == target_data:
                 new_node = Node(new_data)
                 new_node.next = current.next
+                new_node.prev = current
+                if current.next:
+                    current.next.prev = new_node
+                else:
+                    self.tail = new_node
                 current.next = new_node
                 return
             current = current.next
         raise ValueError(f"Элемент {target_data} не найден в списке")
 
     def reverse(self):
-        previous = None
         current = self.head
         while current:
-            next_node = current.next
-            current.next = previous
-            previous = current
-            current = next_node
-        self.head = previous
+            current.next, current.prev = current.prev, current.next
+            current = current.prev
+        self.head, self.tail = self.tail, self.head
 
     def clear(self):
         self.head = None
