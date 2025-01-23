@@ -8,6 +8,9 @@ class LinkedList:
     def __init__(self):
         self.head = None
 
+    def add_to_head(self):
+        pass
+
     def add_to_tail(self, data):
         new_node = Node(data)
         if not self.head:
