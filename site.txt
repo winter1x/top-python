@@ -5,7 +5,7 @@ power shell
 https://github.com/tsenturion/top-python
 
 https://code-basics.com/ru/languages/python
-без классов
+все
 
 pythontutor.ru
 https://leetcode.com/studyplan/
