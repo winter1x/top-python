@@ -1,28 +1,22 @@
-"""Задание
-В одном из предыдущих уроков мы уже написали функцию filter_string().
-Напомним, она принимает на вход строку и символ и возвращает новую строку,
-в которой удалён переданный символ во всех его позициях.
-На этот раз реализуйте эту функцию с помощью цикла for.
-Дополнительное условие: регистр исключаемого символа не имеет значения.
+"""Реализуйте функцию print_table_of_squares(first, last),
+которая печатает на экран квадраты чисел.
+Она первое first и последнее last число печатает строку square of <число> is <результат>
 
-Пример вызова:
+Примеры вызова:
 """
-text = 'If I look forward I win'
-
-def filter_string(s, c):
-    c = c.lower()
+def print_table_of_squares(first, last):
     result = []
-    for i in s:
-        if i.lower() != c:
-            result.append(i)
-    return ''.join(result)
+    for number in range(first, last + 1):
+        square = number ** 2
+        result.append(f'square of {number} is {square}')
+    print('\n'.join(result))
 
-def filter_string2(text, char):
-    result = ''
-    for current_char in text:
-        if current_char.upper() != char.upper():
-            result += current_char
-    return result
+def print_table_of_squares2(first, last):
+    for i in range(first, last + 1):
+        square = i * i
+        print(f"square of {i} is {square}")
 
-print(filter_string(text, 'i'))  # 'f  look forward  wn'
-print(filter_string(text, 'O'))  # 'If I lk frward I win'
+print_table_of_squares(1, 3)
+# => square of 1 is 1
+# => square of 2 is 4
+# => square of 3 is 9
