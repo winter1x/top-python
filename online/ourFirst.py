@@ -254,7 +254,7 @@ print('frffr', 'ererferfer', 'erfr', end='\t')
 print('frffr', 'ererferfer', 'erfr', end=' ')
 print('frffr', 'ererferfer', 'erfr', end='??')
 """
-def custom_add_print(a, b):
+"""def custom_add_print(a, b):
     print(a + b)
 
 def custom_add_return(a, b):
@@ -285,3 +285,22 @@ for i in list1:
 
 print(list1[-1])
 print(list1.pop())
+"""
+# lst = [int(s) for s in input().split()]
+list1 = [i for i in range(5)]
+print(list1)
+list1 = list(range(5))
+print(list1)
+list1 = [i ** 4 if i % 4 == 0 else i ** 2 for i in range(10) if i % 2 == 0]
+print(list1)
+list1 = [i * j for i in range(5) for j in range(5)]
+print(list1)
+list1 = [[i * j for i in range(5)] for j in range(5)]
+print(list1)
+
+# квадраты чисел от 3 до 50 с шагом 7
+
+# создать список четных чисел от 0 до 20
+list2 = ['123', '123', '123', '123', '123f', '1234']
+# создать список слов, длина которых больше 3
+

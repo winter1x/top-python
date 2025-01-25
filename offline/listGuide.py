@@ -75,7 +75,7 @@ def fib(n):
     elif n == 1:
         return 1
     elif n < 0:
-        raise Error
+        raise Exception
     return fib(n - 1) + fib(n - 2)
 
 print(fib(6))
