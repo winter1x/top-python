@@ -1,35 +1,28 @@
-# https://buildin.ai/youit/share/817c2f62-dab0-4b06-8b2d-85037305a8a4?code=LHHZV7
-from collections import deque
+"""Задание
+В одном из предыдущих уроков мы уже написали функцию filter_string().
+Напомним, она принимает на вход строку и символ и возвращает новую строку,
+в которой удалён переданный символ во всех его позициях.
+На этот раз реализуйте эту функцию с помощью цикла for.
+Дополнительное условие: регистр исключаемого символа не имеет значения.
 
+Пример вызова:
+"""
+text = 'If I look forward I win'
 
-def min_recolor(n, k, s):
+def filter_string(s, c):
+    c = c.lower()
+    result = []
+    for i in s:
+        if i.lower() != c:
+            result.append(i)
+    return ''.join(result)
 
-    if 'B' * k in s:
-        return 0
+def filter_string2(text, char):
+    result = ''
+    for current_char in text:
+        if current_char.upper() != char.upper():
+            result += current_char
+    return result
 
-    min_white = float('inf')
-    white_count = 0
-    dq = deque()
-
-    for i in range(n):
-        if s[i] == 'W':
-            white_count += 1
-            dq.append(i)
-
-        if i >= k:
-            if s[i - k] == 'W':
-                white_count -= 1
-                if dq and dq[0] == i - k:
-                    dq.popleft()
-
-        if i >= k - 1:
-            min_white = min(min_white, white_count)
-            if min_white == 0:
-                break
-    return min_white
-
-
-print(min_recolor(5, 3, "BBWBW"))
-print(min_recolor(5, 5, "BBWBW"))
-print(min_recolor(5, 1, "BBWBW"))
-print(min_recolor(1, 1, "W"))
+print(filter_string(text, 'i'))  # 'f  look forward  wn'
+print(filter_string(text, 'O'))  # 'If I lk frward I win'
