@@ -272,3 +272,13 @@ custom_add_print(1, 2)
 a = custom_add_return(1, 2)
 print(a)
 
+
+list1 = []
+list2 = [1, 2, {234, 234, 12}, (123, 32), '1231', [123, 123, 123]]
+for i in range(2, 10, 2):
+    list1.append(i)
+    print(i)
+
+print(list1)
+for i in list1:
+    print(i)

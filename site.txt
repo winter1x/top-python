@@ -5,8 +5,7 @@ power shell
 https://github.com/tsenturion/top-python
 
 https://code-basics.com/ru/languages/python
-делаем 61 включительно
-все кроме 61
+без классов
 
 pythontutor.ru
 https://leetcode.com/studyplan/
