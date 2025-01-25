@@ -282,3 +282,6 @@ for i in range(2, 10, 2):
 print(list1)
 for i in list1:
     print(i)
+
+print(list1[-1])
+print(list1.pop())
