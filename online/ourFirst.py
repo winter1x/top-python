@@ -306,7 +306,10 @@ list1 = [i for i in range(20) if i % 2 == 0]
 
 list2 = ['123', '123', '123', '123', '123f', '1234']
 # создать список слов, длина которых больше 3
-
+list2 = [word for word in list2 if len(word) > 3]
+print(list2)
 list3 = [1, 2, 3]
 list4 = [100, 1000]
 # создать список со всеми возможными суммами двух элементов из двух списков
+list1 = [i + j for i in list3 for j in list4]
+print(list1)
