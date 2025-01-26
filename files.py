@@ -1,5 +1,6 @@
 reg = -1
 nat = []
+amount = 0
 with open('txts/region.txt', 'r') as file:
     lines = file.readlines()
     to_find = 'ASIA'
@@ -17,6 +18,10 @@ with open('txts/nation.txt', 'r') as file:
     for line in lines:
         if reg in line.split('|')[2]:
             nat.append(line.split('|')[0])
-print(nat)
 with open('txts/customer.txt', 'r') as file:
     lines = file.readlines()
+    for line in lines:
+        if line.split('|')[3] in nat:
+            print(line)
+            amount += 1
+print(amount)
