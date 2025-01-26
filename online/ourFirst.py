@@ -314,7 +314,7 @@ list4 = [100, 1000]
 list1 = [i + j for i in list3 for j in list4]
 print(list1)
 """
-
+"""
 try:
     a = float(input())
     b = float(input())
@@ -332,7 +332,7 @@ except Exception as ex:
 else:
     print('ошибок не возникло')
 finally:
-    print("тест завершен")
+    print("тест завершен")"""
 
 """
 вводим а б

@@ -29,6 +29,9 @@ print(sum_result)
 
 # Вычислите факториал числа, используя список чисел от 1 до этого числа.
 n = 5
-
+fact = reduce(lambda x, y : x * y, range(1, n + 1))
+print(fact)
 
 # Подсчитайте количество чётных чисел в списке, используя reduce.
+count = reduce(lambda acc, x : acc + 1 if x % 2 == 0 else acc, numbers, 0)
+print(count)
