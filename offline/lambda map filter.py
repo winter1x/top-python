@@ -1,11 +1,8 @@
-from cProfile import label
-
-
 def sqr1(number):
     return number * number
 
 def printf(some_list, func):
-    for _ in some_list:
+    for i in some_list:
         print(func(i))
 
 
@@ -18,16 +15,15 @@ printf(list1, lambda x : x * x)
 sqr = lambda x : x * x
 
 print(sqr(5))
-
 for i in map(sqr1, list1):
     print(i)
-
 list2 = list(map(sqr1, list1))
 print(list2)
 
 for i in filter(lambda x : x % 2 == 0, list1):
     print(i)
-
+list1 = list(filter(lambda x : x % 2 == 0, list1))
+print(list1)
 fib = lambda n : n if n <= 1 else fib(n - 1) + fib(n - 2)
 fact = lambda n : 1 if n == 0 else n * fact(n - 1)
 
@@ -65,3 +61,15 @@ strlist = ['a', '123321', 'fsd1231', 'ii', 'Rsd1231']
 strlist = ['a', 'ii']
 b = "aeiouyAEIOUY"
 strlist = list(filter(lambda x: any(ch in b for ch in x), strlist))
+
+# Удвойте каждый элемент списка чисел.
+
+# Отфильтруйте чётные числа из списка.
+
+# Преобразуйте все строки в списке в верхний регистр.
+
+# Отфильтруйте положительные числа из списка.
+
+# Вычислите квадраты всех чисел в списке.
+
+# Отфильтруйте чётные числа, а затем возведите их в квадрат.

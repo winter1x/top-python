@@ -286,7 +286,7 @@ for i in list1:
 print(list1[-1])
 print(list1.pop())
 """
-# lst = [int(s) for s in input().split()]
+"""# lst = [int(s) for s in input().split()]
 list1 = [i for i in range(5)]
 print(list1)
 list1 = list(range(5))
@@ -313,3 +313,31 @@ list4 = [100, 1000]
 # создать список со всеми возможными суммами двух элементов из двух списков
 list1 = [i + j for i in list3 for j in list4]
 print(list1)
+"""
+
+try:
+    a = float(input())
+    b = float(input())
+    print(a / b)
+
+except ZeroDivisionError:
+    print("нельзя / на 0")
+except ValueError:
+    print("введено не число")
+
+except Exception as ex:
+    print(ex)
+    print("неизвестная ошибка")
+
+else:
+    print('ошибок не возникло')
+finally:
+    print("тест завершен")
+
+"""
+вводим а б
+попробуем поделить а на б
+ZeroDivisionError если делим на 0. печать нельзя на 0
+ValueError если не число. печать введено не число
+в остальных случаях печать неизвестная ошибка
+"""
