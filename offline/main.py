@@ -189,7 +189,7 @@ print(reduce(lambda x, y: x * y, [1, 2, 3, 4]))
 print(reduce(lambda x, y: x + y, ['1', '2', '3', '4']))
 
 """
-"""собрать все оценки всеъ студентов в один список
+"""собрать все оценки всех студентов в один список
 средний балл по всем """
 """
 
@@ -203,18 +203,20 @@ students = [
 # reduce собрать все оценки в один список
 # reduce найти средний балл
 #all_grades = reduce(lambda acc, student: acc + student['grades'], students, [])
-all_grades = [grade for student 
-              in students for grade in student['grades']]
+all_grades = [grade for student in students for grade in student['grades']]
+              
 all_grades = []
 for student in students:
     for grade in student['grades']:
         all_grades.append(grade)
+        
 total_sum = 0
 total_len = 0
 for student in students:
     total_len += len(student["grades"])
     total_sum += sum(student["grades"])
-
+    
+result = reduce(lambda x, y: x + y, all_grades) / len(all_grades)
 print(all_grades)
 for i, e in enumerate(list(range(4, 10))):
     print(i, e)"""

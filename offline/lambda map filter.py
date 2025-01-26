@@ -52,7 +52,7 @@ strlist = ['rsd1231', 'rsd1231']"""
 strlist = list(map(lambda x : x.lower(), filter(lambda x : x.istitle(), strlist)))
 
 strlist = ['121', '123321', 'fsd1231', 'Rsd1231', 'Rsd1231']
-"""одинаково слева направоstrlist = ['121', '123321']"""
+"""одинаково слева направо strlist = ['121', '123321']"""
 
 strlist = list(filter(lambda x : x == x[::-1], strlist))
 
@@ -61,15 +61,23 @@ strlist = ['a', '123321', 'fsd1231', 'ii', 'Rsd1231']
 strlist = ['a', 'ii']
 b = "aeiouyAEIOUY"
 strlist = list(filter(lambda x: any(ch in b for ch in x), strlist))
-
+print()
+numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 # Удвойте каждый элемент списка чисел.
+print(list(map(lambda x : x * 2, numbers)))
 
 # Отфильтруйте чётные числа из списка.
+print(list(filter(lambda x : x % 2 == 0, numbers)))
 
 # Преобразуйте все строки в списке в верхний регистр.
+strlist = ['fsd1231', 'fsd1231', 'fsd1231', 'fsd1231']
+print(list(map(lambda s : s.upper(), strlist)))
 
 # Отфильтруйте положительные числа из списка.
+print(list(filter(lambda x : x > 0, numbers)))
 
 # Вычислите квадраты всех чисел в списке.
+print(list(map(lambda x : x ** 2, numbers)))
 
-# Отфильтруйте чётные числа, а затем возведите их в квадрат.
+# Отфильтруйте чётные числа, а затем возведите их в квадрат. map filter
+print(list(map(lambda x : x ** 2, filter(lambda x : x % 2 == 0, numbers))))
