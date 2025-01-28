@@ -22,6 +22,5 @@ with open('txts/customer.txt', 'r') as file:
     lines = file.readlines()
     for line in lines:
         if line.split('|')[3] in nat:
-            print(line)
             amount += 1
 print(amount)
