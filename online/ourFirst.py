@@ -341,3 +341,70 @@ ZeroDivisionError если делим на 0. печать нельзя на 0
 ValueError если не число. печать введено не число
 в остальных случаях печать неизвестная ошибка
 """
+
+"""def outer_function(x):
+    def inner_function(y):
+        return x + y
+    return inner_function
+
+closure = outer_function(10)
+print(closure(5))"""
+
+
+"""def make_counter():
+    count = 0
+    def counter():
+        nonlocal count
+        count += 1
+        return count
+    return counter
+
+counter1 = make_counter()
+print(counter1())
+print(counter1())
+print(counter1())"""
+"""
+функция умножения
+"""
+"""def make_multiplier(x):
+    def inner_function(y):
+        return x * y
+    return inner_function
+
+times3 = make_multiplier(3)
+print(times3(9)) # 27
+print(times3(9)) # 27
+
+def outer_function(name):
+    return lambda: f'Hello, {name}'
+
+greet = outer_function('alice')
+print(greet())
+greet = outer_function('112')
+print(greet())
+
+multipliers = []
+for x in range(1, 4):
+    multipliers.append(lambda y : x * y)
+
+m1, m2, m3 = multipliers
+print(m1(10))
+print(m2(10))
+print(m3(10))
+
+multipliers = []
+for x in range(1, 4):
+    multipliers.append(lambda y, real_x=x : real_x * y)
+
+m1, m2, m3 = multipliers
+print(m1(10))
+print(m2(10))
+print(m3(10))
+"""
+
+# 1 счетчик
+counter = make_counter()
+print(counter()) # 1
+print(counter()) # 2
+print(counter()) # 3
+
