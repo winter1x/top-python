@@ -1,37 +1,54 @@
-from functools import reduce
+"""
+Задание 1
+ Дано два текстовых файла. Выяснить, совпадают ли
+их строки. Если нет, то вывести несовпадающую строку
+из каждого файла.
+ Задание 2
+ Дантекстовыйфайл.Необходимосоздатьновыйфайл
+и записать в него следующую статистику по исходному
+файлу:
+ ■ Количество символов;
+ ■ Количество строк;
+ ■ Количество гласных букв;
+ ■ Количество согласных букв;
+ ■ Количество цифр.
+ Задание 3
+ Дан текстовый файл. Удалить из него последнюю
+строку. Результат записать в другой файл.
+ Задание 4
+ Дан текстовый файл. Найти длину самой длинной
+строки.
+ 1
+Задание 5
+ Дан текстовый файл. Посчитать сколько раз в нем
+встречается заданное пользователем слово.
+ Задание 6
+ Дан текстовый файл. Найти изаменить в немзадан
+ное слово. Что искать и на что заменять определяется
+пользователем
+"""
+# 1
+def compare_files(file1, file2):
+    with open(file1, 'r', encoding='utf-8') as f1, open(file2, 'r', encoding='utf-8') as f2:
+        lines1, lines2 = f1.readlines(), f2.readlines()
+        for l1, l2 in zip(lines1, lines2):
+            if l1.strip() != l2.strip():
+                print(l1, l2)
+# 2
+def file_statistics(file, output_file):
+    vowels = 'аеёиоуыюяАЕЁИОУЫЭЮЯaeiouAEIOU'
+    consonants = ''
+# 3
 
-numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-strs = ['123', '456']
-
-# Найдите сумму всех элементов списка чисел.
-sum_result = reduce(lambda x, y : x + y, numbers)
-print(sum_result)
-
-# Найдите произведение всех элементов списка чисел.
-sum_result = reduce(lambda x, y : x * y, numbers)
-print(sum_result)
-
-# Найдите максимальный элемент в списке чисел.
-sum_result = reduce(lambda x, y : x if x > y else y, numbers)
-print(sum_result)
-
-# Объедините все строки из списка в одну строку через пробел.
-conc_result = reduce(lambda x, y : x + ' ' + y, strs)
-print(conc_result)
-
-# Найдите сумму квадратов всех элементов списка чисел.
-sum_result = reduce(lambda x, y : x + y ** 2, numbers)
-print(sum_result)
-
-# Найдите наименьший элемент в списке чисел.
-sum_result = reduce(lambda x, y : x if x < y else y, numbers)
-print(sum_result)
-
-# Вычислите факториал числа, используя список чисел от 1 до этого числа.
-n = 5
-fact = reduce(lambda x, y : x * y, range(1, n + 1))
-print(fact)
-
-# Подсчитайте количество чётных чисел в списке, используя reduce.
-count = reduce(lambda acc, x : acc + 1 if x % 2 == 0 else acc, numbers, 0)
-print(count)
+# 4
+def longest_line_lenght(file):
+    with open(file, 'r', encoding='utf-8') as f:
+        return max(map(len, f.readlines()))
+# 5
+def count_word_occurrences(file, word):
+    with open(file, 'r', encoding='utf-8') as f:
+        return sum(line.lower().split().count(word.lower()) for line in f)
+# 6
+compare_files('1.txt', '2.txt')
+print(longest_line_lenght('1.txt'))
+print(count_word_occurrences('1.txt', "1"))
