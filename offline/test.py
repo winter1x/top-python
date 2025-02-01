@@ -83,3 +83,25 @@ def replace_word_in_file(file, search_word, replace_word):
 file_statistics('1.txt', '3.txt')"""
 """remove_last_line('1.txt', '3.txt')"""
 replace_word_in_file('1.txt', '1', '9')
+"""
+Дантекстовыйфайл.Необходимосоздатьновыйфайл, 
+в которыйтребуетсяпереписатьизисходногофайлавсе 
+слова, состоящие не менее чем из семи букв.
+
+ Дан текстовый файл. Необходимо переписать его 
+строки в другой файл. Порядок строк во втором файле 
+должен быть обратным по отношению к порядку строк 
+в заданном файле"""
+
+def filter_long_words(input_file, output_file):
+    with open(input_file, 'r', encoding='utf-8') as f:
+        words = f.read().split()
+    long_words = [word for word in words if len(word) >= 7]
+    with open(output_file, 'w', encoding='utf-8') as f:
+        f.write(''.join(long_words))
+
+def reverse_lines(input_file, output_file):
+    with open(input_file, 'r', encoding='utf-8') as f:
+        lines = f.readlines()
+    with open(output_file, 'w', encoding='utf-8') as f:
+        f.writelines(lines[::-1])
