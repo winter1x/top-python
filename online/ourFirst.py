@@ -401,20 +401,34 @@ print(m1(10))
 print(m2(10))
 print(m3(10))
 """
+"""def make_counter():
+    count = 0
+    def counter():
+        nonlocal count
+        count += 1
+        return count
+    return counter"""
+def make_counter():
+    count = [0]
+    return lambda: (count.append(count[-1] + 1) or count[-1])
 
 # 1 счетчик
-counter = make_counter()
-print(counter()) # 1
-print(counter()) # 2
-print(counter()) # 3
+counter1 = make_counter()
+print(counter1()) # 1
+print(counter1()) # 2
+print(counter1()) # 3
 
+def make_multiplier(n):
+    return lambda x : x * n
 # умножение на число. Принимает число, возвращает замыкание
 times5 = make_multiplier(5)
 print(times5(10)) # 50
 print(times5(3)) # 15
 
+def filter_by_threshold(threshold):
+    return lambda numbers: [n for n in numbers if n > threshold]
 # фильтрация списка. Принимает пороговое значение, возвращает замыкание для фильтрации списка чисел
-filter_above_10 = filter_by_thresold(10)
+filter_above_10 = filter_by_threshold(10)
 print(filter_above_10([5, 10, 15, 20])) # [15, 20]
 
 # создание множества функций. Принимает список чисел, возвращает список функций. Кажая функция умножает входное на соответствующее из списка
