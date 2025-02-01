@@ -408,3 +408,17 @@ print(counter()) # 1
 print(counter()) # 2
 print(counter()) # 3
 
+# умножение на число. Принимает число, возвращает замыкание
+times5 = make_multiplier(5)
+print(times5(10)) # 50
+print(times5(3)) # 15
+
+# фильтрация списка. Принимает пороговое значение, возвращает замыкание для фильтрации списка чисел
+filter_above_10 = filter_by_thresold(10)
+print(filter_above_10([5, 10, 15, 20])) # [15, 20]
+
+# создание множества функций. Принимает список чисел, возвращает список функций. Кажая функция умножает входное на соответствующее из списка
+functions = create_functions([2, 3, 4])
+print(functions[0](10)) # 40
+print(functions[1](10)) # 30
+print(functions[2](10)) # 20
