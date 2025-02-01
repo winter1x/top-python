@@ -408,7 +408,7 @@ print(m3(10))
         count += 1
         return count
     return counter"""
-def make_counter():
+"""def make_counter():
     count = [0]
     return lambda: (count.append(count[-1] + 1) or count[-1])
 
@@ -437,5 +437,114 @@ def create_functions(numbers):
 functions = create_functions([2, 3, 4])
 print(functions[0](10)) # 20
 print(functions[1](10)) # 30
-print(functions[2](10)) # 40
+print(functions[2](10)) # 40"""
 
+def count_up_to(max1):
+    count = 1
+    while count <= max1:
+        yield count
+        count += 1
+
+"""list1 = list(count_up_to(3))
+print(list1)"""
+for number in count_up_to(3):
+    print(number)
+# ----------------------------------------------------------------
+
+def get_even(list_of_nums):
+    for i in list_of_nums:
+        if i % 2 == 0:
+            yield i
+
+list_of_nums = [1, 2, 3, 8, 15, 42]
+for i in get_even(list_of_nums):
+    print(i, end=' ')
+
+print()
+# ----------------------------------------------------------------
+
+def nextCube():
+    acc = 1
+    while True:
+        yield acc ** 3
+        acc += 1
+
+count = 1
+for num in nextCube():
+    if count > 15:
+        break
+    print(num)
+    count += 1
+
+# ----------------------------------------------------------------
+
+str1 = '1234589'
+iter1 = iter(str1)
+
+print(next(iter1))
+print(next(iter1))
+print(next(iter1))
+print(next(iter1))
+print(next(iter1))
+print(next(iter1))
+# ----------------------------------------------------------------
+
+list1 = [1, 2, 3]
+iter2 = iter(list1)
+try:
+    print(next(iter2))
+    print(next(iter2))
+    print(next(iter2))
+    print(next(iter2))
+except StopIteration:
+    print('конец')
+# ----------------------------------------------------------------
+
+def number_generator():
+    for i in range(1, 6):
+        yield i
+
+gen = number_generator()
+print(next(gen))
+print(next(gen))
+print(next(gen))
+# ----------------------------------------------------------------
+
+import random
+
+def random_number_generator():
+    while True:
+        yield random.randint(1, 100)
+
+gen = random_number_generator()
+print(next(gen))
+print(next(gen))
+print(next(gen))
+# ----------------------------------------------------------------
+
+# фибоначчи
+
+def fibonacci(n):
+    a, b = 0, 1
+    for _ in range(n):
+        yield a
+        a, b = b, a + b
+
+for num in fibonacci(10):
+    print(num)
+# ----------------------------------------------------------------
+
+from itertools import chain, cycle, count
+
+combined = list(chain(iter([1, 2]), iter(['a', 'b'])))
+print(combined)
+# ----------------------------------------------------------------
+cyclic_iterator = cycle([10, 20, 50])
+for i in range(20):
+    print(next(cyclic_iterator), end=' ')
+# ----------------------------------------------------------------
+
+for i in count(10):
+    if i > 15:
+        break
+    print(i)
