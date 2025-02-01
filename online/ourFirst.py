@@ -431,8 +431,11 @@ def filter_by_threshold(threshold):
 filter_above_10 = filter_by_threshold(10)
 print(filter_above_10([5, 10, 15, 20])) # [15, 20]
 
+def create_functions(numbers):
+    return [lambda x, n=n: x * n for n in numbers]
 # создание множества функций. Принимает список чисел, возвращает список функций. Кажая функция умножает входное на соответствующее из списка
 functions = create_functions([2, 3, 4])
-print(functions[0](10)) # 40
+print(functions[0](10)) # 20
 print(functions[1](10)) # 30
-print(functions[2](10)) # 20
+print(functions[2](10)) # 40
+
