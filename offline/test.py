@@ -51,17 +51,35 @@ def file_statistics(file, output_file):
         for key, value in stats.items():
             out.write(f"{key}: {value}\n")
 # 3
+def remove_last_line(input_file, output_file):
+    with open(input_file, 'r', encoding='utf-8') as f:
+        lines = f.readlines()
+    with open(output_file, 'w', encoding='utf-8') as f:
+        f.writelines(lines[:-1])
 
 # 4
 def longest_line_lenght(file):
     with open(file, 'r', encoding='utf-8') as f:
-        return max(map(len, f.readlines()))
+        data = f.readlines()
+        max1 = max(map(len, data))
+        for line in data:
+            if len(line.strip()) == max1:
+                print(line)
+                break
 # 5
 def count_word_occurrences(file, word):
     with open(file, 'r', encoding='utf-8') as f:
         return sum(line.lower().split().count(word.lower()) for line in f)
 # 6
-compare_files('1.txt', '2.txt')
-print(longest_line_lenght('1.txt'))
-print(count_word_occurrences('1.txt', "1"))
-file_statistics('1.txt', '3.txt')
+def replace_word_in_file(file, search_word, replace_word):
+    with open(file, 'r', encoding='utf-8') as f:
+        text = f.read()
+    with open(file, 'w', encoding='utf-8') as f:
+        f.write(text.replace(search_word, replace_word))
+
+"""compare_files('1.txt', '2.txt')"""
+"""longest_line_lenght('1.txt')"""
+"""print(count_word_occurrences('1.txt', "1"))
+file_statistics('1.txt', '3.txt')"""
+"""remove_last_line('1.txt', '3.txt')"""
+replace_word_in_file('1.txt', '1', '9')
