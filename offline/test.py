@@ -37,7 +37,19 @@ def compare_files(file1, file2):
 # 2
 def file_statistics(file, output_file):
     vowels = 'аеёиоуыюяАЕЁИОУЫЭЮЯaeiouAEIOU'
-    consonants = ''
+    consonants = 'бвгджзйклмнпрстфхцчшщБВГДЖЗЙКЛМНПРСТФХЦЧШЩbcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ'
+    with open(file, 'r', encoding='utf-8') as f:
+        text = f.read()
+        stats = {
+            'Количество символов': len(text) - text.count('\n'),
+            'Количество строк': text.count('\n') + 1,
+            'Количество гласных букв': sum(1 for ch in text if ch in vowels),
+            'Количество согласных букв': sum(1 for ch in text if ch in consonants),
+            'Количество цифр': sum(1 for ch in text if ch.isdigit())
+        }
+    with open(output_file, 'w', encoding='utf-8') as out:
+        for key, value in stats.items():
+            out.write(f"{key}: {value}\n")
 # 3
 
 # 4
@@ -52,3 +64,4 @@ def count_word_occurrences(file, word):
 compare_files('1.txt', '2.txt')
 print(longest_line_lenght('1.txt'))
 print(count_word_occurrences('1.txt', "1"))
+file_statistics('1.txt', '3.txt')
