@@ -802,3 +802,11 @@ def math_operator(operator):
                 raise ValueError('неизвестна ')
         return inner2
     return inner1
+
+
+"""
+add()
+subtract()
+divide()
+multiply()
+"""
