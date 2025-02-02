@@ -677,7 +677,9 @@ print(result)
 # ----------------------------------------------------------------
 # принимает порог и список чисел, возвращает список чисел больших этого порога, с lambda; без partial; без @curry
 def filter_greater_than(threshold):
-    pass
+    def inner(numbers):
+        return list(filter(lambda x : x > threshold, numbers))
+    return inner
 # factor - множитель; и список чисел, возвращает список чисел умноженных на множитель, с lambda; без partial; без @curry
 def map_multiply_by(factor):
     pass
