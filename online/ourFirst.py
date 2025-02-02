@@ -2,6 +2,7 @@
 print(pow(2, 3))
 from math import pow
 """
+
 """print(1, 2, 3, 4, '123' + '123', 5 % 2, 5 // 2, 2 ** 3)
 number = input()  # ввод str с консоли
 number = bool(number)
@@ -439,14 +440,14 @@ print(functions[0](10)) # 20
 print(functions[1](10)) # 30
 print(functions[2](10)) # 40"""
 
-def count_up_to(max1):
+"""def count_up_to(max1):
     count = 1
     while count <= max1:
         yield count
         count += 1
 
-"""list1 = list(count_up_to(3))
-print(list1)"""
+list1 = list(count_up_to(3))
+print(list1)
 for number in count_up_to(3):
     print(number)
 # ----------------------------------------------------------------
@@ -548,3 +549,136 @@ for i in count(10):
     if i > 15:
         break
     print(i)
+
+# ----------------------------------------------------------------"""
+
+"""f(a, b, c) => result
+f(a)(b)(c) => result"""
+
+def add(a, b):
+    return  a + b
+
+def add_curried(a):
+    def inner(b):
+        return a + b
+    return inner
+
+result = add_curried(5)(10)
+print(result)
+
+add_five = add_curried(5)
+print(add_five(10))
+print(add_five(20))
+# ----------------------------------------------------------------
+def multiply(a):
+    def inner(b):
+        def inner2(c):
+            return a * b * c
+        return inner2
+    return inner
+
+result = multiply(2)(3)(4)
+print(result)
+# ----------------------------------------------------------------
+from functools import partial
+
+def add2(a, b, c):
+    return a + b + c
+
+add_five = partial(add2, 5)
+result = add_five(10, 15)
+
+print(result)
+# ----------------------------------------------------------------
+
+def curry(func):
+    def curried(*args):
+        if len(args) >= func.__code__.co_argcount:
+            return func(*args)
+        return lambda *more_args : curried(*(args + more_args))
+    return curried
+
+@curry
+def add(a, b, c):
+    return a + b + c
+
+result = add(5)(10)(15)
+print(result)
+# ----------------------------------------------------------------
+@curry
+def filter_list(predicate, lst):
+    return list(filter(predicate, lst))
+
+filter_even = filter_list(lambda x : x % 2 == 0)
+result = filter_even([1, 2, 3, 4, 5])
+print(result)
+# ----------------------------------------------------------------
+
+@curry
+def map_list(func, lst):
+    return list(map(func, lst))
+
+multiply_by_two = map_list(lambda x : x * 2)
+result = multiply_by_two([1, 2, 3])
+print(result)
+
+# ----------------------------------------------------------------
+def power(base, exponent):
+    return base ** exponent
+
+square = partial(power, 2)
+print(square(3))
+print(square(4))
+# ----------------------------------------------------------------
+
+def greet(greeting, name, punctuation):
+    return f"{greeting}, {name}{punctuation}"
+
+say_hello = partial(greet, "hello", punctuation='!')
+print(say_hello("alice"))
+print(say_hello("bob"))
+# ----------------------------------------------------------------
+def filter_greater_than(threshold, value):
+    return value > threshold
+
+filter_above_five = partial(filter_greater_than, 5)
+numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+filtered = list(filter(filter_above_five, numbers))
+print(filtered)
+# ----------------------------------------------------------------
+def multiply(a, b):
+    return a * b
+multiply_by_three = partial(multiply, 3)
+numbers = [1, 2, 3, 4]
+result = list(map(multiply_by_three, numbers))
+print(result)
+# ----------------------------------------------------------------
+def sort_by_key(key, items):
+    return sorted(items, key=key)
+
+sort_by_length = partial(sort_by_key, len)
+words = ['123', '12345', '1234']
+sorted_words = sort_by_length(words)
+print(sorted_words)
+# ----------------------------------------------------------------
+def greet(name, greeting='hello', punctuation='!'):
+    return f"{greeting}, {name}{punctuation}"
+
+say_hi = partial(greet, greeting='hi', punctuation='.')
+print(say_hi("alice"))
+print(greet("alice"))
+# ----------------------------------------------------------------
+multiply_by_two = partial(map, lambda x : x * 2)
+filter_even = partial(filter, lambda x : x % 2 == 0)
+
+numbers = [1, 2, 3, 4, 5]
+result = list(multiply_by_two(filter_even(numbers)))
+print(result)
+# ----------------------------------------------------------------
+# принимает порог и список чисел, возвращает список чисел больших этого порога, с lambda; без partial; без @curry
+def filter_greater_than(threshold):
+    pass
+# factor - множитель; и список чисел, возвращает список чисел умноженных на множитель, с lambda; без partial; без @curry
+def map_multiply_by(factor):
+    pass
+#
