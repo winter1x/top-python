@@ -682,7 +682,9 @@ def filter_greater_than(threshold):
     return inner
 # factor - множитель; и список чисел, возвращает список чисел умноженных на множитель, с lambda; без partial; без @curry
 def map_multiply_by(factor):
-    pass
+    def inner(numbers):
+        return list(map(lambda x: x * factor, numbers))
+    return inner
 # принимает приветсвтие, имя, знак, возвращает return f"{greeting}, {name}{punctuation}" без lambda; без partial; без @curry
 def greet(greeting):
     pass
