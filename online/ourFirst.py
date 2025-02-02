@@ -685,11 +685,31 @@ def map_multiply_by(factor):
     def inner(numbers):
         return list(map(lambda x: x * factor, numbers))
     return inner
-# принимает приветсвтие, имя, знак, возвращает return f"{greeting}, {name}{punctuation}" без lambda; без partial; без @curry
+# принимает приветствие, имя, знак, возвращает return f"{greeting}, {name}{punctuation}" без lambda; без partial; без @curry
 def greet(greeting):
     def inner(name):
         def inner2(punctuation):
             return f"{greeting}, {name}{punctuation}"
         return inner2
     return inner
+
 # Каррированная math_operator, принимает operator и два числа. Возвращает результат операции
+
+def math_operator(operator):
+    def inner1(a):
+        def inner2(b):
+            if operator == 'add':
+                return a + b
+            elif operator == 'subtract':
+                return a - b
+            elif operator == 'divide':
+                if b == 0:
+                    raise ZeroDivisionError('b == 0')
+                else:
+                    return a / b
+            elif operator == 'multiply':
+                return a * b
+            else:
+                raise ValueError('неизвестна ')
+        return inner2
+    return inner1
