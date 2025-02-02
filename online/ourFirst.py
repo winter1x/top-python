@@ -687,5 +687,9 @@ def map_multiply_by(factor):
     return inner
 # принимает приветсвтие, имя, знак, возвращает return f"{greeting}, {name}{punctuation}" без lambda; без partial; без @curry
 def greet(greeting):
-    pass
+    def inner(name):
+        def inner2(punctuation):
+            return f"{greeting}, {name}{punctuation}"
+        return inner2
+    return inner
 # Каррированная math_operator, принимает operator и два числа. Возвращает результат операции
