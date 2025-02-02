@@ -762,7 +762,7 @@ outer()
 # ----------------------------------------------------------------
 print((len('123')))
 """
-
+"""
 def make_multiplier(factor):
     def multiplier(x):
         return x * factor
@@ -779,7 +779,7 @@ def outer():
         return x
     return inner
 func = outer()
-print(func)
+print(func)"""
 
 
 # Каррированная math_operator, принимает operator и два числа. Возвращает результат операции
@@ -804,9 +804,13 @@ def math_operator(operator):
     return inner1
 
 
-"""
-add()
-subtract()
-divide()
-multiply()
-"""
+add = math_operator('add')
+subtract = math_operator('subtract')
+divide = math_operator('divide')
+multiply = math_operator('multiply')
+
+print(add(2)(5))
+print(subtract(2)(5))
+print(divide(2)(5))
+print(multiply(2)(5))
+
