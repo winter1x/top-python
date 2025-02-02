@@ -848,7 +848,7 @@ print(expensive_computation(4))
 # create_counter - фабрика функций, тк есть increment, reset, decrement создает счетчик. Счетчик на +1, сохранение состояния - замыкание
 # метод reset будет сбрасывать счетчик
 # decrement уменьшает
-
+"""
 def create_counter():
     count = 0
 
@@ -877,7 +877,7 @@ print(decrement())
 print(counter())
 reset()
 print(counter())
-
+"""
 """
 Задание: Создать систему для отслеживания и управления счетчиком
 Функция должна быть каррированной, то есть принимать несколько аргументов по частям.
@@ -887,9 +887,39 @@ print(counter())
 Функция должна иметь побочные эффекты (например, вывод в консоль).
 """
 
-def sum_all(*args):
+"""def sum_all(*args):
     return sum(args)
 
 print(sum_all(1, 2, 3))
 print(sum_all(10, 20, 30, 40, 50))
-print(sum_all())
+print(sum_all())"""
+
+"""def print_info(**kwargs):
+    for key, value in kwargs.items():
+        print(f"{key}: {value}")
+
+print_info(name='alice', age=30, job='student')"""
+
+"""def display_info(name=None, *args, **kwargs):
+    print(f"name: {name}")
+    print(f"additional:")
+    for arg in args:
+        print(f'-{arg}')
+    print("details:")
+    for key, value in kwargs.items():
+        print(f"{key}: {value}")
+
+display_info('alice', 25, 'student', location='new york', houbbies='programming')"""
+
+def greet(greeting, *names, **options):
+    print(greeting)
+    for name in names:
+        print(f'hello, {name}')
+    if 'punctuatioin' in options:
+        print(options['punctuatioin'])
+    else:
+        print('!')
+
+greet('доброе утро', 'alice', 'bob', punctuatioin='!!!')
+
+
