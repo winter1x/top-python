@@ -782,7 +782,7 @@ func = outer()
 print(func)"""
 
 
-# Каррированная math_operator, принимает operator и два числа. Возвращает результат операции
+"""# Каррированная math_operator, принимает operator и два числа. Возвращает результат операции
 
 def math_operator(operator):
     def inner1(a):
@@ -813,4 +813,37 @@ print(add(2)(5))
 print(subtract(2)(5))
 print(divide(2)(5))
 print(multiply(2)(5))
+"""
 
+"""def counter():
+    count = 0
+    def increment():
+        nonlocal count
+        count += 1
+        return count
+    return increment
+
+c = counter()
+print(c())
+print(c())
+print(c())
+print(c())"""
+
+def memoize(func):
+    cache = {}
+    def wrapper(*args):
+        if args not in cache:
+            cache[args] = func(*args)
+        return cache[args]
+    return wrapper
+
+@memoize
+def expensive_computation(x):
+    print('computing', end=' ')
+    return x * x
+
+print(expensive_computation(4))
+print(expensive_computation(4))
+
+# create_counter создает счетчик. Счетчик на 1, сохранение состояния
+# метод reset будет сбрасывать счетчик
