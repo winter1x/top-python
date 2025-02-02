@@ -714,7 +714,7 @@ def math_operator(operator):
         return inner2
     return inner1
 """
-
+"""
 def func():
     x = 10
     print(x)
@@ -761,3 +761,44 @@ def outer():
 outer()
 # ----------------------------------------------------------------
 print((len('123')))
+"""
+
+def make_multiplier(factor):
+    def multiplier(x):
+        return x * factor
+    return multiplier
+
+multiply_by_2 = make_multiplier(2)
+print(multiply_by_2(5))
+# ----------------------------------------------------------------
+
+
+def outer():
+    x = 10
+    def inner():
+        return x
+    return inner
+func = outer()
+print(func)
+
+
+# Каррированная math_operator, принимает operator и два числа. Возвращает результат операции
+
+def math_operator(operator):
+    def inner1(a):
+        def inner2(b):
+            if operator == 'add':
+                return a + b
+            elif operator == 'subtract':
+                return a - b
+            elif operator == 'divide':
+                if b == 0:
+                    raise ZeroDivisionError('b == 0')
+                else:
+                    return a / b
+            elif operator == 'multiply':
+                return a * b
+            else:
+                raise ValueError('неизвестна ')
+        return inner2
+    return inner1
