@@ -681,4 +681,7 @@ def filter_greater_than(threshold):
 # factor - множитель; и список чисел, возвращает список чисел умноженных на множитель, с lambda; без partial; без @curry
 def map_multiply_by(factor):
     pass
-#
+# принимает приветсвтие, имя, знак, возвращает return f"{greeting}, {name}{punctuation}" без lambda; без partial; без @curry
+def greet(greeting):
+    pass
+# Каррированная math_operator, принимает operator и два числа. Возвращает результат операции
