@@ -845,5 +845,6 @@ def expensive_computation(x):
 print(expensive_computation(4))
 print(expensive_computation(4))
 
-# create_counter создает счетчик. Счетчик на +1, сохранение состояния - замыкание
+# create_counter - фабрика функций, тк есть increment, reset, decrement создает счетчик. Счетчик на +1, сохранение состояния - замыкание
 # метод reset будет сбрасывать счетчик
+# decrement уменьшает
