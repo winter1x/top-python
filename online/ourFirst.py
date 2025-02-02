@@ -554,7 +554,7 @@ for i in count(10):
 
 """f(a, b, c) => result
 f(a)(b)(c) => result"""
-
+"""
 def add(a, b):
     return  a + b
 
@@ -713,3 +713,51 @@ def math_operator(operator):
                 raise ValueError('неизвестна ')
         return inner2
     return inner1
+"""
+
+def func():
+    x = 10
+    print(x)
+
+func()
+# print(x)
+# ----------------------------------------------------------------
+x = 10
+
+def func():
+    print(x)
+
+func()
+# ----------------------------------------------------------------
+x = 10
+
+def func():
+    global x
+    x = 20
+
+func()
+print(x)
+# ----------------------------------------------------------------
+def outer():
+    x = 10
+
+    def inner():
+        print(x)
+
+    inner()
+
+outer()
+# ----------------------------------------------------------------
+def outer():
+    x = 10
+
+    def inner():
+        nonlocal x
+        x = 20
+        print(x)
+
+    inner()
+    print(x)
+outer()
+# ----------------------------------------------------------------
+print((len('123')))
