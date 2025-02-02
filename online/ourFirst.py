@@ -829,7 +829,7 @@ print(c())
 print(c())
 print(c())"""
 
-def memoize(func):
+"""def memoize(func):
     cache = {}
     def wrapper(*args):
         if args not in cache:
@@ -844,7 +844,52 @@ def expensive_computation(x):
 
 print(expensive_computation(4))
 print(expensive_computation(4))
-
+"""
 # create_counter - фабрика функций, тк есть increment, reset, decrement создает счетчик. Счетчик на +1, сохранение состояния - замыкание
 # метод reset будет сбрасывать счетчик
 # decrement уменьшает
+
+def create_counter():
+    count = 0
+
+    def counter():
+        nonlocal count
+        count += 1
+        return count
+
+    def decrement():
+        nonlocal count
+        count -= 1
+        return count
+
+    def reset():
+        nonlocal count
+        count = 0
+
+    return counter, decrement, reset
+
+counter, decrement, reset = create_counter()
+
+print(counter())
+print(counter())
+print(decrement())
+print(decrement())
+print(counter())
+reset()
+print(counter())
+
+"""
+Задание: Создать систему для отслеживания и управления счетчиком
+Функция должна быть каррированной, то есть принимать несколько аргументов по частям.
+Использовать замыкания для отслеживания состояния счетчика.
+Применить partial для частичного применения функции.
+Функция должна принимать переменное количество аргументов (например, добавление множества значений к счетчику).
+Функция должна иметь побочные эффекты (например, вывод в консоль).
+"""
+
+def sum_all(*args):
+    return sum(args)
+
+print(sum_all(1, 2, 3))
+print(sum_all(10, 20, 30, 40, 50))
+print(sum_all())
