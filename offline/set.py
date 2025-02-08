@@ -1,7 +1,11 @@
 inp = [1, 1, 2, 2]
 print(set(inp)) # делает множество уникальных значений
+
 some_set = {1, 2, 3, 3}
 print(some_set)
+
+print(type(set()))
+
 zero2_set = set()
 zero2_set.add(3)
 zero2_set.add(3)
@@ -29,12 +33,32 @@ print(zero2_set)
 union_set = {1, 2, 3}.union({13, 2})
 union2_set = {1, 2, 3} | {13, 2}
 print(union_set)
+"""
+.add добавление
+.remove удаляет с ошибкой если отсутствует
+.pop удаляет случайный без ошибки
+.discard удаляет без ошибки
+.copy копия 
+.clear() удаляет полностью
 
+.update |= добавление элементов ищ другого множества
+.intersection_update() &=  оставляет в множестве только общие элементы с другим множеством
+.symmetric_difference_update() ^= есть в одном из множеств но не в обоих одновременно
+
+.union | объединение 
+.intersection & только общие элементы для обоих множеств
+.difference - есть в первом но нет во втором
+.difference_update ^ -= симметричная разность. Есть только в одном из множеств но не в обеих одновременно
+
+.isdisjoint(other) True, если set и other не имеют общих элементов
+.issubset(other) <= True если все эл set принадлежат other
+.issuperset(other) >= True если все из other принадлежат set
+"""
 intersection_set = {1, 2, 3}.intersection({13, 2})
 intersection2_set = {1, 2, 3} & {13, 2}
 print(intersection_set)
-
-difference_set = {1, 2, 3}.difference({3, 4, 5})
+intersection_set
+difference_set = {1, 2, 3}.difference_update({3, 4, 5})
 difference2_set = {1, 2, 3} - {3, 4, 5}
 print(difference_set)
 print(difference2_set)
