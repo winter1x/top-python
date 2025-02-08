@@ -770,7 +770,6 @@ def make_multiplier(factor):
 
 multiply_by_2 = make_multiplier(2)
 print(multiply_by_2(5))
-# ----------------------------------------------------------------
 
 
 def outer():
@@ -923,3 +922,119 @@ def greet(greeting, *names, **options):
 greet('доброе утро', 'alice', 'bob', punctuatioin='!!!')
 
 
+fruits = ('1', '2', '3', '4', '5', '5')
+fruit_name = input()
+print(fruits.count(fruit_name))
+# ----------------------------------------------------------------
+print(sum(fruit_name in fruit for fruit in fruits))
+# ----------------------------------------------------------------
+car_brands = ('123', '1234', '12345')
+brand_to_replace = input()
+replacement_word = input()
+new_car_brands = tuple(replacement_word if brand == brand_to_replace else brand for brand in car_brands)
+# result = tuple(map(lambda x : to_replace if x == title else x, data))
+print(new_car_brands)
+
+
+# ----------------------------------------------------------------
+dictionary = {}
+
+def add_word():
+    eng = input()
+    fch = input()
+    dictionary[eng] = fch
+
+def del_word():
+    eng = input()
+    if eng in dictionary:
+        del dictionary[eng]
+    else:
+        raise Exception('')
+
+def find_word():
+    eng = input()
+    if eng in dictionary:
+        print(eng, dictionary[eng])
+    else:
+        print(None)
+
+def update_word():
+    eng = input()
+    if eng in dictionary:
+        fch = input()
+        dictionary[eng] = fch
+    else:
+        print(None)
+
+# ----------------------------------------------------------------
+employees = {}
+
+def add_employee():
+    name = input()
+    phone = input()
+    email = input()
+    position = input()
+    office = input()
+    skype = input()
+
+    employees[name] = {
+        "Телефон": phone,
+        "Email": email,
+        'Должность': position,
+        "Кабинет": office,
+        'Skype': skype
+    }
+
+def del_emp():
+    name = input()
+    if name in employees:
+        del employees[name]
+    else:
+        raise Exception("")
+
+def find_emp():
+    name = input()
+    if name in employees:
+        for key, value in employees[name].items():
+            print(f"{key}, {value}")
+    else:
+        print(None)
+
+def update_emp():
+    name = input()
+    if name in employees:
+        phone = input()
+        email = input()
+        position = input()
+        office = input()
+        skype = input()
+
+        employees[name] = {
+            "Телефон": phone,
+            "Email": email,
+            'Должность': position,
+            "Кабинет": office,
+            'Skype': skype
+        }
+    else:
+        raise Exception("")
+
+# ----------------------------------------------------------------
+
+book_collectioin = {}
+
+def add_book():
+    author = input()
+    title = input()
+    genre = input()
+    year = input()
+    pages = input()
+    publisher = input()
+
+    book_collectioin[title] = {
+        "Автор": author,
+        'Жанр': genre,
+        "Год выпуска": year,
+        "Количество страниц": pages,
+        "Издательство": publisher
+    }
