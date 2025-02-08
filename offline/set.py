@@ -46,7 +46,7 @@ print(union_set)
 .update(other) |= добавление элементов ищ другого множества
 .intersection_update(other) &=  оставляет в множестве только общие элементы с другим множеством
 .symmetric_difference_update(other) ^= есть в одном из множеств но не в обоих одновременно
-
+.symmetric_difference(other) -= симметричная разность
 .union(other) | объединение 
 .intersection(other) & только общие элементы для обоих множеств
 .difference(other) - есть в первом но нет во втором
@@ -59,15 +59,29 @@ print(union_set)
 intersection_set = {1, 2, 3}.intersection({13, 2})
 intersection2_set = {1, 2, 3} & {13, 2}
 print(intersection_set)
-intersection_set
 difference_set = {1, 2, 3}.difference_update({3, 4, 5})
 difference2_set = {1, 2, 3} - {3, 4, 5}
+
 print(difference_set)
 print(difference2_set)
 
 fs1 = frozenset([1, 2, 3])
 fs2 = frozenset([3, 4, 5])
 
+"""
+.frozenset() пустое
+.frozenset(iterable) итерируемый объект в неизменяемое множество
+
+copy
+union
+intersection
+difference
+symmetric_difference
+isdisjoint
+issubset
+issuperset
+
+"""
 print(fs1 | fs2)
 print(fs1 & fs2)
 print(fs1 - fs2)
