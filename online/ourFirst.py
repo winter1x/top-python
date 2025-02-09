@@ -909,7 +909,7 @@ print_info(name='alice', age=30, job='student')"""
         print(f"{key}: {value}")
 
 display_info('alice', 25, 'student', location='new york', houbbies='programming')"""
-
+"""
 def greet(greeting, *names, **options):
     print(greeting)
     for name in names:
@@ -1037,4 +1037,63 @@ def add_book():
         "Год выпуска": year,
         "Количество страниц": pages,
         "Издательство": publisher
-    }
+    }"""
+class Person:
+
+    health = 100
+
+    @classmethod
+    def print_health(cls):
+        print(cls.health)
+
+    def __init__(self, name, age, is_student=False):
+        self.name = name
+        self.age = age
+        self.is_student = is_student
+        self.__gender = None
+
+    def invert_is_student(self):
+        self.is_student = not self.is_student
+
+    @staticmethod
+    def to_learn():
+        print('im learning')
+
+Matvey = Person('name', 18, is_student=True)
+Matvey2 = Person('name', 18)
+Matvey2 = Person('name', 18)
+print(Matvey.is_student)
+Matvey.invert_is_student()
+print(Matvey.is_student)
+Matvey.to_learn()
+
+Person.print_health()
+print(Person.health)
+
+class A:
+    @classmethod
+    def df(cls):
+        print(1)
+    pass
+
+class B(A):
+    @classmethod
+    def df(cls):
+        print(1)
+    pass
+
+class C1(B):
+    @classmethod
+    def df(cls):
+        print(1)
+
+class C2(B):
+    @classmethod
+    def df(cls):
+        print(1)
+
+class D(C1, C2):
+    pass
+
+
+D.df()
