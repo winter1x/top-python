@@ -1280,7 +1280,7 @@ print(Child.mro())
 c = Child()
 c.show()
 """
-
+"""
 print(type(object))
 print(type(type))
 
@@ -1321,4 +1321,28 @@ class MyClass(metaclass=AutoMethodsMeta):
         pass
 
 obj = MyClass()
-obj.greet()
+obj.greet()"""
+
+
+class Point:
+    def __init__(self, x=None, y=None):
+        self._x = x
+        self._y = y
+
+    def point_print(self):
+        print(f'Point x={self._x}, y={self._y}')
+
+    def __str__(self):
+        return f'Point x={self._x}, y={self._y}'
+
+a = Point(1, 2)
+a.point_print()
+str_result = str(a)
+print(str_result)
+print(str(a))
+
+class Number:
+    def __init__(self, value):
+        if not isinstance(value, (int, float)):
+            raise TypeError("NaN")
+        self.value = value

@@ -1,3 +1,6 @@
+"""1 -> 2 -> 3 -> 4 -> None
+4 <-> 5 <-> 6 -> None"""
+
 """
 сделать двусвязный
 """
@@ -105,7 +108,7 @@ class LinkedList:
             raise IndexError("Index out of range")
 
     def __str__(self):
-        return " -> ".join(str(item) for item in self) + " -> None"
+        return " <-> ".join(str(item) for item in self) + " -> None"
 
     def __len__(self):
         return sum(1 for _ in self)
