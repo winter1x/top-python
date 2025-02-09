@@ -1231,3 +1231,30 @@ class Hamster(HomeAnimal):
 
     def sound(self):
         print('Hamster')
+
+class A:
+    def __init__(self):
+        self.__hidden = 'secret'
+
+    def get_hidden(self):
+        return self.__hidden
+
+a = A()
+print(a._A__hidden)
+
+class B(A):
+    def reveal(self):
+        return self._A__hidden
+
+b = B()
+print(b.reveal())
+
+class C(A):
+    def __init__(self):
+        super().__init__()
+        self.__hidden = 'child secret'
+
+c = C()
+print(c._C__hidden)
+print(c._A__hidden)
+
