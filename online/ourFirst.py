@@ -2,6 +2,7 @@
 print(pow(2, 3))
 from math import pow
 """
+from typing import final
 
 """print(1, 2, 3, 4, '123' + '123', 5 % 2, 5 // 2, 2 ** 3)
 number = input()  # ввод str с консоли
@@ -1185,7 +1186,7 @@ print(processor.process("hello"))"""
 ■ Sound — издает звук животного (пишем текстом в консоль); 
 ■ Show — отображает имя животного; 
 ■ Type — отображает название его подвида;"""
-
+"""
 from abc import ABC, abstractmethod
 
 class HomeAnimal(ABC):
@@ -1256,5 +1257,25 @@ class C(A):
 
 c = C()
 print(c._C__hidden)
-print(c._A__hidden)
+print(c._A__hidden)"""
 
+class Parent:
+    @final
+    def show(self):
+        print('родительский')
+
+    def __init_subclass__(cls, **kwargs):
+        if 'show' in cls.__dict__:
+            raise TypeError("нельзя переопределить show")
+        super().__init_subclass__(**kwargs)
+
+
+class Child(Parent):
+    def show(self):
+        super().show()
+        print('дочерний')
+
+print(Child.mro())
+
+c = Child()
+c.show()
