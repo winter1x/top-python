@@ -25,9 +25,9 @@ MRO - порядок поиска методов в иерархии насле�
 делитер - метод удаляет атрибут
 приватный атрибут - не предназначен для доступа извне
 декораторы - через @
+миксины - классы с доп функционалом, не предназначены для самостоятельного использования
 """
 """
-
 class Person:
 
     health = 100
@@ -116,6 +116,7 @@ class Cat(Animal):
     def __init__(self, name):
         self.name = name
         self.__owner = 'me'
+
     def make_voice(self):
         print(f'{self.name} maked voice')
 
@@ -124,9 +125,11 @@ class Cat(Animal):
 
     def print_owner(self):
         print(self.__owner)
+
     @classmethod
     def info(cls):
         print(super().info)
+
 MyCat = Cat('cat')
 MyCat.make_voice()
 MyCat.walk()
@@ -140,3 +143,6 @@ class Alg(MClass):
     @classmethod
     def substruct(cls):
         return 7
+
+class Dog(Animal):
+    pass

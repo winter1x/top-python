@@ -2,6 +2,7 @@
 print(pow(2, 3))
 from math import pow
 """
+from platform import processor
 
 """print(1, 2, 3, 4, '123' + '123', 5 % 2, 5 // 2, 2 ** 3)
 number = input()  # ввод str с консоли
@@ -1125,7 +1126,7 @@ class Person:
     def get_name(self):
         return self.__name"""
 
-class A:
+"""class A:
     def __init__(self, first, second):
         self.first = first
         self.second = second
@@ -1139,5 +1140,41 @@ class B(A):
 
     def bprint(self):
         super().print_first()
+        """
+#super(класс, объект)
+
+class A:
+    def method(self):
+        print('А')
+
+    def greet(self):
+        return "привет из A"
+
+    def greet2(self):
+        return "привет из A"
+
+class B(A):
+    def method(self):
+        print("B")
+        super(B, self).method()
+
+    def greet(self):
+        return super().greet() + "и привет из B"
+
+    def greet2(self):
+        return super().greet()
+b = B()
+b.method()
 
 
+class LoggingMixin:
+    def log(self, message):
+        print(f"лог: {message}")
+
+class DataProcessor(LoggingMixin):
+    def process(self, data):
+        self.log("обработка данных")
+        return data.upper()
+
+processor = DataProcessor()
+print(processor.process("hello"))
