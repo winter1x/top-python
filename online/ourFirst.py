@@ -1038,7 +1038,7 @@ def add_book():
         "Количество страниц": pages,
         "Издательство": publisher
     }"""
-class Person:
+"""class Person:
 
     health = 100
 
@@ -1068,8 +1068,8 @@ print(Matvey.is_student)
 Matvey.to_learn()
 
 Person.print_health()
-print(Person.health)
-
+print(Person.health)"""
+"""
 class A:
     @classmethod
     def df(cls):
@@ -1083,9 +1083,7 @@ class B(A):
     pass
 
 class C1(B):
-    @classmethod
-    def df(cls):
-        print(1)
+    pass
 
 class C2(B):
     @classmethod
@@ -1097,3 +1095,49 @@ class D(C1, C2):
 
 
 D.df()
+print(D.mro())"""
+
+"""
+адание 1 Реализуйте класс «Человек». Необходимо хранить в поляхкласса:ФИО,датурождения,контактныйтелефон, город, 
+страну,домашнийадрес.Реализуйтеметодыкласса для ввода данных, вывода данных, реализуйте доступ к отдельным полям
+ через методы класса."""
+"""
+class Person:
+    def __init__(self, name=None, date=None, phone=None, town=None, country=None, address=None):
+        self.__name = name
+        self.__date = date
+        self.__phone = phone
+        self.__town = town
+        self.__country = country
+        self.__address = address
+
+    def inp(self):
+        self.__name = input()
+        self.__date = input()
+        self.__phone = input()
+        self.__town = input()
+        self.__country = input()
+        self.__address = input()
+
+    def prnt(self):
+        print(self.__name, self.__date, self.__phone, self.__town, self.__country, self.__address)
+        
+    def get_name(self):
+        return self.__name"""
+
+class A:
+    def __init__(self, first, second):
+        self.first = first
+        self.second = second
+    def print_first(self):
+        print(self.first)
+
+class B(A):
+    def __init__(self, first, second, third):
+        super().__init__(first, second)
+        self.third = third
+
+    def bprint(self):
+        super().print_first()
+
+

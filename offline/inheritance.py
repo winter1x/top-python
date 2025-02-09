@@ -10,18 +10,13 @@ class Animal:
     def make_voice(self):
         print(f'{self.name} maked voice')
 
-class Cat(Animal, Ddff, Fsdfds):
+class Cat(Animal):
     def __init__(self, name, height, weight, color):
         super().__init__(name, height, weight)
         self.color = color
 
     def greet(self):
         super().make_voice()
-#MRO - порядок поиска методов в иерархии наследования
-
-
-class Some(Cat)
-print(Cat.mro())
 
 cat = Animal('вася', 12, 12)
 
@@ -33,5 +28,3 @@ Cat.greet()
 # в триг мат функции
 # иниц предыдущее и 1 новое
 # из триг вызвать методы MClass
-
-
