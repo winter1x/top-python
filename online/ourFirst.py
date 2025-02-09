@@ -1141,7 +1141,7 @@ class B(A):
         super().print_first()
         """
 #super(класс, объект)
-
+"""
 class A:
     def method(self):
         print('А')
@@ -1176,4 +1176,58 @@ class DataProcessor(LoggingMixin):
         return data.upper()
 
 processor = DataProcessor()
-print(processor.process("hello"))
+print(processor.process("hello"))"""
+
+"""Задание 3 Создать базовыйкласс«Домашнееживотное»ипро изводныеклассы
+«Собака»,«Кошка»,«Попугай»,«Хомяк». 
+Спомощью конструктора установить имя каждого жи вотного и его характеристики. 
+Реализуйте для каждого из классов методы: 
+■ Sound — издает звук животного (пишем текстом в консоль); 
+■ Show — отображает имя животного; 
+■ Type — отображает название его подвида;"""
+
+from abc import ABC, abstractmethod
+
+class HomeAnimal(ABC):
+    @abstractmethod
+    def __init__(self, name, species):
+        self.name = name
+        self.species = species
+
+    @abstractmethod
+    def sound(self):
+        raise NotImplementedError
+
+    def show(self):
+        print(f"имя: {self.name}")
+
+    def type(self):
+        print(f"Вид: {self.species}")
+
+class Cat(HomeAnimal):
+    def __init__(self, name):
+        super().__init__(name, 'Cat')
+
+    def sound(self):
+        print('Cat')
+
+class Dog(HomeAnimal):
+    def __init__(self, name):
+        super().__init__(name, 'Dog')
+
+    def sound(self):
+        print('Dog')
+
+class Parrot(HomeAnimal):
+    def __init__(self, name):
+        super().__init__(name, 'Parrot')
+
+    def sound(self):
+        print('Parrot')
+
+class Hamster(HomeAnimal):
+    def __init__(self, name):
+        super().__init__(name, 'Hamster')
+
+    def sound(self):
+        print('Hamster')
