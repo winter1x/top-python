@@ -1258,7 +1258,7 @@ class C(A):
 c = C()
 print(c._C__hidden)
 print(c._A__hidden)"""
-
+"""
 class Parent:
     @final
     def show(self):
@@ -1279,3 +1279,46 @@ print(Child.mro())
 
 c = Child()
 c.show()
+"""
+
+print(type(object))
+print(type(type))
+
+MyClass = type("MyClass", (object,), {'attr': 42})
+
+obj = MyClass()
+print(obj.attr)
+
+
+class MyMeta(type):
+    def __new__(cls, name, bases, dct):
+        print(f"создаем {name}")
+        dct['new_attr'] = 100
+        return super().__new__(cls, name, bases, dct)
+
+class MyClass(metaclass=MyMeta):
+    new_attr = None
+
+print(MyClass.new_attr)
+
+class Base:
+    def __init_subclass__(cls, **kwargs):
+        if "forbidden" in cls.__name__.lower():
+            raise TypeError("нельзя наследовать")
+        super().__init_subclass__(**kwargs)
+
+class ForbiddenClass(Base):
+    pass
+
+
+class AutoMethodsMeta(type):
+    def __new__(cls, name, bases, dct):
+        dct['greet'] = lambda self: print(f"hello from {name}")
+        return super().__new__(cls, name, bases, dct)
+
+class MyClass(metaclass=AutoMethodsMeta):
+    def greet(self):
+        pass
+
+obj = MyClass()
+obj.greet()
