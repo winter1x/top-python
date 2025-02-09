@@ -2,7 +2,6 @@
 print(pow(2, 3))
 from math import pow
 """
-from platform import processor
 
 """print(1, 2, 3, 4, '123' + '123', 5 % 2, 5 // 2, 2 ** 3)
 number = input()  # ввод str с консоли
