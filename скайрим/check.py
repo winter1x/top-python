@@ -48,7 +48,6 @@ with open('ingredients.json', 'r', encoding='utf-8') as f1, \
 
 all_names = {ingredient['name'] for ingredient in all_ingredients if ingredient['name'] not in excluded_names}
 
-
 data_names = {ingredient['name'] for ingredient in data}
 
 missing_names = all_names - data_names
