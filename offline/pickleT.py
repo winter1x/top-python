@@ -53,7 +53,7 @@ class CountryCapitalDatabase:
     def search_country(self, country):
         pass
 
-    def edit_country(self, country, new_country):
+    def edit_country(self, country, new_capital):
         pass
 
     def load_data(self):
@@ -62,6 +62,24 @@ class CountryCapitalDatabase:
     def display_data(self):
         pass
 
+    def remove_country(self, country):
+        pass
+
+    def save_data(self):
+        pass
+db = CountryCapitalDatabase()
+
+db.add_country('Россия', "Москва")
+db.add_country('Россия2', "Москва")
+db.display_data()
+
+db.edit_country('Россия2', "Москва2")
+db.display_data()
+
+db.remove_country('Россия2')
+db.display_data()
+
+db.save_data()
 """
 Задание 2
 Есть некоторый словарь, который хранит названия
