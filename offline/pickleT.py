@@ -67,6 +67,10 @@ class CountryCapitalDatabase:
 
     def save_data(self):
         pass
+
+    def search_country(self, country):
+        pass
+
 db = CountryCapitalDatabase()
 
 db.add_country('Россия', "Москва")
@@ -78,6 +82,9 @@ db.display_data()
 
 db.remove_country('Россия2')
 db.display_data()
+
+db.search_country('Россия')
+db.search_country('Россия2')
 
 db.save_data()
 """
