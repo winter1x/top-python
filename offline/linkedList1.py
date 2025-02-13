@@ -152,19 +152,18 @@ class LinkedList:
         while swapped:
             swapped = False
             current = self.head
-
             while current.next:
                 if current.data > current.next.data:
                     current.data, current.next.data = current.next.data, current.data
                     swapped = True
                 current = current.next
 
-ll1 = LinkedList()
+"""ll1 = LinkedList()
 ll1.add_to_tail(30)
 ll1.add_to_tail(20)
 ll1.add_to_tail(10)
 ll1.bubble_sort()
-print(ll1)
+print(ll1)"""
 """ll1 = LinkedList()
 ll1.add_to_tail(10)
 ll1.add_to_tail(20)
