@@ -145,7 +145,7 @@ class LinkedList:
         return self.head is not None
 
 
-ll1 = LinkedList()
+"""ll1 = LinkedList()
 ll1.add_to_tail(10)
 ll1.add_to_tail(20)
 ll1.add_to_tail(30)
@@ -172,4 +172,4 @@ print("Список 1 пуст?", not ll1)
 
 ll1.clear()
 print("Список 1 после очистки:", ll1)
-print("Список 1 пуст?", not ll1)
+print("Список 1 пуст?", not ll1)"""

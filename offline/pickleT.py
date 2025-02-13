@@ -1,3 +1,5 @@
+import PyQt5.QtDesigner
+
 import pickle
 
 #data = {'name': "alice", 'age': 24, 'city': 'new york'}
@@ -43,6 +45,7 @@ print(loaded_data)
 данных, редактирование данных, сохранение и загрузку
 данных (используя упаковку и распаковку).
 """
+
 class CountryCapitalDatabase:
     def __init__(self, filename="data.pkl"):
         pass
@@ -95,3 +98,11 @@ db.save_data()
 добавление данных, удаление данных, поиск данных,
 редактирование данных, сохранение и загрузку данных
 (используя упаковку и распаковку)."""
+
+import random
+a = tuple([{"1": "13"}, ])
+print(a)
+print(random.sample(list({"ключ": "значение",
+                          'b': 2,
+                          "c": 3}
+                         .keys()), 2))
