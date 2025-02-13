@@ -158,12 +158,44 @@ class LinkedList:
                     swapped = True
                 current = current.next
 
-"""ll1 = LinkedList()
+    def insertion_sort(self):
+        if not self.head or not self.head.next:
+            return
+
+        sorted_head = None
+        current = self.head
+
+        while current:
+            next_node = current.next
+            if not sorted_head or sorted_head.data >= current.data:
+                current.next = sorted_head
+                if sorted_head:
+                    sorted_head.prev = current
+                sorted_head = current
+                sorted_head.prev = None
+            else:
+                temp = sorted_head
+                while temp.next and temp.next.data < current.data:
+                    temp = temp.next
+                current.next = temp.next
+                if temp.next:
+                    temp.next.prev = current
+                temp.next = current
+                current.prev = temp
+
+            current = next_node
+
+        self.head = sorted_head
+        self.tail = sorted_head
+        while self.tail and self.tail.next:
+            self.tail = self.tail.next
+
+ll1 = LinkedList()
 ll1.add_to_tail(30)
 ll1.add_to_tail(20)
 ll1.add_to_tail(10)
-ll1.bubble_sort()
-print(ll1)"""
+ll1.insertion_sort()
+print(ll1)
 """ll1 = LinkedList()
 ll1.add_to_tail(10)
 ll1.add_to_tail(20)
