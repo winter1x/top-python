@@ -145,6 +145,7 @@ class LinkedList:
         return self.head is not None
 
 
+
 """ll1 = LinkedList()
 ll1.add_to_tail(10)
 ll1.add_to_tail(20)
