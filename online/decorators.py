@@ -70,3 +70,23 @@ def example():
 
 print(example.__name__)
 print(example.__doc__)"""
+
+class MathUtils:
+    @staticmethod
+    def add(a, b):
+        return a + b
+
+print(MathUtils.add(3, 5))
+
+class Counter:
+    count = 0
+    @classmethod
+    def increment(cls):
+        cls.count += 1
+
+Counter.increment()
+Counter.increment()
+print(Counter.count)
+
+
+
