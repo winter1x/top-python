@@ -70,7 +70,7 @@ def example():
 
 print(example.__name__)
 print(example.__doc__)"""
-
+"""
 class MathUtils:
     @staticmethod
     def add(a, b):
@@ -88,5 +88,28 @@ Counter.increment()
 Counter.increment()
 print(Counter.count)
 
+"""
+class Circle:
+    def __init__(self, radius):
+        self._radius = radius
+
+    @property
+    def radius(self):
+        return self._radius
+
+    @radius.setter
+    def radius(self, value):
+        if value < 0:
+            raise ValueError("")
+        self._radius = value
+
+    @radius.deleter
+    def radius(self):
+        raise AttributeError("")
 
 
+
+c = Circle(5)
+print(c.radius)
+#c.radius = -3
+del c.radius
