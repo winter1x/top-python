@@ -10,6 +10,7 @@ def say_hello():
     print('функция')
 
 say_hello()"""
+from pandas.compat.numpy.function import validate_argsort
 
 """def decorator(func):
     def wrapper(*args, **kwargs):
@@ -114,7 +115,7 @@ print(c.radius)
 #c.radius = -3
 del c.radius"""
 
-from functools import lru_cache
+"""from functools import lru_cache
 
 class Fibonacci:
     @lru_cache(maxsize=None)
@@ -141,17 +142,7 @@ handler = FileHandler()
 with handler.open_file("test.txt") as f:
     f.write("hi")
 
-from dataclasses import dataclass
 
-@dataclass
-class Point:
-    x: int
-    y: int
-
-p1 = Point(10, 20)
-p2 = Point(10, 20)
-print(p1)
-print(p1 == p2)
 
 from functools import singledispatchmethod
 
@@ -186,3 +177,73 @@ class ExpensiveComputation:
 obj = ExpensiveComputation(10)
 print(obj.compute)
 print(obj.compute)
+
+
+from dataclasses import dataclass
+
+@dataclass
+class Point:
+    x: int
+    y: int
+
+p1 = Point(10, 20)
+p2 = Point(10, 20)
+print(p1)
+print(p1 == p2)"""
+
+from functools import total_ordering
+
+@total_ordering
+class Student:
+    def __init__(self, name, grade):
+        self.name = name
+        self.grade = grade
+
+    def __eq__(self, other):
+        return self.grade == other.grade
+
+    def __lt__(self, other):
+        return self.grade < other.grade
+
+s1 = Student("q", 90)
+s2 = Student("b", 85)
+
+print(s1 > s2)
+print(s1 <= s2)
+
+
+def singleton(cls):
+    instances = {}
+
+    def get_instance(*args, **kwargs):
+        if cls not in instances:
+            instances[cls] = cls(*args, **kwargs)
+        return instances[cls]
+
+    return  get_instance
+
+@singleton
+class Database:
+    def __init__(self):
+        print("создали")
+
+db1 = Database()
+db2 = Database()
+
+print(db1 is db2)
+
+
+@classproperty
+"""
+аналог @propertry для класса
+
+"""
+
+
+
+@timing
+
+@validate_args
+
+@log_methods
+
