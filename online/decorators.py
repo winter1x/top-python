@@ -40,7 +40,7 @@ def say_hi():
 
 say_hi()"""
 
-def methor_decorator(func):
+"""def methor_decorator(func):
     def wrapper(self, *args, **kwargs):
         print(f"вызов метода {func.__name__}")
         return func(self, *args, **kwargs)
@@ -53,3 +53,20 @@ class Example:
 
 obj = Example()
 obj.greet()
+"""
+"""from functools import wraps
+
+def decorator(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        print("выполняетя декорированная функция")
+        return func(*args, **kwargs)
+    return wrapper
+
+@decorator
+def example():
+    """"""эта функция возвращает hello""""""
+    return "hello"
+
+print(example.__name__)
+print(example.__doc__)"""
