@@ -88,7 +88,7 @@ Counter.increment()
 Counter.increment()
 print(Counter.count)
 
-"""
+""""""
 class Circle:
     def __init__(self, radius):
         self._radius = radius
@@ -112,4 +112,77 @@ class Circle:
 c = Circle(5)
 print(c.radius)
 #c.radius = -3
-del c.radius
+del c.radius"""
+
+from functools import lru_cache
+
+class Fibonacci:
+    @lru_cache(maxsize=None)
+    def fib(self, n):
+        if n < 2:
+            return n
+        return self.fib(n - 1) + self.fib(n - 2)
+
+f = Fibonacci()
+print(f.fib(50))
+
+from contextlib import contextmanager
+
+class FileHandler:
+    @contextmanager
+    def open_file(self, filename):
+        file = open(filename, 'w')
+        try:
+            yield file
+        finally:
+            file.close()
+
+handler = FileHandler()
+with handler.open_file("test.txt") as f:
+    f.write("hi")
+
+from dataclasses import dataclass
+
+@dataclass
+class Point:
+    x: int
+    y: int
+
+p1 = Point(10, 20)
+p2 = Point(10, 20)
+print(p1)
+print(p1 == p2)
+
+from functools import singledispatchmethod
+
+class Printer:
+    @singledispatchmethod
+    def show(self, value):
+        raise NotImplementedError("")
+
+    @show.register
+    def _(self, value: int):
+        print(f"целое число: {value}")
+
+    @show.register
+    def _(self, value: str):
+        print(f"строка {value}")
+
+printer = Printer()
+printer.show(10)
+printer.show("hi")
+
+from functools import  cached_property
+
+class ExpensiveComputation:
+    def __init__(self, x):
+        self.x = x
+
+    @cached_property
+    def compute(self):
+        print("выполнение сложных вычислений")
+        return self.x ** 2
+
+obj = ExpensiveComputation(10)
+print(obj.compute)
+print(obj.compute)
