@@ -1,40 +1,45 @@
-import math
+class Employer:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
 
-class Square:
-    def __init__(self, side_length):
-        self.side_length = side_length
-
-    def area(self):
-        return self.side_length ** 2
-
-    def perimeter(self):
-        return 4 * self.side_length
-
-class Circle:
-    def __init__(self, radius):
-        self.radius = radius
-
-    def area(self):
-        return math.pi * self.radius ** 2
-
-    def circumference(self):
-        return 2 * math.pi * self.radius
-
-
-class CircleInSquare(Square, Circle):
-    def __init__(self, side_length):
-        Square.__init__(self, side_length)
-        Circle.__init__(self, side_length / 2)
+    def Print(self):
+        print("this is employer class")
 
     def __str__(self):
-        return (
-            f"Квадрат, сторона = {self.side_length}, "
-            f"площадь = {self.area()}, "
-            f"периметр = {self.perimeter()}\n"
-            f"Окружность, радиус = {self.radius}, "
-            f"площадь = {self.area()}, "
-            f"длина окружности = {self.circumference():.2f}"
-        )
+        return f"Employee: {self.name}, Age: {self.age}"
 
-shape = CircleInSquare(10)
-print(shape)
+    def __int__(self):
+        return self.age
+
+class President(Employer):
+    def Print(self):
+        print("pres")
+
+    def __str__(self):
+        return f"President: {self.name}, Age: {self.age}"
+
+class Manager(Employer):
+    def Print(self):
+        print("mana")
+
+    def __str__(self):
+        return f"Manager: {self.name}, Age: {self.age}"
+
+class Worker(Employer):
+    def Print(self):
+        print("Worker")
+
+    def __str__(self):
+        return f"Worker: {self.name}, Age: {self.age}"
+
+employees = [
+    President('a', 50),
+    Manager('b', 40),
+    Worker("c", 30)
+]
+
+for employee in employees:
+    employee.Print()
+    print(employee)
+    print(f"Age as integer: {int(employee)}\n")
