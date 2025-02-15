@@ -24,7 +24,7 @@ def add(a, b):
     return a + b
 
 print(add(3, 5))"""
-
+"""
 def repeat(n):
     def decorator(func):
         def wrapper(*args, **kwargs):
@@ -38,4 +38,18 @@ def repeat(n):
 def say_hi():
     print('hi')
 
-say_hi()
+say_hi()"""
+
+def methor_decorator(func):
+    def wrapper(self, *args, **kwargs):
+        print(f"вызов метода {func.__name__}")
+        return func(self, *args, **kwargs)
+    return wrapper
+
+class Example:
+    @methor_decorator
+    def greet(self):
+        print("привет от класса")
+
+obj = Example()
+obj.greet()
