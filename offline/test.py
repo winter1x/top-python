@@ -1,45 +1,62 @@
-class Employer:
-    def __init__(self, name, age):
-        self.name = name
-        self.age = age
+from dataclasses import dataclass
+from math import gcd
 
-    def Print(self):
-        print("this is employer class")
 
-    def __str__(self):
-        return f"Employee: {self.name}, Age: {self.age}"
+@dataclass
+class  Fraction:
+    numerator: int
+    denominator: int
 
-    def __int__(self):
-        return self.age
+    def __post_init__(self):
+        if self.denominator == 0:
+            raise ZeroDivisionError("")
+        self._reduce()
 
-class President(Employer):
-    def Print(self):
-        print("pres")
+    def _reduce(self):
+        """сокращает дробь"""
+        common_divisor = gcd(self.numerator, self.denominator)
+        self.numerator //= common_divisor
+        self.denominator //= common_divisor
+        if self.denominator < 0:
+            self.numerator = -self.numerator
+            self.denominator = -self.denominator
 
-    def __str__(self):
-        return f"President: {self.name}, Age: {self.age}"
-
-class Manager(Employer):
-    def Print(self):
-        print("mana")
-
-    def __str__(self):
-        return f"Manager: {self.name}, Age: {self.age}"
-
-class Worker(Employer):
-    def Print(self):
-        print("Worker")
 
     def __str__(self):
-        return f"Worker: {self.name}, Age: {self.age}"
+        return f"{self.numerator}/{self.denominator}"
 
-employees = [
-    President('a', 50),
-    Manager('b', 40),
-    Worker("c", 30)
-]
+    def __add__(self, other):
+        if isinstance(other, Fraction):
+            new_numerator = self.numerator * other.denominator + other.numerator * self.denominator
+            new_denominator = self.denominator * other.denominator
 
-for employee in employees:
-    employee.Print()
-    print(employee)
-    print(f"Age as integer: {int(employee)}\n")
+            return Fraction(new_numerator, new_denominator)
+        return NotImplemented
+
+    def __sub__(self, other):
+        if isinstance(other, Fraction):
+            new_numerator = self.numerator * other.denominator - other.numerator * self.denominator
+            new_denominator = self.denominator * other.denominator
+
+            return Fraction(new_numerator, new_denominator)
+        return NotImplemented
+
+    def __mul__(self, other):
+        if isinstance(other, Fraction):
+            return Fraction(self.numerator * other.numerator, self.denominator * other.denominator)
+        return NotImplemented
+
+    def __truediv__(self, other):
+        if isinstance(other, Fraction):
+            if other.numerator == 0:
+                raise ZeroDivisionError("")
+            return Fraction(self.numerator * other.denominator, self.denominator * other.numerator)
+        return NotImplemented
+
+
+frac1 = Fraction(1, 2)
+frac2 = Fraction(3, 4)
+print(frac1 * frac2)
+print(frac1 / frac2)
+print(frac1 - frac2)
+print(frac1 + frac2)
