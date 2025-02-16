@@ -190,7 +190,7 @@ p1 = Point(10, 20)
 p2 = Point(10, 20)
 print(p1)
 print(p1 == p2)"""
-
+"""
 from functools import total_ordering
 
 @total_ordering
@@ -235,7 +235,7 @@ print(db1 is db2)
 
 @classproperty
 """
-аналог @propertry для класса
+"""аналог @propertry для класса"""
 
 """
 
@@ -245,5 +245,70 @@ print(db1 is db2)
 
 @validate_args
 
-@log_methods
+@log_methods"""
 
+def my_decorator(func):
+    def wrapper():
+        print("что-то перед")
+        func()
+        print("что-то после")
+    return wrapper
+
+
+@my_decorator
+def say_hello():
+    print("hello")
+
+def repeat(n):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            for _ in range(n):
+                func(*args, **kwargs)
+        return wrapper
+    return decorator
+
+
+@repeat(3)
+def say_hi():
+    print('hi')
+
+def methor_decorator(func):
+    def wrapper(self, *args, **kwargs):
+        print(f"вызов метода {func.__name__}")
+        return func(self, *args, **kwargs)
+    return wrapper
+
+class Example:
+    @methor_decorator
+    def greet(self):
+        print("привет от класса")
+
+obj = Example()
+obj.greet()
+
+class MyDecorator:
+    def __init__(self, func):
+        self.func = func
+
+    def __call__(self, *args, **kwargs):
+        print("что-то перед")
+        result = self.func(*args, **kwargs)
+        print("что-то после")
+        return result
+
+@MyDecorator
+def say_hi():
+    print('hi')
+
+say_hi()
+
+"""
+1
+logger - декоратор, для логирования вызова функций 
+должен выводить
+имя
+аргументы
+время вызова
+import time
+time()
+"""
