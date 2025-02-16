@@ -359,7 +359,7 @@ check_access
 проверяет имеет ли пользователь доступ к функции
 принимает уровень доступа
 """
-current_user = "admin"
+"""current_user = "admin"
 
 def check_access(role):
     def decorator(func):
@@ -376,7 +376,7 @@ def delete_db():
     print('удалено')
 
 delete_db()
-# ----------------------------------------------------------------
+# ----------------------------------------------------------------"""
 
 """
 def repeat(n):
@@ -400,6 +400,27 @@ random < 0.5
 успех
 """
 
+def retry(n):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            for attemp in range(1, n + 1):
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    print(f"попытка {attemp}: ошибка")
+                    if attemp == n:
+                        raise e
+        return wrapper
+    return decorator
+
+@retry(3)
+def risky_func():
+    import random
+    if random.random() < 0.5:
+        raise ValueError("ошибка")
+    return "успех"
+
+print(risky_func())
 """
 rate_limit
 ограничивает частоту вызовов 
