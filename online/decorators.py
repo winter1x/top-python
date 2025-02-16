@@ -246,6 +246,7 @@ print(db1 is db2)
 @validate_args
 
 @log_methods"""
+"""# ----------------------------------------------------------------
 
 def my_decorator(func):
     def wrapper():
@@ -258,6 +259,7 @@ def my_decorator(func):
 @my_decorator
 def say_hello():
     print("hello")
+# ----------------------------------------------------------------
 
 def repeat(n):
     def decorator(func):
@@ -271,6 +273,7 @@ def repeat(n):
 @repeat(3)
 def say_hi():
     print('hi')
+# ----------------------------------------------------------------
 
 def methor_decorator(func):
     def wrapper(self, *args, **kwargs):
@@ -285,6 +288,7 @@ class Example:
 
 obj = Example()
 obj.greet()
+# ----------------------------------------------------------------
 
 class MyDecorator:
     def __init__(self, func):
@@ -301,6 +305,7 @@ def say_hi():
     print('hi')
 
 say_hi()
+# ----------------------------------------------------------------"""
 
 """
 1
@@ -312,7 +317,7 @@ logger - декоратор, для логирования вызова функ
 import time
 time()
 """
-import time
+"""import time
 def logger(func):
     def wrapper(*args, **kwargs):
         timestamp = time.time()
@@ -326,11 +331,13 @@ def add(x, y):
     return x + y
 
 add(4, 5)
+# ----------------------------------------------------------------"""
+
 """
 timer / timing
 будет замерять время выполнения функции и выводить
 """
-def timer(func):
+"""def timer(func):
     def wrapper(*args, **kwargs):
         start_time = time.time()
         result = func(*args, **kwargs)
@@ -344,12 +351,32 @@ def add(x, y):
     return x + y
 
 add(3, 5)
+# ----------------------------------------------------------------
+"""
 """
 current_user = "admin"
 check_access
 проверяет имеет ли пользователь доступ к функции
 принимает уровень доступа
 """
+current_user = "admin"
+
+def check_access(role):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            if current_user == role:
+                return func(*args, **kwargs)
+            else:
+                print('нет доступа')
+        return wrapper
+    return decorator
+
+@check_access('admin')
+def delete_db():
+    print('удалено')
+
+delete_db()
+# ----------------------------------------------------------------
 
 """
 def repeat(n):
