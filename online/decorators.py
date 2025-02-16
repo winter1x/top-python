@@ -330,7 +330,20 @@ add(4, 5)
 timer / timing
 будет замерять время выполнения функции и выводить
 """
+def timer(func):
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        result = func(*args, **kwargs)
+        end_time = time.time()
+        print(f"f{func.__name__} за {end_time - start_time}с.")
+    return wrapper
 
+@timer
+def add(x, y):
+    time.sleep(1)
+    return x + y
+
+add(3, 5)
 """
 current_user = "admin"
 check_access
