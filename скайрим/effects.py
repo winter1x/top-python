@@ -10,7 +10,7 @@ for item in data:
     for effect in item['effects']:
         effects_dict[effect].append(item['name'])
 
-effects_data = [{'effect': effect, 'ingredients': ingredients} for effect, ingredients in effects_dict.items()]
+effects_data = [{'effect': effect, 'names': ingredients} for effect, ingredients in effects_dict.items()]
 
 with open('effects.json', 'w', encoding='utf-8') as file:
     json.dump(effects_data, file, ensure_ascii=False, indent=4)

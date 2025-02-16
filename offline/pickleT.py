@@ -47,32 +47,50 @@ print(loaded_data)
 """
 
 class CountryCapitalDatabase:
-    def __init__(self, filename="data.pkl"):
-        pass
+    def __init__(self, filename='data.pkl'):
+        self.filename = filename
+        self.data = self.load_data()
 
     def add_country(self, country, capital):
-        pass
-
-    def search_country(self, country):
-        pass
-
-    def edit_country(self, country, new_capital):
-        pass
-
-    def load_data(self):
-        pass
-
-    def display_data(self):
-        pass
+        self.data[country] = capital
+        print(f"Добавлено: {country} - {capital}")
 
     def remove_country(self, country):
-        pass
-
-    def save_data(self):
-        pass
+        if country in self.data:
+            del self.data[country]
+            print(f"Удалено: {country}")
+        else:
+            print(f"Страна {country} не найдена")
 
     def search_country(self, country):
-        pass
+        return self.data.get(country, "Страна не найдена")
+
+    def edit_country(self, country, new_capital):
+        if country in self.data:
+            self.data[country] = new_capital
+            print(f"Обновлено: {country} - {new_capital}")
+        else:
+            print(f"Страна {country} не найдена")
+
+    def save_data(self):
+        with open(self.filename, 'wb') as file:
+            pickle.dump(self.data, file)
+        print("Данные сохранены")
+
+    def load_data(self):
+        try:
+            with open(self.filename, 'rb') as file:
+                return pickle.load(file)
+        except (FileNotFoundError, EOFError):
+            return {}
+
+    def display_data(self):
+        if self.data:
+            for country, capital in self.data.items():
+                print(f"{country}: {capital}")
+        else:
+            print("База данных пуста")
+
 
 db = CountryCapitalDatabase()
 
