@@ -459,7 +459,7 @@ send_request()"""
 to_upper
 преобразует результат ф в верх рег
 """
-def to_upper(func):
+"""def to_upper(func):
     def wrapper(*args, **kwargs):
         result = func(*args, **kwargs)
         return result.upper()
@@ -470,14 +470,27 @@ def to_upper(func):
 def say_hi():
     return "hi"
 
-print(say_hi())
+print(say_hi())"""
 #----------------------------------------------------------------
 
 """
 validate_args
 проверка что аргументы ф положительные
 """
+def validate_args(func):
+    def wrapper(*args, **kwargs):
+        for arg in args:
+            if not isinstance(arg, (int, float)) or arg < 0:
+                raise ValueError("")
+        return func(*args, **kwargs)
+    return wrapper
 
+@validate_args
+def multiply(a, b):
+    return a * b
+
+print(multiply(3, 5))
+print(multiply(-3, 5))
 """
 count_calls
 считает количество вызовов функции, выводит при каждом вызове
