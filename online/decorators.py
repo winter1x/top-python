@@ -477,6 +477,7 @@ print(say_hi())"""
 validate_args
 проверка что аргументы ф положительные
 """
+"""
 def validate_args(func):
     def wrapper(*args, **kwargs):
         for arg in args:
@@ -490,8 +491,26 @@ def multiply(a, b):
     return a * b
 
 print(multiply(3, 5))
-print(multiply(-3, 5))
+print(multiply(-3, 5))"""
+#----------------------------------------------------------------
+
 """
 count_calls
 считает количество вызовов функции, выводит при каждом вызове
 """
+def count_calls(func):
+    def wrapper(*args, **kwargs):
+        wrapper.call_count += 1
+        print(f"f {func.__name__} вызвана {wrapper.call_count} р.")
+        return func(*args, **kwargs)
+    wrapper.call_count = 0
+    return wrapper
+
+@count_calls
+def say_hi():
+    print("hi")
+
+say_hi()
+say_hi()
+say_hi()
+
