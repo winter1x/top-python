@@ -312,7 +312,20 @@ logger - декоратор, для логирования вызова функ
 import time
 time()
 """
+import time
+def logger(func):
+    def wrapper(*args, **kwargs):
+        timestamp = time.time()
+        print(f"[{timestamp}] вызов {func.__name__}")
+        print(f"args={args}, kwargs={kwargs}")
+        return func(*args, **kwargs)
+    return wrapper
 
+@logger
+def add(x, y):
+    return x + y
+
+add(4, 5)
 """
 timer / timing
 будет замерять время выполнения функции и выводить
