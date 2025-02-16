@@ -430,7 +430,7 @@ rate_limit
 ограничивает частоту вызовов 
 если вызывается чаще раз в 5 секунд, выводим предупреждение
 """
-def rate_limit(interval):
+"""def rate_limit(interval):
     last_called = 0
 
     def decorator(func):
@@ -453,12 +453,25 @@ send_request()
 time.sleep(3)
 send_request()
 time.sleep(2)
-send_request()
-
+send_request()"""
+#----------------------------------------------------------------
 """
 to_upper
 преобразует результат ф в верх рег
 """
+def to_upper(func):
+    def wrapper(*args, **kwargs):
+        result = func(*args, **kwargs)
+        return result.upper()
+
+    return wrapper
+
+@to_upper
+def say_hi():
+    return "hi"
+
+print(say_hi())
+#----------------------------------------------------------------
 
 """
 validate_args
