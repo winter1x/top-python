@@ -77,13 +77,31 @@ model
 Метод: 
 description - выводит строку с описанием 
 """
+Car = type("Car", (object, ), {
+    "description": lambda self: f"это {self.brand}, {self.model}"
+})
 
+car = Car()
+car.brand = 'toyota'
+car.model = 'another'
+
+print(car.description())
 """
 создаем Dog, наследуется от animal
 animal имеет speak
 dog должен переопределить speak
 """
+class Animal:
+    def __init__(self, name):
+        self.name = name
 
+    def speak(self):
+        return f"{self.name} make sound"
+
+Dog = type("Dog", (Animal, ), {"speak": lambda self: f"{self.name} гав"})
+
+dog = Dog('dogg')
+print(dog.speak())
 """"
 student
 атрибуты: 
@@ -93,7 +111,15 @@ age
 динамически добавить
 get_details, с выводом информации о студенте
 """
+Student = type("Student", (object, ), {"name": "", "age": None})
 
+setattr(Student, 'get_details', lambda self: f"name: {self.name}, age: {self.age}")
+
+student = Student()
+student.name = 'a'
+student.age = 5
+
+print(student.get_details())
 """
 сделать фабрику create_class
 принимает имя класса
