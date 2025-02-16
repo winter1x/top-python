@@ -10,6 +10,8 @@ def say_hello():
     print('функция')
 
 say_hello()"""
+import time
+
 from pandas.compat.numpy.function import validate_argsort
 
 """def decorator(func):
@@ -399,7 +401,8 @@ random < 0.5
     raise ошибка
 успех
 """
-
+# ----------------------------------------------------------------
+"""
 def retry(n):
     def decorator(func):
         def wrapper(*args, **kwargs):
@@ -420,12 +423,37 @@ def risky_func():
         raise ValueError("ошибка")
     return "успех"
 
-print(risky_func())
+print(risky_func())"""
+# ----------------------------------------------------------------
 """
 rate_limit
 ограничивает частоту вызовов 
 если вызывается чаще раз в 5 секунд, выводим предупреждение
 """
+def rate_limit(interval):
+    last_called = 0
+
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            nonlocal last_called
+            elapsed = time.time() - last_called
+            if elapsed < interval:
+                print(f"слишком частые вызовы. Подождать {interval - elapsed:.3f} с.")
+                return
+            last_called = time.time()
+            return func(*args, **kwargs)
+        return wrapper
+    return decorator
+
+@rate_limit(5)
+def send_request():
+    print("запрос отправлен")
+
+send_request()
+time.sleep(3)
+send_request()
+time.sleep(2)
+send_request()
 
 """
 to_upper
