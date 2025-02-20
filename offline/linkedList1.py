@@ -190,6 +190,12 @@ class LinkedList:
         while self.tail and self.tail.next:
             self.tail = self.tail.next
 
+    def merge_sort(self):
+        pass
+
+    def binary_search(self):
+        pass
+
 ll1 = LinkedList()
 ll1.add_to_tail(30)
 ll1.add_to_tail(20)
