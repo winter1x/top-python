@@ -58,4 +58,4 @@ def binary_search(arr, target):
 
 target = 64
 
-print(binary_search(arr, target))
+print(binary_search(sorted_arr, target))
