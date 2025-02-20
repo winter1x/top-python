@@ -209,6 +209,8 @@ class LinkedList:
             if second_half:
                 second_half.prev = None
 
+            return head, second_half
+
         def merge(left, right):
             if not left: return right
             if not right: return left
