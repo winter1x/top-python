@@ -248,8 +248,30 @@ class LinkedList:
         self.tail = current
 
 
-    def binary_search(self):
-        pass
+    def binary_search(self, target):
+        if not self.head:
+            return None
+
+        length = len(self)
+        left = self.head
+        right = self.tail
+
+        while left != right:
+            mid = left
+            steps = (length // 2) - 1
+            for _ in range(steps):
+                mid = mid.next
+
+            if mid.data == target:
+                return mid
+            elif mid.data < target:
+                left = mid.next
+            else:
+                right = mid.prev
+
+            length = length // 2
+
+        return None
 
 ll1 = LinkedList()
 ll1.add_to_tail(30)
@@ -257,6 +279,7 @@ ll1.add_to_tail(20)
 ll1.add_to_tail(10)
 ll1.merge_sort()
 print(ll1)
+
 """ll1 = LinkedList()
 ll1.add_to_tail(10)
 ll1.add_to_tail(20)
