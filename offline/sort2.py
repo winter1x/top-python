@@ -32,7 +32,30 @@ def merge(left, right):
     return sorted_array
 
 
-arr = [64, 34, 25, 12, 22, 11, 90]
-
+arr = [34, 25, 12, 22, 11, 90, 64]
 sorted_arr = merge_sort(arr)
 print(sorted_arr)
+target = 64
+for i in range(len(sorted_arr)):
+    if sorted_arr[i] == target:
+        print(i)
+        break
+
+
+def binary_search(arr, target):
+    left, right = 0, len(arr) - 1
+
+    while left <= right:
+        mid = (left + right) // 2
+
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] > target:
+            right = mid - 1
+        else:
+            left = mid + 1
+    return -1
+
+target = 64
+
+print(binary_search(arr, target))
