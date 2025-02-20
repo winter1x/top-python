@@ -191,7 +191,62 @@ class LinkedList:
             self.tail = self.tail.next
 
     def merge_sort(self):
-        pass
+        if not self.head or not self.head.next:
+            return
+
+        def split(head):
+            if not head or not head.next:
+                return head, None
+            slow, fast = head, head
+            while fast.next and fast.next.next:
+                slow = slow.next
+                fast = fast.next.next
+
+            middle = slow
+            second_half = middle.next
+            middle.next = None
+
+            if second_half:
+                second_half.prev = None
+
+        def merge(left, right):
+            if not left: return right
+            if not right: return left
+            dummy = Node(0)
+            current = dummy
+
+            while left and right:
+                if left.data < right.data:
+                    current.next, left.prev, left = left, current, left.next
+                else:
+                    current.next, right.prev, right = right, current, right.next
+                current = current.next
+
+                if left:
+                    current.next, left.prev = left, current
+                elif right:
+                    current.next, right.prev = right, current
+
+                head = dummy.next
+                head.prev = None
+                return head
+
+        def merge_sort_recursive(node):
+            if not node or not node.next:
+                return node
+            left, right = split(node)
+            left = merge_sort_recursive(left)
+            right = merge_sort_recursive(right)
+
+            return merge(left, right)
+
+        self.head = merge_sort_recursive(self.head)
+
+        current = self.head
+        while current.next:
+            current = current.next
+        self.tail = current
+
 
     def binary_search(self):
         pass
@@ -200,7 +255,7 @@ ll1 = LinkedList()
 ll1.add_to_tail(30)
 ll1.add_to_tail(20)
 ll1.add_to_tail(10)
-ll1.insertion_sort()
+ll1.merge_sort()
 print(ll1)
 """ll1 = LinkedList()
 ll1.add_to_tail(10)
