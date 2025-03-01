@@ -19,20 +19,25 @@ class Library:
         self.books_count += value
         return self
 
-    #-
-    def __sub__(self, other):
-        pass
+    def __sub__(self, value: int):
+        if not isinstance(value, int):
+            raise ValueError("")
+        new_count = max(0, self.books_count - value)
+        return Library(self.name, self.address, new_count)
 
-    # -=
-    def __isub__(self, other):
-        pass
+    def __isub__(self, value: int):
+        if not isinstance(value, int):
+            raise ValueError("")
+        self.books_count = max(0, self.books_count - value)
+        return self
 
     def __eq__(self, other):
         if not isinstance(other, Library):
             raise NotImplemented("")
         return self.books_count == other.books_count
 
-    #<
     def __lt__(self, other):
-        pass
+        if not isinstance(other, Library):
+            raise NotImplemented("")
+        return self.books_count < other.books_count
 
