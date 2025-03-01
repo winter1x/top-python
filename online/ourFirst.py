@@ -1481,7 +1481,7 @@ class User:
 
 # ----------------------------------------------------------------
 #slap
-
+"""
 def process_user():
     name = input("введите имя")
     if not name.strip():
@@ -1532,5 +1532,149 @@ class DataProcessor2:
     def run(self, input_file, output_file):
         data = self.read_file(input_file)
         processed_data = self.process_data(data)
-        self.save_file(output_file, processed_data)
+        self.save_file(output_file, processed_data)"""
 # ----------------------------------------------------------------
+#solid
+#s - srp
+
+class Report:
+    def __init__(self, data):
+        self.data = data
+
+    def calculate_statistics(self):
+        return sum(self.data) / len (self.data)
+
+    def save_to_file(self, filename):
+        with open(filename, "w") as file:
+            file.write(str(self.data))
+
+class Statistics:
+    def __init__(self, data):
+        self.data = data
+
+    def calculate_average(self):
+        return sum(self.data) / len (self.data)
+
+
+class FileManager:
+    def save_to_file(selfself, filename, data):
+        with open(filename, "w") as file:
+            file.write(str(data))
+
+#o - ocp
+
+class Discount:
+    def __init__(self, price):
+        self.price = price
+
+    def get_discounted_price(self, customer_type):
+        if customer_type == "VIP":
+            return self.price * 0.8
+        elif customer_type == "Regular":
+            return self.price * 0.9
+        else:
+            return self.price
+
+
+class Discount:
+    def __init__(self, price):
+        self.price = price
+
+    def get_discounted_price(self):
+            return self.price
+
+class VIPDiscount(Discount):
+    def get_discounted_price(self):
+        return self.price * 0.8
+
+class RegularDiscount(Discount):
+    def get_discounted_price(self):
+        return self.price * 0.9
+
+#l - lsp
+
+class Bird:
+    def fly(self):
+        print("птица летит")
+
+class Penguin(Bird):
+    def fly(self):
+        return Exception("пингвины не летают")
+
+class Bird:
+    pass
+
+class FlyingBird:
+    def fly(self):
+        print("птица летит")
+
+class Penguin(Bird):
+    def swim(self):
+        return Exception("пингвин плавает")
+
+#i - isp
+
+class Worker:
+    def work(self):
+        pass
+    def eat(self):
+        pass
+
+
+class Workable:
+    def work(self):
+        pass
+
+class Eatable:
+    def work(self):
+        pass
+
+class Human(Workable, Eatable):
+    def work(self):
+        print("Человек работает")
+
+    def eat(self):
+        print("Человек ест")
+
+
+class Robot(Workable):
+    def work(self):
+        print("Робот работает")
+
+
+#d - dip
+
+class MySQLDatabse:
+    def connect(self):
+        print("подключение..")
+
+class Application:
+    def __init__(self):
+        self.database = MySQLDatabse()
+
+    def run(self):
+        self.database.connect()
+
+class Database:
+    def connect(self):
+        pass
+
+class MySQLDatabse(Database):
+    def connect(self):
+        print("подключение к MySQL")
+
+class PostgreSQLDatabase(Database):
+    def connect(self):
+        print("подключение к PostgreSQL")
+
+
+class Application:
+    def __init__(self, database: Database):
+        self.database = database
+
+    def run(self):
+        self.database.connect()
+
+db = PostgreSQLDatabase()
+app = Application(db)
+app.run()
