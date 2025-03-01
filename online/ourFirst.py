@@ -1349,7 +1349,7 @@ class Number:
         self.value = value"""
 # ----------------------------------------------------------------
 
-from time import *
+"""from time import *
 
 current_time = time()
 print(current_time)
@@ -1369,6 +1369,68 @@ print(formatted_time)
 
 time_string = "2025-03-01 12:37:17"
 time_struct = strptime(time_string ,"%Y-%m-%d %H:%M:%S")
-print(time_struct)
+print(time_struct)"""
 
 #sleep(1)
+# ----------------------------------------------------------------
+#kiss
+def add(a, b):
+    return a + b
+
+result = add(5, 6)
+
+result = 5 + 6
+
+x = 10
+y = x >> 1
+y = x // 2
+# ----------------------------------------------------------------
+#dry
+
+print("enter")
+name = input("имя")
+print(f"привет, {name}")
+
+print("enter")
+surname = input("имя")
+print(f"привет, {surname}")
+
+def greet_user():
+    print("enter")
+    name = input("имя")
+    print(f"привет, {name}")
+
+greet_user()
+greet_user()
+
+class Dog:
+    def __init__(self, name):
+        self.name = name
+
+    def speak(self):
+        return f"{self.name} гав"
+
+class Cat:
+    def __init__(self, name):
+        self.name = name
+
+    def speak(self):
+        return f"{self.name} мяу"
+
+
+class Animal:
+    def __init__(self, name):
+        self.name = name
+
+    def speak(self):
+        raise NotImplemented
+
+
+class Dog(Animal):
+    def speak(self):
+        return f"{self.name} гав"
+
+class Cat(Animal):
+    def speak(self):
+        return f"{self.name} мяу"
+
