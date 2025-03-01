@@ -1437,7 +1437,7 @@ class Cat(Animal):
 # ----------------------------------------------------------------
 #yagni
 
-class Calculator:
+"""class Calculator:
     def __init__(self):
         pass
 
@@ -1477,6 +1477,60 @@ class RegularUser(BaseUser):
 
 class User:
     def __init__(self, name):
-        self.name = name
+        self.name = name"""
 
+# ----------------------------------------------------------------
+#slap
+
+def process_user():
+    name = input("введите имя")
+    if not name.strip():
+        print("ошибка - пустое")
+        return
+    print(f"привет, {name}")
+
+def get_user_input():
+    return input("введите имя")
+
+def validate_name(name):
+    return bool(name.strip())
+
+def greet_user(name):
+    print(f"привет, {name}")
+
+def process_user():
+    name = get_user_input()
+    if not validate_name(name):
+        print("ошибка - пустое")
+        return
+    greet_user(name)
+
+
+class DataProcessor:
+    def process_data(self, filename):
+        with open(filename, "r") as file:
+            data = file.read()
+
+        processed_data = data.upper()
+
+        with open("output.txt", "w") as file:
+            file.write(processed_data)
+
+
+class DataProcessor2:
+    def read_file(self, filename):
+        with open(filename, "r") as file:
+            data = file.read()
+
+    def process_data(self, data):
+        processed_data = data.upper()
+
+    def save_file(self, filename, data):
+        with open(filename, "w") as file:
+            file.write(data)
+
+    def run(self, input_file, output_file):
+        data = self.read_file(input_file)
+        processed_data = self.process_data(data)
+        self.save_file(output_file, processed_data)
 # ----------------------------------------------------------------
