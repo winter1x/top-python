@@ -2,6 +2,7 @@
 print(pow(2, 3))
 from math import pow
 """
+import time
 from typing import final
 
 """print(1, 2, 3, 4, '123' + '123', 5 % 2, 5 // 2, 2 ** 3)
@@ -1324,7 +1325,7 @@ obj = MyClass()
 obj.greet()"""
 
 
-class Point:
+"""class Point:
     def __init__(self, x=None, y=None):
         self._x = x
         self._y = y
@@ -1345,4 +1346,29 @@ class Number:
     def __init__(self, value):
         if not isinstance(value, (int, float)):
             raise TypeError("NaN")
-        self.value = value
+        self.value = value"""
+# ----------------------------------------------------------------
+
+from time import *
+
+current_time = time()
+print(current_time)
+
+local_time = localtime()
+print(local_time)
+
+utc_time = gmtime()
+print(utc_time)
+
+time_tuple = (2023, 10, 10, 14, 30, 0, 0, 0, 0)
+seconds = mktime(time_tuple)
+print(seconds)
+
+formatted_time = strftime("%Y-%m-%d %H:%M:%S", tuple(localtime()))
+print(formatted_time)
+
+time_string = "2025-03-01 12:37:17"
+time_struct = strptime(time_string ,"%Y-%m-%d %H:%M:%S")
+print(time_struct)
+
+#sleep(1)
