@@ -28,3 +28,11 @@ class ReportGenerator:
             print(f"Category: {expense['category']}, Amount: {expense['amount']}")
         print("--------------")
         print(f"Total Expenses: {total_expense}")
+
+
+#dry
+
+class ReportGenerator:
+    def print_header(self, title):
+        print(title)
+        print("0" * len(title))
