@@ -1374,7 +1374,7 @@ print(time_struct)"""
 #sleep(1)
 # ----------------------------------------------------------------
 #kiss
-def add(a, b):
+"""def add(a, b):
     return a + b
 
 result = add(5, 6)
@@ -1383,10 +1383,10 @@ result = 5 + 6
 
 x = 10
 y = x >> 1
-y = x // 2
+y = x // 2"""
 # ----------------------------------------------------------------
 #dry
-
+"""
 print("enter")
 name = input("имя")
 print(f"привет, {name}")
@@ -1433,4 +1433,50 @@ class Dog(Animal):
 class Cat(Animal):
     def speak(self):
         return f"{self.name} мяу"
+"""
+# ----------------------------------------------------------------
+#yagni
 
+class Calculator:
+    def __init__(self):
+        pass
+
+    def add(self, a, b):
+        pass
+
+    def subtract(self, a, b):
+        pass # не используется
+
+    def multiply(self, a, b):
+        pass # не используется
+
+
+class Calculator2:
+    def __init__(self):
+        pass
+
+    def add(self, a, b):
+        pass
+
+class BaseUser:
+    def __init__(self, name):
+        self.name = name
+
+    def get_name(self):
+        return  self.name
+
+class AdminUser(BaseUser):
+    def __init__(self, name, permissions):
+        super().__init__(name)
+        self.permissions = permissions
+
+class RegularUser(BaseUser):
+    def __init__(self, name):
+        super().__init__(name)
+
+
+class User:
+    def __init__(self, name):
+        self.name = name
+
+# ----------------------------------------------------------------
