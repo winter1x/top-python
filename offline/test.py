@@ -51,3 +51,28 @@ print(math_op.execute(10, 2, "addition"))
 print(math_op.execute(10, 2, "subtraction"))
 print(math_op.execute(10, 2, "multiplication"))
 print(math_op.execute(10, 2, "division"))
+
+#kiss
+class SimpleCalculator:
+    def __init__(self):
+        self.operations = {
+            "addition": self.add,
+            "subtraction": self.subtract,
+            "multiplication": self.multiply,
+            "division": self.divide,
+        }
+
+    def calculate(self, num1, num2, operation):
+        return self.operations.get(operation, lambda x, y: "unknown operation")(num1, num2)
+
+    def add(self, a, b):
+        return a + b
+
+    def subtract(self, a, b):
+        return a - b
+
+    def multiply(self, a, b):
+        return a * b
+
+    def divide(self, a, b):
+        return a / b if b != 0 else "ошибка на 0"
