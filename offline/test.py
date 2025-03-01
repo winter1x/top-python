@@ -1,43 +1,25 @@
 from dataclasses import dataclass
-from functools import total_ordering
+from datetime import date, timedelta
 
-@total_ordering
 @dataclass
-class Library:
-    name: str
-    address: str
-    books_count: int
+class Date:
+    day: int
+    month: int
+    year: int
 
-    def __add__(self, value: int):
-        if not isinstance(value, int):
+    def to_date(self):
+        return date(self.year, self.month, self.day)
+
+    def __sub__(self, other):
+        if not isinstance(other, Date):
+            return NotImplemented
+        return abs((self.to_date() - other.to_date()).days)
+
+    def __add__(self, days):
+        if not isinstance(days, int):
             raise ValueError("")
-        return Library(self.name, self.address, self.books_count + value)
+        new_date = self.to_date() + timedelta(days=days)
+        return Date(new_date.day, new_date.month, new_date.year)
 
-    def __iadd__(self, value: int):
-        if not isinstance(value, int):
-            raise ValueError("")
-        self.books_count += value
-        return self
-
-    def __sub__(self, value: int):
-        if not isinstance(value, int):
-            raise ValueError("")
-        new_count = max(0, self.books_count - value)
-        return Library(self.name, self.address, new_count)
-
-    def __isub__(self, value: int):
-        if not isinstance(value, int):
-            raise ValueError("")
-        self.books_count = max(0, self.books_count - value)
-        return self
-
-    def __eq__(self, other):
-        if not isinstance(other, Library):
-            raise NotImplemented("")
-        return self.books_count == other.books_count
-
-    def __lt__(self, other):
-        if not isinstance(other, Library):
-            raise NotImplemented("")
-        return self.books_count < other.books_count
-
+    def __repr__(self):
+        return f"{self.day:02d}.{self.month:02d}.{self.year}"
