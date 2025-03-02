@@ -1,64 +1,34 @@
-class ReportGenerator:
-    def generate_sales_report(self, data):
-        total = 0
-        for item in data:
-            total += item['price'] * item['quantity']
-        print("Sales Report")
-        print("------------")
-        for item in data:
-            print(
-                f"Product: {item['name']}, Price: {item['price']}, Quantity: {item['quantity']}, Total: {item['price'] * item['quantity']}")
-        print("------------")
-        print(f"Total Sales: {total}")
+class Employee:
+    def __init__(self, name, position, salary):
+        self.name = name
+        self.position = position
+        self.salary = salary
 
-    def generate_inventory_report(self, data):
-        print("Inventory Report")
-        print("---------------")
-        for item in data:
-            print(f"Product: {item['name']}, Quantity: {item['quantity']}")
-        print("---------------")
+    def calculate_bonus(self):
+        if self.position == "Manager":
+            return self.salary * 0.2
+        elif self.position == "Developer":
+            return self.salary * 0.1
+        else:
+            return self.salary * 0.05
 
-    def generate_expense_report(self, data):
-        total_expense = 0
-        for expense in data:
-            total_expense += expense['amount']
-        print("Expense Report")
-        print("--------------")
-        for expense in data:
-            print(f"Category: {expense['category']}, Amount: {expense['amount']}")
-        print("--------------")
-        print(f"Total Expenses: {total_expense}")
+    def generate_report(self):
+        print(f"Employee: {self.name}, Position: {self.position}, Salary: {self.salary}")
 
+    def save_to_database(self):
+        print(f"Saving {self.name} to database...")
 
-#dry
+class HRSystem:
+    def __init__(self):
+        self.employees = []
 
-class ReportGenerator:
-    def print_header(self, title):
-        print(title)
-        print("0" * len(title))
+    def add_employee(self, employee):
+        self.employees.append(employee)
 
-    def print_items(self, data, fields):
-        for item in data:
-            print(", ".join([f"{fields.capitalize()}: {item[field]}" for field in fields]))
-        print("0" * 20)
+    def process_salaries(self):
+        for emp in self.employees:
+            print(f"Processing salary for {emp.name}: {emp.salary}")
 
-    def calculate_total(self, data, key, multiplier_key=None):
-        if multiplier_key:
-            return sum(item[key] * item[multiplier_key] for item in data)
-        return sum(item[key] for item in data)
-
-    def generate_report(self, title, data, fields, total_key=None, multiplier_key=None):
-        self.print_header(title)
-        self.print_items(data, fields)
-        if total_key:
-            total = self.calculate_total(data, total_key, multiplier_key)
-            print(f"Total {title.split()[0]}: {total}")
-        print()
-
-
-#экзем
-#data {}
-#data {}
-#data {}
-
-#.generate_report(
+    def send_salary_notifications(self):
+        for emp in self.employees:
+            print(f"Sending notification to {emp.name} about salary payment.")
