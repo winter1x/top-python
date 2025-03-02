@@ -1,22 +1,21 @@
-class Employee:
-    def __init__(self, name, position, salary):
-        self.name = name
-        self.position = position
-        self.salary = salary
+class Order:
+    def __init__(self, order_id, customer_name, items):
+        self.order_id = order_id
+        self.customer_name = customer_name
+        self.items = items  # список товаров в заказе
 
-    def calculate_bonus(self):
-        """Рассчитывает бонус сотрудника"""
-        if self.position == "Manager":
-            return self.salary * 0.2
-        elif self.position == "Developer":
-            return self.salary * 0.1
-        else:
-            return self.salary * 0.05
+    def calculate_total(self):
+        """Рассчитывает общую стоимость заказа"""
+        total = sum(item['price'] * item['quantity'] for item in self.items)
+        return total
 
-    def generate_report(self):
-        """Генерирует отчет по сотруднику"""
-        print(f"Employee: {self.name}, Position: {self.position}, Salary: {self.salary}")
+    def print_invoice(self):
+        """Генерирует и печатает счет-фактуру"""
+        print(f"Invoice for Order {self.order_id}")
+        for item in self.items:
+            print(f"{item['name']} - {item['quantity']} x {item['price']}")
+        print(f"Total: {self.calculate_total()}")
 
     def save_to_database(self):
-        """Сохраняет сотрудника в базу данных"""
-        print(f"Saving {self.name} to database...")
+        """Сохраняет заказ в базу данных"""
+        print(f"Saving order {self.order_id} to database...")
