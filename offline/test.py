@@ -1,42 +1,38 @@
-class DiscountCalculator:
-    def calculate_discount(self, order_amount, customer_type):
-        """Рассчитывает скидку в зависимости от типа клиента"""
-        if customer_type == "Regular":
-            return order_amount * 0.05  # 5% скидка
-        elif customer_type == "VIP":
-            return order_amount * 0.1  # 10% скидка
-        elif customer_type == "New":
-            return order_amount * 0.02  # 2% скидка
-        else:
-            return 0  # Без скидки
+class Rectangle:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
 
-#o
-from abc import ABC, abstractmethod
+    def set_width(self, width):
+        self.width = width
 
-class DiscountStrategy(ABC):
-    @abstractmethod
-    def calculate(self, order_amount):
-        pass
+    def set_height(self, height):
+        self.height = height
 
-class RegularCustomerDiscount(DiscountStrategy):
-    def calculate(self, order_amount):
-        return order_amount * 0.05
+    def get_area(self):
+        return self.width * self.height
 
-class VIPCustomerDiscount(DiscountStrategy):
-    def calculate(self, order_amount):
-        return order_amount * 0.1
 
-class NewCustomerDiscount(DiscountStrategy):
-    def calculate(self, order_amount):
-        return order_amount * 0.02
+class Square(Rectangle):
+    def __init__(self, side):
+        super().__init__(side, side)
 
-class NoDiscount(DiscountStrategy):
-    def calculate(self, order_amount):
-        return 0
+    def set_width(self, width):
+        self.width = self.height = width  # Нарушает LSP
 
-class DiscountCalculator:
-    def __init__(self, discount_strategy: DiscountStrategy):
-        self.discount_strategy = discount_strategy
+    def set_height(self, height):
+        self.width = self.height = height  # Нарушает LSP
 
-    def calculate_discount(self, order_amount):
-        return self.discount_strategy.calculate(order_amount)
+
+# --- Тестируем код ---
+def test_area(rectangle: Rectangle):
+    rectangle.set_width(5)
+    rectangle.set_height(10)
+    print(f"Expected area: 50, Got: {rectangle.get_area()}")  # Ожидаем 50
+
+
+rect = Rectangle(2, 3)
+test_area(rect)  # Работает правильно
+
+sq = Square(4)
+test_area(sq)  # Ошибка! Ожидаем 50, но получаем 100
