@@ -28,3 +28,29 @@ class RobotWorker(IWorker):
 
     def eat(self):
         raise NotImplementedError("Робот не ест!")
+
+#i
+from abc import ABC, abstractmethod
+
+class IWorkable(ABC):
+    @abstractmethod
+    def work(self):
+        pass
+
+class IEatable(ABC):
+    @abstractmethod
+    def eat(self):
+        pass
+
+class Worker(IWorkable, IEatable):
+    def work(self):
+        print("Рабочий работает")
+
+    def eat(self):
+        print("Рабочий обедает")
+
+
+class RobotWorker(IWorkable):
+    def work(self):
+        print("Робот работает")
+
