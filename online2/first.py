@@ -1,59 +1,76 @@
-import random
-import string
+"""
+int - числа
+str - строки
+float - 1.1  плавающей (точкой)
+bool - True False
+"""
 
-def random_string(length=8):
-    return ''.join(random.choices(string.ascii_letters, k=length))
+number = 10
+str1 = '112'
+str_number = "34"
 
-def random_list(size=10, min_val=0, max_val=100):
-    return [random.randint(min_val, max_val) for _ in range(size)]
+"""num1 = input()
+print(num1 + 1)"""
 
-def add_numbers(a, b):
-    return a + b
+'''dceeve''' #многострочный
+#92hrf9ejf39 - однострочный
+"""
+функции
+int()
+str()
+float()
+bool()
+"""
 
-def multiply_numbers(a, b):
-    return a * b
+"""num1 = int(input())
+print(num1 + 1)
+"""
 
-def reverse_string(s):
-    return s[::-1]
+"""try:
+    num1 = input()
+    print(1 / 0)
+except ZeroDivisionError as ex:
+    print(ex)
+except Exception as ex:
+    print(ex)
+else:
+    print("тест не прошел")
+finally:
+    print("тест закончился")"""
+""""""
 
-def is_even(n):
-    return n % 2 == 0
+#print(f'{number + 10}, что угодно {str1}')
+"""print(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+average_grade = 1.111111111
+print(f"{average_grade:.2f}")"""
+average_grade = 1.111111111
 
-class Nonsense:
-    def __init__(self):
-        self.data = {random_string(): random_list() for _ in range(10)}
+#a = input()
 
-    def shuffle_keys(self):
-        keys = list(self.data.keys())
-        random.shuffle(keys)
-        self.data = {key: self.data[key] for key in keys}
+flag1 = True
+flag2 = False
 
-    def mutate_values(self):
-        for key in self.data:
-            self.data[key] = [multiply_numbers(val, random.choice([-1, 1])) for val in self.data[key]]
+"""
+>
+<
+>=
+<=
+==
+!=
 
-    def filter_data(self):
-        self.data = {k: v for k, v in self.data.items() if is_even(sum(v))}
+and и/умножение
+or или/сложение
+not отрицание
+"""
 
-    def nonsense_operation(self):
-        temp = {}
-        for key in self.data:
-            temp[reverse_string(key)] = [x**2 if is_even(x) else x**3 for x in self.data[key]]
-        self.data = temp
+"""boolean_value = 6 > 2 and False or flag1
+print(boolean_value)"""
+number = int(input())
+if number > 5:
+    print(f"{number} > 5")
+elif number < 5:
+    print(f"{number} < 5")
+else:
+    print(f"{number} = 5")
 
-    def display(self):
-        for key, value in self.data.items():
-            print(f"{key}: {value}")
 
-print(add_numbers(5, 7))
-print(multiply_numbers(3, 4))
-print(reverse_string("Hello, World!"))
-print(is_even(10))
-print(is_even(7))
-
-n = Nonsense()
-n.shuffle_keys()
-n.mutate_values()
-n.filter_data()
-n.nonsense_operation()
-n.display()
