@@ -3,6 +3,7 @@ int - числа
 str - строки
 float - 1.1  плавающей (точкой)
 bool - True False
+list - список
 """
 """
 number = 10
@@ -85,15 +86,49 @@ else:
     print("цикл завершился")
 """
 
-str2 = """
-\n
+"""str2 = """
+"""\n
 ed
            \t
            w  wv fvff
-ewewew
+ewewew"""
 """
 
 str1 = '1234'
 for el in str1:
     print(type(el).__name__)
+"""
 
+print(list(range(5, 50, 10)))
+print(list(range(50, 5, -10)))
+print(list(range(5, 50, -10)))
+
+list1 = []
+list2 = [1, 23, 4,  66, 7,7,8 ,8, True, "23ed", [234, True]]
+print(24 in list2)
+for e in list2:
+    print(e)
+
+print(list(range(0, 5, 2)))
+for _ in range(0, 5, 2):
+    print("всем привет")
+
+#range (начало, конец (не включая), шаг)
+"""
+range(0, 5, 2)
+начало             0
+конец (не включая) 5
+шаг                2
+0 + 2 = 2
+2 + 2 = 4
+4 + 2 = 6 - вышли за пределы
+
+result = [0, 2, 4]
+"""
+print("-------")
+sum = 0
+for index in range(3):
+    sum += index
+    print(index)
+print("-------")
+print(sum)
