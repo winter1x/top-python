@@ -134,3 +134,45 @@ print("-------")
 print(sum)
 
 
+"""
+some_number = 2.229
+print(f'erfger {some_number:.2f} ') #округление до двух знаков
+
+chr() символ по юникод коду
+hex() 16x
+
+len() длина 
+abs() модуль
+max()
+min()
+sum()
+
+in print('6' in 'absolute')
+as 
+"""
+try:
+    num1 = input()
+    print(1 / 0)
+except ZeroDivisionError as ex:
+    print(ex)
+except Exception as ex:
+    print(ex)
+else:
+    print("тест не прошел")
+finally:
+    print("тест закончился")
+
+import math as m
+from math import pow as p
+
+print(m.pi)
+print(p(2, 2))
+import func
+from func import local_func
+print(local_func)
+
+"""
+операции
+//
+"""
+
