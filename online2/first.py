@@ -72,7 +72,7 @@ elif number < 5:
     print(f"{number} < 5")
 else:
     print(f"{number} = 5")"""
-count = 0
+"""count = 0
 while count < 10 and True:
     if count == 5:
         count += 1
@@ -83,3 +83,17 @@ while count < 10 and True:
     count += 1
 else:
     print("цикл завершился")
+"""
+
+str2 = """
+\n
+ed
+           \t
+           w  wv fvff
+ewewew
+"""
+
+str1 = '1234'
+for el in str1:
+    el += 1
+    print(type(el).__name__)
