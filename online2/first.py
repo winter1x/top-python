@@ -95,5 +95,5 @@ ewewew
 
 str1 = '1234'
 for el in str1:
-    el += 1
     print(type(el).__name__)
+
