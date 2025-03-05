@@ -99,7 +99,7 @@ for el in str1:
     print(type(el).__name__)
 """
 
-print(list(range(5, 50, 10)))
+"""print(list(range(5, 50, 10)))
 print(list(range(50, 5, -10)))
 print(list(range(5, 50, -10)))
 
@@ -111,7 +111,7 @@ for e in list2:
 
 print(list(range(0, 5, 2)))
 for _ in range(0, 5, 2):
-    print("всем привет")
+    print("всем привет")"""
 
 #range (начало, конец (не включая), шаг)
 """
@@ -125,14 +125,14 @@ range(0, 5, 2)
 
 result = [0, 2, 4]
 """
-print("-------")
+"""print("-------")
 sum = 0
 for index in range(3):
     sum += index
     print(index)
 print("-------")
 print(sum)
-
+"""
 
 """
 some_number = 2.229
@@ -150,7 +150,7 @@ sum()
 in print('6' in 'absolute')
 as 
 """
-try:
+"""try:
     num1 = input()
     print(1 / 0)
 except ZeroDivisionError as ex:
@@ -170,9 +170,18 @@ print(p(2, 2))
 import func
 from func import local_func
 print(local_func)
-
+"""
 """
 операции
 //
 """
 
+if None:
+    print(True)
+else:
+    print(False)
+
+print(1)
+num = print(1)
+print(num)
+a = max(1, 2)
