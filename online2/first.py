@@ -21,6 +21,7 @@ int()
 str()
 float()
 bool()
+list()
 """
 
 """num1 = int(input())
@@ -35,7 +36,7 @@ except ZeroDivisionError as ex:
 except Exception as ex:
     print(ex)
 else:
-    print("тест не прошел")
+    print("тест прошел")
 finally:
     print("тест закончился")"""
 """"""
@@ -164,6 +165,9 @@ finally:
 
 import math as m
 from math import pow as p
+from math import *
+
+import math
 
 print(m.pi)
 print(p(2, 2))
@@ -176,7 +180,7 @@ print(local_func)
 //
 """
 
-if None:
+"""if None:
     print(True)
 else:
     print(False)
@@ -184,4 +188,19 @@ else:
 print(1)
 num = print(1)
 print(num)
-a = max(1, 2)
+a = max(1, 2)"""
+
+"""
++
+-
+/
+*
+
+% - остаток от деления
+// - целочисленное деление
+** - возведение в степень
+"""
+
+print(7 // 2)
+print(4001 % 2 == 0)
+

@@ -114,3 +114,4 @@ print(f'erfger {some_number: } ')
 print(f'erfger {some_number:^} ')
 print(f'erfger {some_number:<} ')
 print(f'erfger {some_number:>} ')
+print(f'erfger {some_number:.2f} ') #округление до двух знаков

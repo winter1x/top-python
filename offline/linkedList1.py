@@ -1,9 +1,7 @@
 """1 -> 2 -> 3 -> 4 -> None
-4 <-> 5 <-> 6 -> None"""
-
-"""
-сделать двусвязный
-"""
+1 -> None
+ 2 -> 3 -> 4 -> None
+None <- 4 <-> 5 <-> 6 -> None"""
 class Node:
     def __init__(self, data):
         self.data = data

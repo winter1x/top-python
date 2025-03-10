@@ -103,4 +103,31 @@ range (конец)
 """
 for i in range(1, 50, 7):
     print(i, end=' ')
+else:
+    print("цикл завершился")
 
+
+try:
+    num1 = int(input())
+    if num1 != 0:
+        print(1 / num1)
+
+except ZeroDivisionError as ex:
+    print(ex)
+    print(ZeroDivisionError)
+except TypeError as ex:
+    print(ex)
+    print(TypeError)
+except Exception as ex:
+    print(ex)
+    print(Exception)
+else:
+    print("тест прошел")
+finally:
+    print("тест закончился")
+
+list2 = [1, 2]
+
+match list2:
+    case [1, 2]:
+        print(True)

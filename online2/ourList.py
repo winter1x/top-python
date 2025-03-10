@@ -21,6 +21,6 @@ list1.reverse()  # переворачивает
 list1 = list1[::-1]  # переворачивает
 
 #как
-str1 = " каК"
+str1 = " каК        "
 str1 = str1.strip().lower()
 print(str1 == str1[::-1])
