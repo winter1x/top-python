@@ -22,10 +22,10 @@ a = 1
 #float
 b = 1.1
 
-#set
-#frozenset
 #tuple
 #dict
+#set
+#frozenset
 
 """
 False:
