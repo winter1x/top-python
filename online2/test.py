@@ -70,7 +70,8 @@ for i in range(n):
 correct = True
 for i in range(n):
     for j in range(i + 1, n):
-        if x[i] == x[j] or y[i] == y[j] or abs(x[i] - x[j]) == abs(y[i] - y[j]):
+        if (x[i] == x[j] or y[i] == y[j]
+                or abs(x[i] - x[j]) == abs(y[i] - y[j])):
             correct = False
 
 if correct:
@@ -80,6 +81,12 @@ else:
 
 #--------------------------------------
 queens = []
+[
+    (x11, y12),
+    (x23, y24),
+    (5, 6),
+    (7, 8)
+]
 for _ in range(8):
     x, y = map(int, input().split())
     queens.append((x, y))
@@ -119,6 +126,20 @@ print("YES" if found else "NO")
 """
 Дана строка. Удалите из нее все символы, чьи индексы делятся на 3.
 """
+s = input()
+t = ''
+for i in range(len(s)):
+    if i % 3 != 0:
+        t = t + s[i]
+print(t)
+
+s = input()
+result = ''
+for i in range(len(s)):
+    if i % 3 != 0:
+        result += s[i]
+print(result)
+
 
 """
 Политическая жизнь одной страны очень оживленная. В стране действует K политических партий, 
