@@ -230,3 +230,8 @@ match day:
     case _: print("нет")
 
 print(round(1.1))
+
+text = "hello"
+encoded = [ord(c) for c in text]
+print(encoded)
+print("".join(chr(a) for a in encoded))
