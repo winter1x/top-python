@@ -132,7 +132,7 @@ for i in range(len(s)):
     if i % 3 != 0:
         t = t + s[i]
 print(t)
-
+#--------------------------------------
 s = input()
 result = ''
 for i in range(len(s)):
@@ -156,6 +156,25 @@ i-я партия объявляет забастовки строго кажд�
 В первой строке даны числа N и K. Далее идет K строк, описывающие графики проведения забастовок. 
 i-я строка содержит числа a_i и b_i. Вам нужно определить число забастовок, произошедших в этой стране в течении года.
 """
+N, K = [int(s) for s in input().split()]
+work_days = set([day for day in range(1, N + 1) if day % 7 not in (6, 0)])
+no_strikes = set(work_days)
+for party in range(K):
+    a, b = [int(s) for s in input().split()]
+    max_strikes = (N - a) // b + 1
+    no_strikes -= {a + b*i for i in range(max_strikes)}
+print(len(work_days) - len(no_strikes))
+#--------------------------------------
+N, K = map(int, input().split())
+strikes = set()
+for _ in range(K):
+    a_i, b_i = map(int, input().split())
+    current_day = a_i
+    while current_day <= N:
+        if current_day % 7 != 6 and current_day % 7 != 0:
+            strikes.add(current_day)
+        current_day += b_i
+print(len(strikes))
 
 """
 В единственной строке записан текст. Для каждого слова из данного текста подсчитайте, 
