@@ -13,7 +13,7 @@ for i in range(1, len(a)):
 a[index_of_min], a[index_of_max] = a[index_of_max], a[index_of_min]
 print(' '.join([str(i) for i in a]))
 
-
+#--------------------------------------
 lst = list(map(int, input().split()))
 max_index = lst.index(max(lst))
 min_index = lst.index(min(lst))
@@ -27,6 +27,31 @@ for i in lst:
 Посчитайте, сколько в нем пар элементов, равных друг другу. Считается, что любые два элемента, 
 равные друг другу образуют одну пару, которую необходимо посчитать.
 """
+
+a = [int(s) for s in input().split()]
+counter = 0
+for i in range(len(a)):
+    for j in range(i + 1, len(a)):
+        if a[i] == a[j]:
+            counter += 1
+print(counter)
+#--------------------------------------
+lst = list(map(int, input().split()))
+
+element_counts = {}
+for num in lst:
+    if num in element_counts:
+        element_counts[num] += 1
+    else:
+        element_counts[num] = 1
+
+count = 0
+for key in element_counts:
+    n = element_counts[key]
+    if n >= 2:
+        count += n * (n - 1) // 2
+
+print(count)
 
 """
 Известно, что на доске 8×8 можно расставить 8 ферзей так, чтобы они не били друг друга. 
