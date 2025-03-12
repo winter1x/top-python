@@ -3,6 +3,7 @@ print(type(dict1))
 
 set1 = set()
 zero_dict = {}
+
 zero_dict['age'] = 30
 zero_dict['name'] = 'bob'
 
@@ -14,7 +15,7 @@ hash_value = hash(num)
 print(hash_value)
 
 """my_list = [1, 2, 3, 4]
-hash_value = hash(my_list)
+hash_value = hash(frozenset())
 print(hash_value)"""
 
 str1 = '123'

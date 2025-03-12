@@ -4,7 +4,7 @@ print(set(inp)) # делает множество уникальных знач�
 
 some_set = {1, 2, 3, 3}
 print(some_set)
-
+print(type({}))
 print(type(set()))
 
 zero2_set = set()
@@ -56,6 +56,7 @@ print(union_set)
 .issubset(other) <= True если все эл set принадлежат other
 .issuperset(other) >= True если все из other принадлежат set
 """
+
 intersection_set = {1, 2, 3}.intersection({13, 2})
 intersection2_set = {1, 2, 3} & {13, 2}
 print(intersection_set)
@@ -69,10 +70,11 @@ fs1 = frozenset([1, 2, 3])
 fs2 = frozenset([3, 4, 5])
 
 """
-.frozenset() пустое
-.frozenset(iterable) итерируемый объект в неизменяемое множество
+frozenset() пустое
+frozenset(iterable) итерируемый объект в неизменяемое множество
 
 copy
+
 union
 intersection
 difference
