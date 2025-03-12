@@ -228,3 +228,5 @@ match day:
     case 6: print("")
     case 7: print("")
     case _: print("нет")
+
+print(round(1.1))

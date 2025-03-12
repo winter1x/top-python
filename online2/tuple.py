@@ -1,4 +1,7 @@
+#tuple - кортеж - неизменяемая последовательность
+
 tuple1 = tuple([1, 2, 3, 4]) # приводит к неизменияемому типу данных
+
 print(tuple1)
 tup = (1, 2, 4, '123')
 zero_tuple = tuple()
@@ -17,7 +20,7 @@ print(2 in tup)
 print(len(tup))
 for i in tup:
     print(i)
-from dict import value
+
 """to_search = input()
 data = ("banana", "apple", "bananamango", "mango", "strawberry-banana")
 amount = 0
