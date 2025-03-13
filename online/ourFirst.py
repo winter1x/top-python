@@ -1241,7 +1241,7 @@ class A:
         return self.__hidden
 
 a = A()
-print(a._A__hidden)
+print(a._A__hidden1
 
 class B(A):
     def reveal(self):
