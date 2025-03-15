@@ -2,6 +2,7 @@
 print(pow(2, 3))
 from math import pow
 """
+import time
 from typing import final
 
 """print(1, 2, 3, 4, '123' + '123', 5 % 2, 5 // 2, 2 ** 3)
@@ -1324,7 +1325,7 @@ obj = MyClass()
 obj.greet()"""
 
 
-class Point:
+"""class Point:
     def __init__(self, x=None, y=None):
         self._x = x
         self._y = y
@@ -1345,4 +1346,335 @@ class Number:
     def __init__(self, value):
         if not isinstance(value, (int, float)):
             raise TypeError("NaN")
-        self.value = value
+        self.value = value"""
+# ----------------------------------------------------------------
+
+"""from time import *
+
+current_time = time()
+print(current_time)
+
+local_time = localtime()
+print(local_time)
+
+utc_time = gmtime()
+print(utc_time)
+
+time_tuple = (2023, 10, 10, 14, 30, 0, 0, 0, 0)
+seconds = mktime(time_tuple)
+print(seconds)
+
+formatted_time = strftime("%Y-%m-%d %H:%M:%S", tuple(localtime()))
+print(formatted_time)
+
+time_string = "2025-03-01 12:37:17"
+time_struct = strptime(time_string ,"%Y-%m-%d %H:%M:%S")
+print(time_struct)"""
+
+#sleep(1)
+# ----------------------------------------------------------------
+#kiss
+"""def add(a, b):
+    return a + b
+
+result = add(5, 6)
+
+result = 5 + 6
+
+x = 10
+y = x >> 1
+y = x // 2"""
+# ----------------------------------------------------------------
+#dry
+"""
+print("enter")
+name = input("имя")
+print(f"привет, {name}")
+
+print("enter")
+surname = input("имя")
+print(f"привет, {surname}")
+
+def greet_user():
+    print("enter")
+    name = input("имя")
+    print(f"привет, {name}")
+
+greet_user()
+greet_user()
+
+class Dog:
+    def __init__(self, name):
+        self.name = name
+
+    def speak(self):
+        return f"{self.name} гав"
+
+class Cat:
+    def __init__(self, name):
+        self.name = name
+
+    def speak(self):
+        return f"{self.name} мяу"
+
+
+class Animal:
+    def __init__(self, name):
+        self.name = name
+
+    def speak(self):
+        raise NotImplemented
+
+
+class Dog(Animal):
+    def speak(self):
+        return f"{self.name} гав"
+
+class Cat(Animal):
+    def speak(self):
+        return f"{self.name} мяу"
+"""
+# ----------------------------------------------------------------
+#yagni
+
+"""class Calculator:
+    def __init__(self):
+        pass
+
+    def add(self, a, b):
+        pass
+
+    def subtract(self, a, b):
+        pass # не используется
+
+    def multiply(self, a, b):
+        pass # не используется
+
+
+class Calculator2:
+    def __init__(self):
+        pass
+
+    def add(self, a, b):
+        pass
+
+class BaseUser:
+    def __init__(self, name):
+        self.name = name
+
+    def get_name(self):
+        return  self.name
+
+class AdminUser(BaseUser):
+    def __init__(self, name, permissions):
+        super().__init__(name)
+        self.permissions = permissions
+
+class RegularUser(BaseUser):
+    def __init__(self, name):
+        super().__init__(name)
+
+
+class User:
+    def __init__(self, name):
+        self.name = name"""
+
+# ----------------------------------------------------------------
+#slap
+"""
+def process_user():
+    name = input("введите имя")
+    if not name.strip():
+        print("ошибка - пустое")
+        return
+    print(f"привет, {name}")
+
+def get_user_input():
+    return input("введите имя")
+
+def validate_name(name):
+    return bool(name.strip())
+
+def greet_user(name):
+    print(f"привет, {name}")
+
+def process_user():
+    name = get_user_input()
+    if not validate_name(name):
+        print("ошибка - пустое")
+        return
+    greet_user(name)
+
+
+class DataProcessor:
+    def process_data(self, filename):
+        with open(filename, "r") as file:
+            data = file.read()
+
+        processed_data = data.upper()
+
+        with open("output.txt", "w") as file:
+            file.write(processed_data)
+
+
+class DataProcessor2:
+    def read_file(self, filename):
+        with open(filename, "r") as file:
+            data = file.read()
+
+    def process_data(self, data):
+        processed_data = data.upper()
+
+    def save_file(self, filename, data):
+        with open(filename, "w") as file:
+            file.write(data)
+
+    def run(self, input_file, output_file):
+        data = self.read_file(input_file)
+        processed_data = self.process_data(data)
+        self.save_file(output_file, processed_data)"""
+# ----------------------------------------------------------------
+#solid
+#s - srp
+
+class Report:
+    def __init__(self, data):
+        self.data = data
+
+    def calculate_statistics(self):
+        return sum(self.data) / len (self.data)
+
+    def save_to_file(self, filename):
+        with open(filename, "w") as file:
+            file.write(str(self.data))
+
+class Statistics:
+    def __init__(self, data):
+        self.data = data
+
+    def calculate_average(self):
+        return sum(self.data) / len (self.data)
+
+
+class FileManager:
+    def save_to_file(selfself, filename, data):
+        with open(filename, "w") as file:
+            file.write(str(data))
+
+#o - ocp
+
+class Discount:
+    def __init__(self, price):
+        self.price = price
+
+    def get_discounted_price(self, customer_type):
+        if customer_type == "VIP":
+            return self.price * 0.8
+        elif customer_type == "Regular":
+            return self.price * 0.9
+        else:
+            return self.price
+
+
+class Discount:
+    def __init__(self, price):
+        self.price = price
+
+    def get_discounted_price(self):
+            return self.price
+
+class VIPDiscount(Discount):
+    def get_discounted_price(self):
+        return self.price * 0.8
+
+class RegularDiscount(Discount):
+    def get_discounted_price(self):
+        return self.price * 0.9
+
+#l - lsp
+
+class Bird:
+    def fly(self):
+        print("птица летит")
+
+class Penguin(Bird):
+    def fly(self):
+        return Exception("пингвины не летают")
+
+class Bird:
+    pass
+
+class FlyingBird:
+    def fly(self):
+        print("птица летит")
+
+class Penguin(Bird):
+    def swim(self):
+        return Exception("пингвин плавает")
+
+#i - isp
+
+class Worker:
+    def work(self):
+        pass
+    def eat(self):
+        pass
+
+
+class Workable:
+    def work(self):
+        pass
+
+class Eatable:
+    def work(self):
+        pass
+
+class Human(Workable, Eatable):
+    def work(self):
+        print("Человек работает")
+
+    def eat(self):
+        print("Человек ест")
+
+
+class Robot(Workable):
+    def work(self):
+        print("Робот работает")
+
+
+#d - dip
+
+class MySQLDatabse:
+    def connect(self):
+        print("подключение..")
+
+class Application:
+    def __init__(self):
+        self.database = MySQLDatabse()
+
+    def run(self):
+        self.database.connect()
+
+class Database:
+    def connect(self):
+        pass
+
+class MySQLDatabse(Database):
+    def connect(self):
+        print("подключение к MySQL")
+
+class PostgreSQLDatabase(Database):
+    def connect(self):
+        print("подключение к PostgreSQL")
+
+
+class Application:
+    def __init__(self, database: Database):
+        self.database = database
+
+    def run(self):
+        self.database.connect()
+
+db = PostgreSQLDatabase()
+app = Application(db)
+app.run()

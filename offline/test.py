@@ -1,62 +1,39 @@
-from dataclasses import dataclass
-from math import gcd
+class Worker:
+    def work(self):
+        print("Человек работает")
 
 
-@dataclass
-class  Fraction:
-    numerator: int
-    denominator: int
-
-    def __post_init__(self):
-        if self.denominator == 0:
-            raise ZeroDivisionError("")
-        self._reduce()
-
-    def _reduce(self):
-        """сокращает дробь"""
-        common_divisor = gcd(self.numerator, self.denominator)
-        self.numerator //= common_divisor
-        self.denominator //= common_divisor
-        if self.denominator < 0:
-            self.numerator = -self.numerator
-            self.denominator = -self.denominator
+class RobotWorker:
+    def work(self):
+        print("Робот работает")
 
 
-    def __str__(self):
-        return f"{self.numerator}/{self.denominator}"
+class WorkerService:
+    def __init__(self, worker: Worker):
+        self.worker = worker
 
-    def __add__(self, other):
-        if isinstance(other, Fraction):
-            new_numerator = self.numerator * other.denominator + other.numerator * self.denominator
-            new_denominator = self.denominator * other.denominator
+    def manage(self):
+        self.worker.work()
 
-            return Fraction(new_numerator, new_denominator)
-        return NotImplemented
+#d
+from abc import ABC, abstractmethod
 
-    def __sub__(self, other):
-        if isinstance(other, Fraction):
-            new_numerator = self.numerator * other.denominator - other.numerator * self.denominator
-            new_denominator = self.denominator * other.denominator
+class IWorkable(ABC):
+    @abstractmethod
+    def work(self):
+        pass
 
-            return Fraction(new_numerator, new_denominator)
-        return NotImplemented
+class Worker(IWorkable):
+    def work(self):
+        print("Человек работает")
 
-    def __mul__(self, other):
-        if isinstance(other, Fraction):
-            return Fraction(self.numerator * other.numerator, self.denominator * other.denominator)
-        return NotImplemented
+class RobotWorker(IWorkable):
+    def work(self):
+        print("Робот работает")
 
-    def __truediv__(self, other):
-        if isinstance(other, Fraction):
-            if other.numerator == 0:
-                raise ZeroDivisionError("")
-            return Fraction(self.numerator * other.denominator, self.denominator * other.numerator)
-        return NotImplemented
+class WorkerService:
+    def __init__(self, worker: IWorkable):
+        self.worker = worker
 
-
-frac1 = Fraction(1, 2)
-frac2 = Fraction(3, 4)
-print(frac1 * frac2)
-print(frac1 / frac2)
-print(frac1 - frac2)
-print(frac1 + frac2)
+    def manage(self):
+        self.worker.work()

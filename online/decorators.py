@@ -1,3 +1,4 @@
+
 """def decorator(func):
     def wrapper():
         print("декоратор сработал до вызова функции")
@@ -12,7 +13,6 @@ def say_hello():
 say_hello()"""
 import time
 
-from pandas.compat.numpy.function import validate_argsort
 
 """def decorator(func):
     def wrapper(*args, **kwargs):
@@ -199,7 +199,10 @@ from functools import total_ordering
 class Student:
     def __init__(self, name, grade):
         self.name = name
-        self.grade = grade
+        if grade > 0:
+            self.grade = grade
+        else:
+            throw Exception
 
     def __eq__(self, other):
         return self.grade == other.grade

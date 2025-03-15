@@ -22,17 +22,22 @@ def insertion_sort(arr):
     for i in range(1, len(arr)):
         key = arr[i]
         j = i - 1
-
         while j >= 0 and arr[j] > key:
             arr[j + 1] = arr[j]
             j -= 1
-
         arr[j + 1] = key
 
+def selection_sort(arr):
+    for i in range(len(arr)):
+        min_index = i
+        for j in range(i + 1, len(arr)):
+            if arr[j] < arr[min_index]:
+                min_index = j
+        arr[i], arr[min_index] = arr[min_index] ,arr[i]
+
 arr = [64, 34, 25, 12, 22, 11, 90]
-insertion_sort(arr)
+selection_sort(arr)
 print(arr)
-# arr = [12 22 25 34 64, , , , , 11, 90]
 
 
 
