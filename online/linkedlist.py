@@ -1,0 +1,77 @@
+#node узел (односвязный)
+"""
+данные
+ссылку на следующий узел
+"""
+
+#node узел (двусвязный)
+"""
+данные
+ссылку на следующий узел
+ссылка на предыдущий узел
+"""
+
+#head голова списка первый узел списка
+
+#tail хвост последний узел списка
+"""
+может ссылаться на none
+может ссылаться на первый элемент (цикл)
+"""
+
+1 -> 2 -> 3 -> None
+
+node1
+данные: 1
+ссылку на следующий узел: -> node2
+
+node2
+данные: 2
+ссылку на следующий узел: -> node3
+
+node3
+данные: 3
+ссылку на следующий узел: -> None
+
+
+
+
+node1
+данные: 1
+ссылку на следующий узел: -> node2
+
+node2
+данные: 2
+ссылку на следующий узел: -> node3
+
+node3
+данные: 3
+ссылку на следующий узел: -> node1
+
+singly linked list
+1 -> 2 -> 3 -> 4 -> 5 -> None
+
+doubly linked list
+None <- 1 <-> 2 <-> 3 <-> 4 <-> 5 -> None
+
+circular linked list
+1 -> 2 -> 3 -> 1
+
+class Node:
+    def __init__(self, data=None):
+        self.data = data
+        self.next = None
+
+class SinglyLinkedList:
+    def __init__(self):
+        self.head = None
+
+
+# Definition for singly-linked list.
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+class Solution:
+    def addTwoNumbers(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
