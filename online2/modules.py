@@ -2,11 +2,12 @@
 time
 timeit
 datetime
+platform
+
+math
 random
-platform -
 re
 string
-math
 
 functools
 """
@@ -173,3 +174,20 @@ t1 = timeit(stmt=code1, number=100)
 t2 = timeit(code2, number=100)
 print(t1)
 print(t2)
+
+# import math
+from random import *
+
+#управление состоянием генератора
+seed(42) # фиксация случайных
+getstate() # возвращает текущее состояние генератора
+setstate(state) # устанавливает состояние генератора
+
+print(random()) # случайное 0.0-1.0
+print(randint(a, b)) # случайное [a-b]
+print(randrange(a, b, c)) #случайное из диапазона
+print(uniform(a, b)) #слуаное дробное [ab]
+print(choice(squence)) #случайный элемент из последовательности
+print(shuffle(squence)) # перемешивает последовательность на месте
+print(sample(population, k)) # population - последовательность, k уникальных элементов
+
