@@ -147,3 +147,29 @@ delta = td(days=7)
 next_week = dt.now() + delta
 print(next_week)
 
+# timeit
+
+from timeit import *
+#timeit()
+"""
+stmt - код для замера
+setup - перед замером
+timer - таймер
+number - кол-во раз выполнения
+globals - пространство имен
+"""
+#Timer - класс
+#.repeat() - метод выполнения измерения
+
+code1 = """
+result = 0
+for i in range(10000):
+    result += 1
+"""
+code2 = """
+result = sum(range(10000))
+"""
+t1 = timeit(stmt=code1, number=100)
+t2 = timeit(code2, number=100)
+print(t1)
+print(t2)
