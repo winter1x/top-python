@@ -19,7 +19,7 @@ import platform as pl
 from platform import architecture
 from platform import architecture as arch"""
 
-from platform import *
+"""from platform import *
 
 print(architecture())  # архитектура
 print(machine())  # тип машины
@@ -41,7 +41,7 @@ temp2 = time()
 print(localtime()) # колво сек с 1970 преобразуется в локальное время, объект struct_time
 print(gmtime()) # колво сек с 1970 в utc, объект struct_time
 temp = gmtime()
-print(mktime(temp)) # объект struct_time в секунды
+print(mktime(temp)) # объект struct_time в секунды"""
 
 #шаблоны
 """
@@ -88,26 +88,62 @@ s = "2022-12-31 23:59:59"
 
 """print(strftime(fmt, t)) # форматирует объект struct_time в строку на основе шаблона fmt
 print(strptime(s, fmt)) # преобразует строку s в объект struct_time на основе шаблона fmt"""
-print(ctime(temp2)) # преобразует секунды с начала эпохи в строку
+"""print(ctime(temp2)) # преобразует секунды с начала эпохи в строку
 
 print(perf_counter()) # высокоточное время с начала
 print(monotonic()) # монотонное время (всегда увеличивается)
 
 print(process_time()) # процессорное время, использованное текущим процессом
-
+"""
 # datetime
 
 """
 классы:
 
 date - дата (год, месяц, день)
-    year, month, day - 
-time - время (час, минута, сек, мс)
-
+    year, month, day - атрибуты для доступа
+    today() - возвращает текущую дату
+    fromtimestamp(timestamp) - преобразует метку времени в дату
+    
+time - время (час, минута, сек, микросекунда)
+    hour, minute, second, microsecond - атрибуты
+    
 datetime - объединение
-
+    year, month, day, hour, minute, second, microsecond - атрибуты
+    now() - возвращает ткущую дату и время
+    today() - текущую дату
+    strptime(sting, format) - парсит строку в объект datetime
+    strftime(format) - формирует объект datetime в строку
+    combine(date, time) - объединяет 
+    
 timedelta - разница между двумя датами или временем
-
+    days, seconds, microseconds - атрибуты
+    
 tzinfo, timezone - для часовых поясов
 
 """
+from datetime import date, time, datetime as dt, timedelta as td
+
+d = date(2025, 3, 17)
+print(d)
+
+today = date.today()
+print(today)
+
+t = time(21, 49, 34, 34)
+print(t)
+
+dt = dt(2025, 3, 17, 21, 59)
+print(dt)
+
+now = dt.now()
+print(now)
+
+formatted_dt = now.strftime("%Y-%m-%d %H:%M:%S")
+print(formatted_dt)
+
+delta = td(days=7)
+
+next_week = dt.now() + delta
+print(next_week)
+
