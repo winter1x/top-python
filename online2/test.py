@@ -10,3 +10,11 @@
 # создать список на их основе
 # перемешать символы в пароле
 # выбрать случайные 2 из списка
+from random import *
+r1 = random()
+r2 = randint(1, 2)
+r3 = uniform(1, 2)
+l1 = [r1, r2, r3]
+shuffle(l1)
+r = sample(l1, 2)
+print(l1, r)
