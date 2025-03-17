@@ -240,7 +240,7 @@ for c in text:
 print(encoded)
 print("".join(chr(a) for a in encoded))"""
 
-# работа с типами данных
+"""# работа с типами данных
 my_variable: str = "123"
 
 def greet(name: str) -> str:
@@ -270,3 +270,19 @@ def process_data(data):
         print("неверный тип данных")
 
 process_data(5)
+"""
+"""
+console.log(Math.round(num)); //до ближайшего целого
+console.log(Math.floor(num)); //округление вниз до ближайшего целого
+console.log(Math.ceil(num)); //вверх до ближайшего целого
+console.log(Math.trunc(num)); //убрать дробную часть
+console.log(num.toFixed(2)); //определенное количество знаков после запятой
+"""
+num1 = 1.5555
+print(round(num1, 2))  # Обычное округление
+print(int(num1))  # обрезает
+from  math import ceil, floor, trunc
+print(ceil(num1))
+print(floor(num1))
+print(trunc(num1))
+
