@@ -1,39 +1,38 @@
-class Worker:
-    def work(self):
-        print("Человек работает")
+def counting_sort(arr, exp):
+    n = len(arr)
+    output = [0] * n
+    count = [0] * 10
 
+    # подсчитываем кол-во элементов для каждый цифры
+    for i in arr:
+        index = (i // exp) % 10
+        count[index] += 1
 
-class RobotWorker:
-    def work(self):
-        print("Робот работает")
+    # обновляем массив count[i], чтобы он содержал только позицию этой цифры в output
+    for i in range(1, 10):
+        count[i] += count[i - 1]
 
+    # заполняем выходной массив output
+    for i in range(n - 1, -1, -1):
+        index = (arr[i] // exp) % 10
+        output[count[index] - 1] = arr[i]
+        count[index] -= 1
 
-class WorkerService:
-    def __init__(self, worker: Worker):
-        self.worker = worker
+    # копируем output обратно в arr
+    for i in range(n):
+        arr[i] = output[i]
 
-    def manage(self):
-        self.worker.work()
+def radix_sort(arr):
+    max_num = max(arr)
+    exp = 1
 
-#d
-from abc import ABC, abstractmethod
+    while max_num // exp > 0:
+        counting_sort(arr, exp)
+        exp *= 10
+        
+    return arr
 
-class IWorkable(ABC):
-    @abstractmethod
-    def work(self):
-        pass
-
-class Worker(IWorkable):
-    def work(self):
-        print("Человек работает")
-
-class RobotWorker(IWorkable):
-    def work(self):
-        print("Робот работает")
-
-class WorkerService:
-    def __init__(self, worker: IWorkable):
-        self.worker = worker
-
-    def manage(self):
-        self.worker.work()
+numbers = [45, 3, 23, 78, 98, 23, 56, 87, 320, 630, 76]
+#numbers = [630, 320, 45, 3, 23, 78, 98, 23, 56, 87, 76]
+sorted_numbers = radix_sort(numbers)
+print(sorted_numbers)
