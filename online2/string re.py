@@ -6,44 +6,47 @@ from string import *
 from re import *
 import re
 
-from listGuide import list1
-
 print(ascii_letters)
 print(ascii_lowercase)
 print(ascii_uppercase)
 print(digits)
 print(hexdigits)
 print(octdigits)
-
 print(whitespace)
-print("".join('12123123123'))
-print("".join(['12123123123', 'er']))
-
-str = 'ffrfijin2342311&^$%$%#$@'
-str = 'f'
 print(punctuation)
-"""проще - используем join, генератор"""
-#str = ''.join([char for char in str if])
 
-str = '453876'
-print(str[:3:])
-print(str[3::])
-"""написать функцию, возвращающую true 
-если 1+2+3 == 4+5+6
-или false в остальных """
+"""
+создать паттерн для номеров телефона, такой, чтобы для
+r''
+Добавить:
 
-print(ascii_letters)
-print(digits)
-print(hexdigits)
-print(octdigits)
+начало
+первые символов +7(
+три случайных числа
+)
+три случайных числа
+-
+два случайных числа
+-
+два случайных числа
+конец
 
-print(ascii_uppercase)
-print(punctuation)
-print(ascii_lowercase)
+str1 True
+str2 True
+str3 False
+"""
 
 """создать случайный логин и пароль
 логин - заглавная буква + 10 строчных
 пароль - заглавная, символ, 10 строчных"""
+
+
+
+
+
+
+
+
 
 
 
@@ -177,39 +180,55 @@ pattern = r'^\w+[\.\w-]*@\w+[\.\w-]*\.\w+[\.\w-]*$' # 11 цифр
 print(bool(match(r'^\w+[.\w-]*@\w+[.\w-]*\.\w+[.\w-]*$', 'e....6...------@')))
 
 """
+match(pattern, string, flags=0)
+совпадаения в начале строки, Match если найдено, иначе None
 
 """
+#совпадение в любом месте строки, Match если найдено, иначе None
+#(pattern, string, flags=0)
 match1 = search(r'\d+', '123qwe333')
 print(match1.group())
 
+#(pattern, string, flags=0)
+#список всех совпадений шаблона в строке
 matches = findall(r'\d+', '123qwe333')
 print(matches)
 
+#(pattern, string, flags=0)
+#возвращает итератор с объектами Match для каждого совпадения
 matches = finditer(r'\d+', '123qwe333')
 for i in matches:
     print(i.group())
 
+#(pattern, string, maxspit=0, flags=0)
+#разделяет строку по шаблону и возвращает список частей
 result = split(r'\s+', '123qwe333\tqweqwqw  qwe')
 print(result)
 
+#(pattern, repl, string, count=0, flags=0)
+# заменяет все совпадения шаблона на указанную строку или результат функци
 result = sub('\d+','', '123qwe333\tqweqwqw  qwe')
 print(type(result).__name__) #str
 
+#кортеж
 result = subn('\d+','', '123qwe333\tqweqwqw  qwe')
 print(type(result).__name__) #tuple
 
+#(pattern, string, flags=0)
+# соответствие всей строки шаблону
+result = fullmatch(r'\d+', '12345')
+print(bool(result))
+
+#(pattern, flags=0)
+#компилирует pattern в объект
 pattern = compile('\d+')
 
+#(string)
+# делает экранирование
+result = escape('1+1=2')
+print(result)
 match = search(pattern, 'gvugvugv123')
 print(match.group())
 
-class Cat():
-    def __init__(self, color='black', age=0):
-        self.color = color
-        self.age = age
-
-    def meow(self):
-        print('meow')
-
-cat = Cat()
-cat.meow()
+# очистка
+purge()
