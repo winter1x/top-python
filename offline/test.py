@@ -1,17 +1,17 @@
 N = int(input())
-keys = [int(input()) for _ in range(N)]
+keys = [0] + [int(input()) for _ in range(N)]
 visited = [False] * (N + 1)
 count = 0
 
 for i in range(1, N + 1):
     if not visited[i]:
-        cycle = []
+        path = set()
         current = i
-        while not visited[current]:
+        while current not in path and not visited[current]:
+            path.add(current)
             visited[current] = True
-            cycle.append(current)
-            current = keys[current - 1]
-        if current in cycle:
+            current = keys[current]
+        if current in path:
             count += 1
 
 print(count)

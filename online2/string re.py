@@ -31,24 +31,11 @@ r''
 два случайных числа
 конец
 
-str1 True
-str2 True
-str3 False
-"""
+pattern = r'^\+7\(\d{3}\)\d{3}-\d{2}-\d{2}$'
 
-"""создать случайный логин и пароль
+создать случайный логин и пароль
 логин - заглавная буква + 10 строчных
 пароль - заглавная, символ, 10 строчных"""
-
-
-
-
-
-
-
-
-
-
 
 from random import *
 login = choice(ascii_uppercase)
@@ -70,12 +57,6 @@ a = randint(1, 10)
 # choises
 # shuffle - перемешивает
 """password2 = password
-result = ''
-for i in range(len(password) - 1):
-    randNum = randint(0, len(password))
-    result += password[randNum]
-    password = password[:randNum] + password[randNum + 1:]
-
 password2 = list(password2)
 shuffle(password2)"""
 

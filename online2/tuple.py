@@ -7,6 +7,7 @@ zero_tuple = tuple()
 zero_tuple = ()
 print(tup)
 print(type(tup).__name__)
+print(type(tup))
 tup2 = ([], 1, 2, 4, '123')
 print(tup)
 tup2[0].append(1)
@@ -19,6 +20,16 @@ print(2 in tup)
 print(len(tup))
 for i in tup:
     print(i)
+
+a = 3, 3
+print(type(a))
+print(a)
+
+def multi_return():
+    return 1, 2, 3, 4
+
+a, b, c, d = multi_return()
+print(a, b, c, d)
 
 """to_search = input()
 data = ("banana", "apple", "bananamango", "mango", "strawberry-banana")

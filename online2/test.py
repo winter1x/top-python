@@ -1,20 +1,17 @@
-"""
-В единственной строке записан текст. Для каждого слова из данного текста подсчитайте, 
-сколько раз оно встречалось в этом тексте ранее.
+N = int(input())
+keys = [0] + [int(input()) for _ in range(N)]
+visited = [False] * (N + 1)
+count = 0
 
-Словом считается последовательность не пробельных символов идущих подряд,
-слова разделены одним или большим числом пробелов или символами конца строки.
-"""
+for i in range(1, N + 1):
+    if not visited[i]:
+        path = set()
+        current = i
+        while current not in path and not visited[current]:
+            path.add(current)
+            visited[current] = True
+            current = keys[current]
+        if current in path:
+            count += 1
 
-# сгенерировать случайные из 3 способами
-# создать список на их основе
-# перемешать символы в пароле
-# выбрать случайные 2 из списка
-from random import *
-r1 = random()
-r2 = randint(1, 2)
-r3 = uniform(1, 2)
-l1 = [r1, r2, r3]
-shuffle(l1)
-r = sample(l1, 2)
-print(l1, r)
+print(count)

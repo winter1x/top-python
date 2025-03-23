@@ -76,3 +76,10 @@ director
 управление, порядок вызова методов строителя, строителей
 """
 
+# Factory Method
+"""
+Creator
+ConcreteCreator
+Product
+ConcreteProduct
+"""
