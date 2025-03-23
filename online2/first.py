@@ -201,11 +201,11 @@ a = max(1, 2)"""
 ** - возведение в степень
 """
 
-print(7 // 2)
+"""print(7 // 2)
 print(4001 % 2 == 0)
 
 # Считать с консоли номер дня недели. Вывести буквенную интерпретацию
-day = int(input("введите день недели"))
+day = int(input("введите день недели"))"""
 """if day == 1:
     print('monday')
 elif day == 2:
@@ -219,7 +219,7 @@ elif day == 2:
 elif day == 2:
     print('втроник')
     """
-match day:
+"""match day:
     case 1: print("пн")
     case 2: print("")
     case 3: print("")
@@ -231,7 +231,58 @@ match day:
 
 print(round(1.1))
 
-text = "hello"
+text = "Hello"
 encoded = [ord(c) for c in text]
+
+for c in text:
+    print(c, ord(c))
+
 print(encoded)
-print("".join(chr(a) for a in encoded))
+print("".join(chr(a) for a in encoded))"""
+
+"""# работа с типами данных
+my_variable: str = "123"
+
+def greet(name: str) -> str:
+    return f"hi, {name}"
+
+print(greet("name"))
+
+# import mypy
+
+def sum_numbers(a: int, b: int) -> int:
+    return a + b
+
+print(sum_numbers(1, 1))
+print(sum_numbers("1", "1"))
+#print(sum_numbers("1", 1))
+
+#isinstance()
+class A:
+    pass
+
+def process_data(data):
+    if isinstance(data, (A, int)):
+        print(A, '/', int)
+    elif isinstance(data, dict):
+        print(dict)
+    else:
+        print("неверный тип данных")
+
+process_data(5)
+"""
+"""
+console.log(Math.round(num)); //до ближайшего целого
+console.log(Math.floor(num)); //округление вниз до ближайшего целого
+console.log(Math.ceil(num)); //вверх до ближайшего целого
+console.log(Math.trunc(num)); //убрать дробную часть
+console.log(num.toFixed(2)); //определенное количество знаков после запятой
+"""
+num1 = 1.5555
+print(round(num1, 2))  # Обычное округление
+print(int(num1))  # обрезает
+from  math import ceil, floor, trunc
+print(ceil(num1))
+print(floor(num1))
+print(trunc(num1))
+
