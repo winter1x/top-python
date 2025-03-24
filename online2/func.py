@@ -149,3 +149,4 @@ print(result)
 print(count)
 for key, value in cache.items():
     print(key, value)
+# с помощью timeit замерить выполнение fibonacci с cache и без cache
