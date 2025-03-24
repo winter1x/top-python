@@ -1,17 +1,23 @@
-N = int(input())
-keys = [0] + [int(input()) for _ in range(N)]
-visited = [False] * (N + 1)
-count = 0
+# с помощью timeit замерить выполнение fibonacci с cache и без cache
+import timeit
 
-for i in range(1, N + 1):
-    if not visited[i]:
-        path = set()
-        current = i
-        while current not in path and not visited[current]:
-            path.add(current)
-            visited[current] = True
-            current = keys[current]
-        if current in path:
-            count += 1
+def fibonnaci_no_cache(n):
+    if n <= 1:
+        return n
+    return fibonnaci_no_cache(n - 1) + fibonnaci_no_cache(n - 2)
 
-print(count)
+time = timeit.timeit(lambda: fibonnaci_no_cache(30), number=2)
+print(time)
+
+
+from functools import lru_cache
+
+@lru_cache(maxsize=None)
+def fibonacci_with_cache(n):
+    if n <= 1:
+        return n
+    return fibonacci_with_cache(n - 1) + fibonacci_with_cache(n - 2)
+
+time2 = timeit.timeit(lambda: fibonacci_with_cache(30), number=2)
+print(time2)
+print(time2 / time)
