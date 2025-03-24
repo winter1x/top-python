@@ -85,7 +85,7 @@ def nod(a, b):
 #базовый случай - если n = 1, то функция просто выводит 1 и завершает работу(рекурсию)
 #рекурсивный случай - если n > 1,
 
-def print_numbers(n):
+"""def print_numbers(n):
     if n == 1:
         print(n)
     else:
@@ -93,7 +93,7 @@ def print_numbers(n):
         print_numbers(n - 1)
 
 n = 5
-print_numbers(n)
+print_numbers(n)"""
 """
 есть набор чисел
 [1, 2, 3]
@@ -109,8 +109,21 @@ print_numbers(n)
 """
 def generate_combinations(nums, current_combination=[]):
     # базовый случай: если набор чисел пустой, выводим текущую комбинацию
+    if not nums:
+        print(current_combination)
+    else:
     # рекурсивный:
-    # создаем новый набор без текущего числа
-    # добавлять текущее число в комбинацию и рекурсивно генерируем комбинацию
+        for i in range(len(nums)):
+            # создаем новый набор без текущего числа
+            new_nums = nums[:i] + nums[i + 1:]
+            # добавлять текущее число в комбинацию и рекурсивно генерируем комбинацию
+            generate_combinations(new_nums, current_combination + [nums[i]])
+
+        """for i, num in enumerate(nums):
+            # создаем новый набор без текущего числа
+            new_nums = nums[:i] + nums[i + 1:]
+            # добавлять текущее число в комбинацию и рекурсивно генерируем комбинацию
+            generate_combinations(new_nums, current_combination + [num])"""
+
 numbers = [1, 2, 3]
 generate_combinations(numbers)
