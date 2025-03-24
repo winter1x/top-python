@@ -107,7 +107,7 @@ print_numbers(n)"""
 Выбор каждого числа из набора 
 и рекурсивная генерация комбинаций оставшихся чисел 
 """
-def generate_combinations(nums, current_combination=[]):
+"""def generate_combinations(nums, current_combination=[]):
     # базовый случай: если набор чисел пустой, выводим текущую комбинацию
     if not nums:
         print(current_combination)
@@ -117,13 +117,35 @@ def generate_combinations(nums, current_combination=[]):
             # создаем новый набор без текущего числа
             new_nums = nums[:i] + nums[i + 1:]
             # добавлять текущее число в комбинацию и рекурсивно генерируем комбинацию
-            generate_combinations(new_nums, current_combination + [nums[i]])
+            generate_combinations(new_nums, current_combination + [nums[i]])"""
 
-        """for i, num in enumerate(nums):
+"""for i, num in enumerate(nums):
             # создаем новый набор без текущего числа
             new_nums = nums[:i] + nums[i + 1:]
             # добавлять текущее число в комбинацию и рекурсивно генерируем комбинацию
             generate_combinations(new_nums, current_combination + [num])"""
 
-numbers = [1, 2, 3]
-generate_combinations(numbers)
+"""numbers = [1, 2, 3]
+generate_combinations(numbers)"""
+count = 0
+cache = {}
+def fibonacci(n):
+    global count
+    if n in cache:
+        return cache[n]
+
+    if n <= 1:
+        count += 1
+        result = n
+    else:
+        result = fibonacci(n - 1) + fibonacci(n - 2)
+
+    cache[n] = result
+    return result
+
+n = 15
+result = fibonacci(n)
+print(result)
+print(count)
+for key, value in cache.items():
+    print(key, value)
