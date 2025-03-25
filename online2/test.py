@@ -1,41 +1,24 @@
-#uuid
+def id_generator(prefix: str):
+    counter = -1
 
-"""
-замыкание
+    def generate(count=10):
+        nonlocal counter
+        if count < 1:
+            raise ValueError("1")
 
-генерирует последовательные идентификаторы
-возвращает следующий уникальный идентификатор
-"""
+        start = counter + 1
+        counter += count
+        ids = [f"{prefix}{i}" for i in range(start, start + count)]
 
-"""
-ID0
-ID1
-ID2
-"""
+        return "\n".join(ids) if count > 1 else ids[0]
 
-"""
-USER0
-USER1
-USER2
-"""
+    return generate
 
-def create_id_generator(prefix="ID"):
-    current_id = 0
 
-    def generate_id():
-        nonlocal current_id
-        id_value = f'{prefix}{current_id}'
-        current_id += 1
-        return id_value
-    return generate_id
 
-id_generator = create_id_generator()
+item_id = id_generator("ID")
+user_id = id_generator("USER")
 
-print(id_generator())
-print(id_generator())
-print(id_generator())
 
-custom_id_generator = create_id_generator('USER')
-print(custom_id_generator())
-print(custom_id_generator())
-print(custom_id_generator())
+print(item_id())
+print(user_id())
