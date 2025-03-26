@@ -151,7 +151,7 @@ for key, value in cache.items():
     print(key, value)
 """
 
-
+"""
 def add(a, b):
     return a + b
 
@@ -165,18 +165,72 @@ print(add_2(3))
 
 curried_add = lambda a : lambda b : a + b
 print(curried_add(2)(3))
-
+"""
 #map filter reduce (import functools)
 
-from functools import partial
+"""from functools import partial
 
 def multiply(a, b):
     return a * b
 
 double = partial(multiply, 2)
 print(double(5))
-print(multiply(2, 5))
+print(multiply(2, 5))"""
 
+"""
+*args
+**kwargs
+"""
+#*args
+#sum()
+
+"""def sum_numbers(a, b, c):
+    return a + b + c"""
+
+"""def sum_numbers(*args):
+    return sum(args)"""
+
+def sum_numbers(*args):
+    result = 0
+    for e in args:
+        result += e
+        print(e)
+    return result
+
+print(sum_numbers(1, 2, 3, 5))
+
+#**kwargs
+
+def print_person_info(**kwargs):
+    for key, value in kwargs.items():
+        print(f"{key}: {value}")
+
+print_person_info(name='alice', age=43, city='moscow')
+
+def show_info(*args, **kwargs):
+    print("позиционные", args)
+    print("именованные", kwargs)
+
+show_info(1, 2, 3, name='alice', age=43)
+
+
+"""
+последовательность передачи:
+
+обычные аргументы
+*args
+обычные именованные аргументы
+**kwargs
+"""
+
+def demo(a, b, *args, c=10, d=20, **kwargs):
+    print(a, b, args, c, d, kwargs)
+
+"""
+распаковка аргументов
+* позиционных
+** именованных
+"""
 #пример каррирование map filter
-
-1 / 0
+def sum_numbers(a, b, c):
+    return a + b + c
