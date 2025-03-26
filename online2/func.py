@@ -190,18 +190,18 @@ print(multiply(2, 5))"""
 """def sum_numbers(*args):
     return sum(args)"""
 
-def sum_numbers(*args):
+"""def sum_numbers(*args):
     result = 0
     for e in args:
         result += e
         print(e)
     return result
 
-print(sum_numbers(1, 2, 3, 5))
+print(sum_numbers(1, 2, 3, 5))"""
 
 #**kwargs
 
-def print_person_info(**kwargs):
+"""def print_person_info(**kwargs):
     for key, value in kwargs.items():
         print(f"{key}: {value}")
 
@@ -211,7 +211,7 @@ def show_info(*args, **kwargs):
     print("позиционные", args)
     print("именованные", kwargs)
 
-show_info(1, 2, 3, name='alice', age=43)
+show_info(1, 2, 3, name='alice', age=43)"""
 
 
 """
@@ -223,14 +223,74 @@ show_info(1, 2, 3, name='alice', age=43)
 **kwargs
 """
 
-def demo(a, b, *args, c=10, d=20, **kwargs):
-    print(a, b, args, c, d, kwargs)
+"""def demo(a, b, *args, c=10, d=20, **kwargs):
+    print(a, b, args, c, d, kwargs)"""
 
 """
 распаковка аргументов
-* позиционных
-** именованных
+*iterable позиционных
+**dict именованных
 """
 #пример каррирование map filter
+
 def sum_numbers(a, b, c):
     return a + b + c
+
+#*iterable
+numbers = [1, 2, 3]
+
+sum_numbers(*numbers) # 1, 2, 3 - как отдельные аргументы
+#sum_numbers(1, 2, 3)
+
+values = (10, 20, 30)
+print(sum_numbers(*values))
+
+nums = {4, 5, 6}
+print(sum_numbers(*nums))
+#print(sum_numbers(4, 5, 6))
+#print(sum_numbers(6, 4, 5))
+
+first, *rest = [1, 2, 3, 4, 5]
+print(first)
+print(rest)
+
+*head, last = [1, 2, 3, 4, 5]
+print(head)
+print(last)
+
+#**dict
+
+def person_info(name, age, city):
+    print(f"Имя: {name}, Возраст: {age}, Город: {city}")
+
+data = {"name": "alice", "age": 25, "city": 'moscow'}
+person_info(**data)
+#person_info(name= alice age= 25 city =moscow)
+
+data = {"name": "alice"}
+person_info(**data, age=30, city='dwv')
+
+def show_info(**kwargs):
+    for key, value in kwargs.items():
+        print(key, value)
+
+data = {"name": "alice", "age": 25, "city": 'moscow'}
+show_info(**data)
+
+def get_numbers():
+    return [1, 2, 3]
+
+a, b, c = get_numbers()
+numbers = [10, 20, 30]
+print(*numbers, sep='\n')
+
+#ошибки
+""" 
+def greet(name, age):
+    print(name, age)
+  
+data = {"name": "alice"}
+greet(**data)
+
+data = {"name": "alice", "age": 25, "city": 'moscow'}
+greet(data)"""
