@@ -106,10 +106,12 @@ counter['decrement']()
 
 def add_curried(a):
     def inner(b):
-        return a + b
+        def inner2(c):
+            return a + b + c
+        return inner2
     return inner
 
-result = add_curried(2)(3)
+result = add_curried(2)(3)(4)
 print(result)
 
 from functools import partial
@@ -136,8 +138,11 @@ add
 subtract
 multiply
 divide"""
+
 from functools import partial
-"""def operation(a):
+
+"""
+def operation(a):
     def inner(b):
         def oper(op):
             try:
@@ -147,12 +152,12 @@ from functools import partial
                     return a - b
                 elif op == "divide":
                     if b == 0:
-                        raise ZeroDivisionError('123')
+                        raise ZeroDivisionError('нельзя делеить на 0')
                     return a / b
                 elif op == 'multiply':
                     return a * b
                 else:
-                    raise ValueError('1234')
+                    raise ValueError('текст который будет напечатан при ошибке')
             except ValueError as e:
                 return str(e)
             except ZeroDivisionError as e:
@@ -171,17 +176,17 @@ result = operation(10)(5)('adde')
 print(result)
 print(result is None)"""
 
-def operation(a, b, op):
+def operation(a, b, operation):
     try:
-        if op == 'add':
+        if operation == 'add':
             return a + b
-        elif op == "subtract":
+        elif operation == "subtract":
             return a - b
-        elif op == "divide":
+        elif operation == "divide":
             if b == 0:
                 raise ZeroDivisionError('123')
             return a / b
-        elif op == 'multiply':
+        elif operation == 'multiply':
             return a * b
         else:
             raise ValueError('1234')

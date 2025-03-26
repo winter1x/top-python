@@ -127,7 +127,7 @@ print_numbers(n)"""
 
 """numbers = [1, 2, 3]
 generate_combinations(numbers)"""
-count = 0
+"""count = 0
 cache = {}
 def fibonacci(n):
     global count
@@ -149,3 +149,34 @@ print(result)
 print(count)
 for key, value in cache.items():
     print(key, value)
+"""
+
+
+def add(a, b):
+    return a + b
+
+def curried_add(a):
+    def add_b(b):
+        return a + b
+    return add_b
+
+add_2 = curried_add(2)
+print(add_2(3))
+
+curried_add = lambda a : lambda b : a + b
+print(curried_add(2)(3))
+
+#map filter reduce (import functools)
+
+from functools import partial
+
+def multiply(a, b):
+    return a * b
+
+double = partial(multiply, 2)
+print(double(5))
+print(multiply(2, 5))
+
+#пример каррирование map filter
+
+1 / 0
