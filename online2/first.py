@@ -12,7 +12,12 @@ str_number = "34"""
 
 """num1 = input()
 print(num1 + 1)"""
-
+print(1, 2, 3, 4, 5, 6)
+print("1", "2", '3')
+print(1, 2, 3, 4, 5, 6, end='1213r31rv13rv')
+print(1, 2, 3, 4, 5, 6, end='')
+print()
+print(1, 2, 3, 4, 5, 6, sep='evv3r')
 '''dceeve''' #многострочный
 #92hrf9ejf39 - однострочный
 """
