@@ -198,12 +198,15 @@ def operation(a, b, operation):
         return ex
 
 add = partial(operation, op='add')
+my_add = partial(operation, op='add', a=10)
 add_10 = partial(partial(operation, a=10), op='add')
 divide = partial(operation, op='divide')
 divide2 = partial(operation, op='d3ivide')
-print(add(10, 2))
+"""print(add(10, 2))
 print(add_10(b=2))
 print(divide(10, 2))
 print(divide(10, 0))
 print(divide2(10, 2))
-
+"""
+print(add_10(b=5))
+print(my_add(b=5))
