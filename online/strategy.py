@@ -2,7 +2,7 @@
 гибкого выбора алгоритмов
 """
 """
-когда используем
+когда используем (+)
 
 несколько вариантов алгоритма
 алгоритмы могут меняться, динамически
@@ -10,6 +10,11 @@
 передавать алгоритм как параметр
 """
 
+"""
+когда не используем (-)
+статическое переключение алгоритмов
+
+"""
 """
 структура
 
@@ -31,7 +36,6 @@ class DiscountStrategy(ABC):
     @abstractmethod
     def apply_discount(self, total_amount: float) -> float:
         pass
-
 #concrete strategies
 class PercentageDiscount(DiscountStrategy):
     def apply_discount(self, total_amount: float) -> float:
@@ -45,7 +49,6 @@ class VipDiscount(DiscountStrategy):
 class FixedDiscount(DiscountStrategy):
     def apply_discount(self, total_amount: float) -> float:
         return total_amount * 0.9
-
 #context
 class Order:
     def __init__(self, total_amount: float, discount_strategy: DiscountStrategy):

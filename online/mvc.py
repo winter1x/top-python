@@ -99,28 +99,44 @@ ConcreteProduct
 коммуникации между объектами
 управления состоянием
 """
+
+"""
+когда используем: (+)
+
+семейство алгоритмов
+отделить отправителя запроса от его обработчика
+общаться между собой, но не должны быть жестко связаны
+"""
+
+"""
+не используем: (-)
+
+проблема слишком проста
+код и так читаемый и расширяемый
+"""
+
 #управления алгоритмами
 """
 strategy
-interpreter 
-visitor 
+interpreter
+visitor
 
 template method
 """
 
 #коммуникации между объектами
 """
-observer 
-mediator 
-command 
+observer
+mediator
+command
 iterator
 
-chain of responsibility 
+chain of responsibility
 protocol
 """
 
 #управления состоянием
 """
 state
-memento 
+memento
 """

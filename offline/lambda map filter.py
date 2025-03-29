@@ -2,6 +2,7 @@ def sqr1(number):
     return number * number
 
 def printf(some_list, func):
+    """docstring"""
     for i in some_list:
         print(func(i))
 

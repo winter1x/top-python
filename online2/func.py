@@ -233,7 +233,7 @@ show_info(1, 2, 3, name='alice', age=43)"""
 """
 #пример каррирование map filter
 
-def sum_numbers(a, b, c):
+"""def sum_numbers(a, b, c):
     return a + b + c
 
 #*iterable
@@ -282,7 +282,7 @@ def get_numbers():
 
 a, b, c = get_numbers()
 numbers = [10, 20, 30]
-print(*numbers, sep='\n')
+print(*numbers, sep='\n')"""
 
 #ошибки
 """ 
@@ -294,3 +294,9 @@ greet(**data)
 
 data = {"name": "alice", "age": 25, "city": 'moscow'}
 greet(data)"""
+
+#lambda argument : expression
+
+add = lambda x, y: x + y
+print(add(3, 5))
+#map filter reduce
