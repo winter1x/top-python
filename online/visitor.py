@@ -74,3 +74,15 @@ JSONExporter
 {"type": "text", "content": "привет мир"}
 {"type": "image", "content": "cat.jpg"}
 """
+import json
+
+class JSONExporter(Visitor):
+    def visit_text(self, text):
+        return json.dumps({"type": "text", "content": text.content}, ensure_ascii=False)
+
+    def visit_image(self, image):
+        return json.dumps({"type": "image", "content": image.file_name}, ensure_ascii=False)
+
+json_exporter = JSONExporter()
+for elem in elements:
+    print(elem.accept(json_exporter))
