@@ -25,4 +25,6 @@ sum_of_cubes = reduce(
 
 объединить все в строку через пробел
 """
-words = ['qwe', 'wer', 'rty', 'asd', 'ert', 'uio']
+words = ['qwe', 'wetr', 'rtty', 'asd', 'ertt', 'uito']
+
+filtered_words = list(filter(lambda word: len(word) > 3, words))
