@@ -25,3 +25,4 @@ sum_of_cubes = reduce(
 
 объединить все в строку через пробел
 """
+words = ['qwe', 'wer', 'rty', 'asd', 'ert', 'uio']
