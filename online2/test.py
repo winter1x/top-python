@@ -28,3 +28,8 @@ sum_of_cubes = reduce(
 words = ['qwe', 'wetr', 'rtty', 'asd', 'ertt', 'uito']
 
 filtered_words = list(filter(lambda word: len(word) > 3, words))
+
+processed_words = list(map(
+    lambda word: word.upper() if word[0].lower() in "aeiouy" else word.capitalize(),
+    filtered_words
+))
