@@ -295,8 +295,195 @@ greet(**data)
 data = {"name": "alice", "age": 25, "city": 'moscow'}
 greet(data)"""
 
-#lambda argument : expression
+#yeild
+def my_function():
+    return [1, 2, 3]
 
-add = lambda x, y: x + y
-print(add(3, 5))
-#map filter reduce
+result = my_function()
+print(result)
+
+def my_generator():
+    yield 1
+    yield 2
+    yield 3
+
+gen = my_generator()
+print(next(gen))
+print(next(gen))
+print(next(gen))
+
+def example_generator():
+    print('старт генератора')
+    yield "first"
+    print('пауза')
+    yield "second"
+    print('остановка')
+
+gen = example_generator()
+print(next(gen))
+print(next(gen))
+
+
+def big_list(n):
+    return [i for i in range(n)]
+
+data = big_list(100000)
+
+def big_generator(n):
+    for i in range(n):
+        yield i
+
+data2 = big_generator(100000)
+
+def infinite_counter():
+    num = 1
+    while True:
+        yield num
+        num += 1
+
+gen = infinite_counter()
+
+print(next(gen))
+print(next(gen))
+print(next(gen))
+print(next(gen))
+print(next(gen))
+print(next(gen))
+print(next(gen))
+print(next(gen))
+print(next(gen))
+print(next(gen))
+
+def read_file(filename):
+    with open(filename, 'r') as file:
+        for line in file:
+            yield line.strip()
+
+"""for line in read_file('large_file.txt'):
+    print(line)"""
+
+def fibonacci():
+    a, b = 0, 1
+    while True:
+        yield a
+        a, b = b, a + b
+
+fib = fibonacci()
+
+print(next(fib))
+print(next(fib))
+print(next(fib))
+print(next(fib))
+print(next(fib))
+print(next(fib))
+print(next(fib))
+print(next(fib))
+print(next(fib))
+
+
+#next(generator) - получение следующего значения
+#generator.send(value) - отправить значение в генератор
+#generator.close() - остановить генератор
+
+def greeter():
+    name = yield "как тебя зовут?"
+    yield f"hi, {name}"
+
+gen = greeter()
+print(next(gen))
+print(gen.send("me"))
+
+def counter():
+    num = 0
+    while True:
+        step = yield num
+        num += step if step else 1
+
+gen = counter()
+
+print(next(gen))
+print(gen.send(5))
+print(gen.send(2))
+print(next(gen))
+
+def calculator():
+    result = 0
+    try:
+        while True:
+            operation = yield result
+            if operation:
+                op, num = operation
+                if op == "+":
+                    result += num
+    except GeneratorExit:
+        print("закрыт")
+
+gen = calculator()
+print(next(gen))
+print(gen.send(('+', 10)))
+print(gen.send(('+', 10)))
+gen.close()
+
+#iter(obj) - превращает iterable в iterator
+
+numbers = [1, 2, 3]
+iterator = iter(numbers)
+
+print(next(iterator))
+print(next(iterator))
+print(next(iterator))
+
+
+"""
+iterable - итерируемый объект - list tiple dict set str frozenset
+iterator - итератор - obj, помнит где он находится в последовательности, __iter__() __next__()
+"""
+
+numbers = [1, 2, 3]
+for num in numbers:
+    print(num)
+
+for num in numbers:
+    print(num)
+
+for num in numbers:
+    print(num)
+
+iterator = iter([1, 2, 3])
+print(next(iterator))
+print(next(iterator))
+print(next(iterator))
+
+for num in [1, 2, 3]:
+    print(num)
+
+"""
+1 iter([1, 2, 3]) создается итератор
+2 next() на каждом шаге цикла
+3 StopIteration завершается
+"""
+
+class Counter:
+    def __init__(self):
+        self.num = 1
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.num > 3:
+            raise StopIteration
+        value = self.num
+        self.num += 1
+        return value
+
+counter = Counter()
+for num in counter:
+    print(num)
+
+import sys
+print('вводите до стоп')
+for line in iter(sys.stdin.readline, 'стоп\n'):
+    print(f'введено {line.strip()}')
+
+#iter(func, sentinel)

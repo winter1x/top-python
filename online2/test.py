@@ -33,3 +33,7 @@ processed_words = list(map(
     lambda word: word.upper() if word[0].lower() in "aeiouy" else word.capitalize(),
     filtered_words
 ))
+
+result = reduce(lambda acc, word: acc + ' ' + word, processed_words)
+
+print(result)
