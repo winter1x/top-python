@@ -112,3 +112,67 @@ def bubble_sort(arr):
         if not swapped:
             break
 
+#выбором (selection sort)
+
+"""
+min из неотсортированной части массива
+меняем этот минимальный e с первым e неотсортированной части
+повторяем
+"""
+
+"""
+1 проход
+
+[5, 3, 8, 4, 2]
+2 <-> 5
+[2, 3, 8, 4, 5]
+
+2 проход
+
+[2, 3, 8, 4, 5]
+3 <-> 5
+[2, 3, 8, 4, 5]
+
+3 проход
+
+[2, 3, 8, 4, 5]
+4 <-> 8
+[2, 3, 4, 8, 5]
+
+"""
+
+def selection_sort(arr):
+    n = len(arr)
+    for i in range(n - 1):
+        min_index = i
+        for j in range(i + 1, n):
+            if arr[j] < arr[min_index]:
+                min_index = j
+        arr[i], arr[min_index] = arr[min_index] ,arr[i]
+
+numbers = [5, 3, 8, 4, 2]
+selection_sort(numbers)
+print(numbers)
+
+def selection_sort(arr):
+    n = len(arr)
+    left, right = 0, n - 1
+    while left < right:
+        min_index = left
+        max_index = right
+
+        for i in range(left, right + 1):
+            if arr[i] < arr[min_index]:
+                min_index = i
+            if arr[i] > arr[min_index]:
+                max_index = i
+
+        arr[left], arr[min_index] = arr[min_index], arr[left]
+
+        if max_index == left:
+            max_index = min_index
+
+        arr[right], arr[max_index] = arr[max_index], arr[right]
+
+        left += 1
+        right -= 1

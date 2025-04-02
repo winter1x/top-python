@@ -6,30 +6,25 @@
 добавить возможность выбора пользователем в каком порядке сортировать
 """
 
-def bubble_sort(arr, ascending=True):
+def selection_sort(arr):
     n = len(arr)
-    total_swaps = 0
-    total_iterations = 0
-    for i in range(n - 1):
-        swapped = False
-        swaps_in_pass = 0
+    left, right = 0, n - 1
+    while left < right:
+        min_index = left
+        max_index = right
 
-        for j in range(n - i - 1):
-            if (ascending and arr[j] > arr[j + 1]) or (not ascending and arr[j] < arr[j + 1]):
-                arr[j], arr[j + 1] = arr[j + 1], arr[j]
-                swapped = True
-                swaps_in_pass += 1
-                total_swaps += 1
+        for i in range(left, right + 1):
+            if arr[i] < arr[min_index]:
+                min_index = i
+            if arr[i] > arr[min_index]:
+                max_index = i
 
-        total_iterations += 1
-        print(f"шаг {i + 1}: {arr} перестановки {swaps_in_pass}")
+        arr[left], arr[min_index] = arr[min_index], arr[left]
 
-        if not swapped:
-            break
+        if max_index == left:
+            max_index = min_index
 
-    return total_iterations, total_swaps
+        arr[right], arr[max_index] = arr[max_index], arr[right]
 
-numbers = list(map(int, input().split()))
-order = input("asc - по возрастания / decs - по убыванию").strip().lower()
-ascending = True if order == 'asc' else False
-iterations, swaps = bubble_sort(numbers, ascending)
+        left += 1
+        right -= 1
