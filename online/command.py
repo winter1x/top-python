@@ -13,6 +13,56 @@ class Button:
 light = Light()
 button = Button(light)
 button.press()
+from abc import ABC, abstractmethod
+
+class Command(ABC):
+    @abstractmethod
+    def execute(self):
+        pass
+
+class Light:
+    def turn_on(self):
+        print("Свет включен")
+
+    def turn_off(self):
+        print("Свет выключен")
+
+class LightOnCommand(Command):
+    def __init__(self, light):
+        self.light = light
+
+    def execute(self):
+        self.light.turn_on()
+
+class LightOffCommand(Command):
+    def __init__(self, light):
+        self.light = light
+
+    def execute(self):
+        self.light.turn_off()
+
+class RemoteControl:
+    def __init__(self):
+        self.command = None
+
+    def set_command(self, command):
+        self.command = command
+
+    def press_button(self):
+        if self.command:
+            self.command.execute()
+
+light = Light()
+on_command = LightOnCommand(light)
+off_command = LightOffCommand(light)
+
+remote = RemoteControl()
+remote.set_command(on_command)
+remote.press_button()
+
+remote.set_command(off_command)
+remote.press_button()
+
 
 from abc import ABC, abstractmethod
 
