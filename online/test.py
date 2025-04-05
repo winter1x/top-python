@@ -1,117 +1,66 @@
 """
-mediator
-реализовать чат
+История команд
 
-разные роли + модерация сообщений:
-
-user - может отправлять сообщения
-moderator - может удалять
-admin - может блокировать пользователей
-
-ChatRoom управляет всеми пользователями и сообщениями
-
-модерация сообщений:
-ban_word_list = ['слово', "еще"]
+5 последних действий
+несколько устройств (тв кондиционер)
+комбинация команд (макрос) [f1, f2, f3]
+вкл все
+выкл все
 """
+
 from abc import ABC, abstractmethod
 
-class ChatMediator(ABC):
+class Command(ABC):
     @abstractmethod
-    def send_message(self, message, sender):
+    def execute(self):
         pass
 
     @abstractmethod
-    def remove_message(self, message, moderator):
+    def undo(self):
         pass
 
-    @abstractmethod
-    def block_user(self, user, admin):
-        pass
+class LightOnCommand(Command):
+    def __init__(self, light):
+        self.light = light
 
-class ChatRoom(ChatMediator):
+    def execute(self):
+        self.light.turn_on()
+
+    def undo(self):
+        self.light.turn_off()
+
+class LightOffCommand(Command):
+    def __init__(self, light):
+        self.light = light
+
+    def execute(self):
+        self.light.turn_off()
+
+    def undo(self):
+        self.light.turn_on()
+
+class RemoteControl:
     def __init__(self):
-        self.users = []
-        self.banned_users = set()
-        self.messages = []
-        self.ban_word_list = {"спам", "оскорбление"}
+        self.command_history = []
 
-    def add_user(self, user):
-        self.users.append(user)
+    def set_command(self, command):
+        self.command_history.append(command)
 
-    def send_message(self, message, sender):
-        if sender in self.banned_users:
-            print(f"{sender.name} заблокирован и не может отправлять сообщения.")
-            return
+    def press_button(self):
+        if self.command_history:
+            self.command_history[-1].execute()
 
-        if any(word in message.lower() for word in self.ban_word_list):
-            print(f"Сообщение от {sender.name} содержит запрещенные слова и не отправлено.")
-            return
+    def press_undo(self):
+        if self.command_history:
+            self.command_history.pop().undo()
 
-        self.messages.append((sender, message))
-        for user in self.users:
-            if user != sender:
-                user.receive_message(message, sender)
+light = Light()
+remote = RemoteControl()
 
-    def remove_message(self, message, moderator):
-        for msg in self.messages:
-            if msg[1] == message:
-                self.messages.remove(msg)
-                print(f"Модератор {moderator.name} удалил сообщение: {message}")
-                return
-        print(f"Сообщение не найдено.")
+on_command = LightOnCommand(light)
+off_command = LightOffCommand(light)
 
-    def block_user(self, user, admin):
-        self.banned_users.add(user)
-        print(f"Админ {admin.name} заблокировал пользователя {user.name}.")
+remote.set_command(on_command)
+remote.press_button()
 
-class User(ABC):
-    def __init__(self, name, mediator):
-        self.name = name
-        self.mediator = mediator
-        mediator.add_user(self)
-
-    @abstractmethod
-    def send_message(self, message):
-        pass
-
-    def receive_message(self, message, sender):
-        print(f"{self.name} получил сообщение от {sender.name}: {message}")
-
-class RegularUser(User):
-    def send_message(self, message):
-        print(f"{self.name} отправил сообщение: {message}")
-        self.mediator.send_message(message, self)
-
-class Moderator(User):
-    def send_message(self, message):
-        print(f"{self.name} (Модератор) отправил сообщение: {message}")
-        self.mediator.send_message(message, self)
-
-    def remove_message(self, message):
-        self.mediator.remove_message(message, self)
-
-class Admin(User):
-    def send_message(self, message):
-        print(f"{self.name} (Админ) отправил сообщение: {message}")
-        self.mediator.send_message(message, self)
-
-    def block_user(self, user):
-        self.mediator.block_user(user, self)
-
-chat = ChatRoom()
-
-alice = RegularUser("Алиса", chat)
-bob = RegularUser("Боб", chat)
-charlie = Moderator("Чарли", chat)
-diana = Admin("Диана", chat)
-
-alice.send_message("Всем привет!")
-bob.send_message("Привет, Алиса!")
-charlie.send_message("Я буду следить за порядком.")
-alice.send_message("Оскорбление!")
-
-charlie.remove_message("Оскорбление!")
-
-diana.block_user(bob)
-
-bob.send_message("Я еще здесь!")
+remote.press_undo()

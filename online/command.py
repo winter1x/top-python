@@ -1,4 +1,20 @@
-class Light:
+"""
+command - команда
+отправитель команды - клиент
+посредник Invoker- официант
+Receiver - исполнитель команды - шеф-повар
+
+execute
+undo()/redo() - отмена действий, храним историю
+"""
+
+"""
+создаем команду
+передаем команду в invoker
+исполнитель выполняет
+"""
+
+"""class Light:
     def turn_on(self):
         print("Свет включен")
 
@@ -12,7 +28,8 @@ class Button:
 
 light = Light()
 button = Button(light)
-button.press()
+button.press()"""
+#---------------------------------------------------
 from abc import ABC, abstractmethod
 
 class Command(ABC):
@@ -63,7 +80,7 @@ remote.press_button()
 remote.set_command(off_command)
 remote.press_button()
 
-
+#---------------------------------------------------
 from abc import ABC, abstractmethod
 
 class Command(ABC):
