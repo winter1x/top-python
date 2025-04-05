@@ -1,60 +1,57 @@
 """
 mediator
-SmartHub - посредник
-Light и Thermostat - отправляют команды через посредника
-когда включается свет, температура автоматически понижается
+реализовать чат
+
+разные роли + модерация сообщений:
+
+user - может отправлять сообщения
+moderator - может удалять
+admin - может блокировать пользователей
+
+ChatRoom управляет всеми пользователями и сообщениями
+
+модерация сообщений:
+ban_word_list = ['слово', "еще"]
+
+
 """
 from abc import ABC, abstractmethod
 
-class SmartHub(ABC):
+class ChatMediator(ABC):
     @abstractmethod
-    def notify(self, sender, event):
+    def send_message(self, message, sender):
         pass
 
-class HomeAutomationHub(SmartHub):
+class ChatRoom(ChatMediator):
     def __init__(self):
-        self.devices = {}
+        self.users = []
 
-    def register_device(self, device):
-        self.devices[device.name] = device
+    def add_user(self, user):
+        self.users.append(user)
 
-    def notify(self, sender, event):
-        if sender == "Light" and event == "ON":
-            print("SmartHub: Свет включен. Понижаем температуру.")
-            if "Thermostat" in self.devices:
-                self.devices["Thermostat"].set_temperature(18)
-        elif sender == "Light" and event == "OFF":
-            print("SmartHub: Свет выключен. Температура возвращается к норме.")
-            if "Thermostat" in self.devices:
-                self.devices["Thermostat"].set_temperature(22)
+    def send_message(self, message, sender):
+        for user in self.users:
+            if user != sender:
+                user.receive_massage(message, sender)
 
-
-class SmartDevice:
-    def __init__(self, name, hub):
+class User:
+    def __init__(self, name, mediator):
         self.name = name
-        self.hub = hub
-        hub.register_device(self)
+        self.mediator = mediator
+        mediator.add_user(self)
 
+    def send_message(self, message):
+        print(f"{self.name} отправляет сообщение {message}")
+        self.mediator.send_message(message, self)
 
-class Light(SmartDevice):
-    def turn_on(self):
-        print("Свет включен.")
-        self.hub.notify("Light", "ON")
+    def receive_massage(self, message, sender):
+        print(f'{self.name} получил сообщение от {sender.name} {message}')
 
-    def turn_off(self):
-        print("Свет выключен.")
-        self.hub.notify("Light", "OFF")
+chat = ChatRoom()
 
+alice = User("alice", chat)
+bob = User("bob", chat)
+matvey = User('matvey', chat)
 
-class Thermostat(SmartDevice):
-    def set_temperature(self, temperature):
-        print(f"Термостат установлен на {temperature}°C")
-
-
-hub = HomeAutomationHub()
-
-light = Light("Light", hub)
-thermostat = Thermostat("Thermostat", hub)
-
-light.turn_on()
-light.turn_off()
+alice.send_message('hi')
+bob.send_message('hi')
