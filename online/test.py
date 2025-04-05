@@ -1,41 +1,60 @@
-class TreeNode:
-    def __init__(self, value):
-        self.value = value
-        self.children = []
+"""
+mediator
+SmartHub - посредник
+Light и Thermostat - отправляют команды через посредника
+когда включается свет, температура автоматически понижается
+"""
+from abc import ABC, abstractmethod
 
-    def add_child(self, child_node):
-        self.children.append(child_node)
+class SmartHub(ABC):
+    @abstractmethod
+    def notify(self, sender, event):
+        pass
 
-    def __iter__(self):
-        return TreeIterator(self)
+class HomeAutomationHub(SmartHub):
+    def __init__(self):
+        self.devices = {}
+
+    def register_device(self, device):
+        self.devices[device.name] = device
+
+    def notify(self, sender, event):
+        if sender == "Light" and event == "ON":
+            print("SmartHub: Свет включен. Понижаем температуру.")
+            if "Thermostat" in self.devices:
+                self.devices["Thermostat"].set_temperature(18)
+        elif sender == "Light" and event == "OFF":
+            print("SmartHub: Свет выключен. Температура возвращается к норме.")
+            if "Thermostat" in self.devices:
+                self.devices["Thermostat"].set_temperature(22)
 
 
-class TreeIterator:
-    def __init__(self, root):
-        self.stack = [root]
-
-    def __iter__(self):
-        return self
-
-    def __next__(self):
-        if not self.stack:
-            raise StopIteration
-
-        current_node = self.stack.pop(0)
-        self.stack.extend(current_node.children)
-        return current_node.value
+class SmartDevice:
+    def __init__(self, name, hub):
+        self.name = name
+        self.hub = hub
+        hub.register_device(self)
 
 
-root = TreeNode("A")
-node_b = TreeNode("B")
-node_c = TreeNode("C")
-node_d = TreeNode("D")
-node_e = TreeNode("E")
+class Light(SmartDevice):
+    def turn_on(self):
+        print("Свет включен.")
+        self.hub.notify("Light", "ON")
 
-root.add_child(node_b)
-root.add_child(node_c)
-node_b.add_child(node_d)
-node_b.add_child(node_e)
+    def turn_off(self):
+        print("Свет выключен.")
+        self.hub.notify("Light", "OFF")
 
-for node_value in root:
-    print(node_value)
+
+class Thermostat(SmartDevice):
+    def set_temperature(self, temperature):
+        print(f"Термостат установлен на {temperature}°C")
+
+
+hub = HomeAutomationHub()
+
+light = Light("Light", hub)
+thermostat = Thermostat("Thermostat", hub)
+
+light.turn_on()
+light.turn_off()
