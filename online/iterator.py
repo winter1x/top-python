@@ -1,3 +1,15 @@
+"""
+iterator
+структура:
+iterable (коллекция/контейнер)
+iterator (итератор)
+__iter__()
+__next__()
+StopIteration
+
+iter()
+next()
+"""
 class Library:
     def __init__(self, books):
         self.books = books
@@ -23,7 +35,7 @@ class LibraryIterator:
 library = Library(["1984", "Гарри Поттер", "Игра престолов"])
 for book in library:
     print(book)
-
+#-----------------------------------------------------------------
 class ReverseLibraryIterator:
     def __init__(self, books):
         self.books = books
@@ -44,7 +56,7 @@ reverse_iterator = ReverseLibraryIterator(library.books)
 
 for book in reverse_iterator:
     print(book)
-
+#-----------------------------------------------------------------
 from itertools import zip_longest
 
 class Library:
@@ -59,7 +71,7 @@ library2 = Library(["Книга 1", "Книга 2"])
 
 for book1, book2 in zip_longest(library1, library2, fillvalue="Нет книги"):
     print(f"{book1} - {book2}")
-
+#-----------------------------------------------------------------
 def book_generator(books):
     for book in books:
         yield book
