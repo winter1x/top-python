@@ -240,3 +240,40 @@ def insertion_sort(arr):
 [1 2 3 4]
 """
 
+"""
+1: выбираем шаг
+2: сортируем с шагом
+3: уменьшаем шаг
+4: дойдя до 1 = обычная вставками
+
+[5, 2, 9, 1, 5, 6]
+первые элементы:
+i = 0 3 6
+[5, 1]
+вторые элементы:
+i = 1, 4
+[2, 5]
+третьи элементы:
+i = 2, 5
+[9, 6]
+
+[1, 2, 6, 5, 5, 9]
+
+хиббарда
+"""
+
+def shell_sort(arr):
+    n = len(arr)
+    gap = n // 2
+
+    while gap > 0:
+        for i in range(gap, n):
+            temp = arr[i]
+            j = i
+
+            while j >= gap and arr[j - gap] > temp:
+                arr[j] = arr[j - gap]
+                j -= gap
+            arr[j] = temp
+
+        gap //= 2

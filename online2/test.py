@@ -5,27 +5,26 @@
 
 добавить возможность выбора пользователем в каком порядке сортировать
 """
-def insertion_sort(arr, ascending=True):
-    swaps = 0
-    iterations = 0
-    for i in range(1, len(arr)):
-        key = arr[i]
-        j = i - 1
-        iterations += 1
+def shell_sort(arr):
+    n = len(arr)
+    gap = n // 2
 
-        while j >= 0 and ((ascending and arr[j] > key) or (not ascending and arr[j] < key)):
-            arr[j + 1] = arr[j]
-            j -= 1
-            swaps += 1
+    while gap > 0:
+        for i in range(gap, n):
+            temp = arr[i]
+            j = i
 
-        arr[j + 1] = key
+            while j >= gap and arr[j - gap] > temp:
+                arr[j] = arr[j - gap]
+                j -= gap
+            arr[j] = temp
 
-    return iterations, swaps
+        gap //= 2
 
 numbers = list(map(int, input().split()))
 order = input("asc - по возрастания / decs - по убыванию").strip().lower()
 ascending = True if order == 'asc' else False
-iterations, swaps = insertion_sort(numbers, ascending)
+iterations, swaps = shell_sort(numbers, ascending)
 
 print(numbers)
 print(iterations, swaps)
