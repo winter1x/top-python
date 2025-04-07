@@ -13,7 +13,7 @@ def insertion_sort(arr, ascending=True):
         j = i - 1
         iterations += 1
 
-        while j >= 0 and ((ascending and arr[j] > key) or (not ascending and arr[j] < kay)):
+        while j >= 0 and ((ascending and arr[j] > key) or (not ascending and arr[j] < key)):
             arr[j + 1] = arr[j]
             j -= 1
             swaps += 1
