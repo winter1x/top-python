@@ -277,3 +277,56 @@ def shell_sort(arr):
             arr[j] = temp
 
         gap //= 2
+
+# массивы из numpy (они там на C)
+"""
+массив из 1 элемента - отсортирован
+разделяем массив на две части
+рекурсивно сортируем каждую из этих частей
+сливаем в один массив
+
+[1, 4, 6]
+[2, 3, 5]
+
+[8, 4, 5, 7, 1, 3, 6, 2]
+[8, 4, 5, 7] [1, 3, 6, 2]
+[8, 4] [5, 7] [1, 3] [6, 2]
+[8] [4] [5] [7] [1] [3] [6] [2]
+[8] [4] -> [4, 8]
+[5] [7] -> [5, 7]
+[4, 5, 7, 8]
+[1, 2, 3, 6]
+
+особенности/важно
+стабилен
+неинтерактивность
+рекурсивность 
+"""
+
+def merge_sort(arr):
+    if len(arr) <= 1:
+        return arr
+
+    mid = len(arr) // 2
+    left = merge_sort(arr[:mid])
+    right = merge_sort(arr[mid:])
+
+    return merge(left, right)
+
+def merge(left, right):
+    result = []
+    i = j = 0
+
+    while i < len(left) and j < len(right):
+        if left[i] <= right[j]:
+            result.append(left[i])
+            i += 1
+        else:
+            result.append(right[j])
+            j += 1
+
+        result.extend(left[i:])
+        result.extend(right[j:])
+
+        return result
+

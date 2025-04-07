@@ -5,26 +5,38 @@
 
 добавить возможность выбора пользователем в каком порядке сортировать
 """
-def shell_sort(arr):
-    n = len(arr)
-    gap = n // 2
+def merge_sort(arr):
+    if len(arr) <= 1:
+        return arr
 
-    while gap > 0:
-        for i in range(gap, n):
-            temp = arr[i]
-            j = i
+    mid = len(arr) // 2
+    left = merge_sort(arr[:mid])
+    right = merge_sort(arr[mid:])
 
-            while j >= gap and arr[j - gap] > temp:
-                arr[j] = arr[j - gap]
-                j -= gap
-            arr[j] = temp
+    return merge(left, right)
 
-        gap //= 2
+def merge(left, right):
+    result = []
+    i = j = 0
+
+    while i < len(left) and j < len(right):
+        if left[i] <= right[j]:
+            result.append(left[i])
+            i += 1
+        else:
+            result.append(right[j])
+            j += 1
+
+        result.extend(left[i:])
+        result.extend(right[j:])
+
+        return result
+
 
 numbers = list(map(int, input().split()))
 order = input("asc - по возрастания / decs - по убыванию").strip().lower()
 ascending = True if order == 'asc' else False
-iterations, swaps = shell_sort(numbers, ascending)
+iterations, swaps = merge_sort(numbers, ascending)
 
 print(numbers)
 print(iterations, swaps)
