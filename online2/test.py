@@ -5,8 +5,6 @@
 
 добавить возможность выбора пользователем в каком порядке сортировать
 """
-numbers = [5, 3, 8, 4, 2]
-
 def insertion_sort(arr):
     for i in range(1, len(arr)):
         key = arr[i]
@@ -18,5 +16,9 @@ def insertion_sort(arr):
 
         arr[j + 1] = key
 
-insertion_sort(numbers)
-print(numbers)
+numbers = list(map(int, input().split()))
+order = input("asc - по возрастания / decs - по убыванию").strip().lower()
+ascending = True if order == 'asc' else False
+iterations, swaps = insertion_sort(numbers, ascending)
+
+print(iterations, swaps)
