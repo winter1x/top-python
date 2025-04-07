@@ -219,6 +219,9 @@ def insertion_sort(arr):
             j -= 1
 
         arr[j + 1] = key
+
+
+
 """
 [4, 3, 2, 1]
 3 4

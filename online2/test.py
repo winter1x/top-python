@@ -5,6 +5,7 @@
 
 добавить возможность выбора пользователем в каком порядке сортировать
 """
+numbers = [5, 3, 8, 4, 2]
 
 def insertion_sort(arr):
     for i in range(1, len(arr)):
@@ -16,3 +17,6 @@ def insertion_sort(arr):
             j -= 1
 
         arr[j + 1] = key
+
+insertion_sort(numbers)
+print(numbers)
