@@ -547,3 +547,38 @@ def heap_sort(arr, ascending=True):
 [1, 5, 3, 4, 10]
 heapigy([1, 5, 3, 4]) 
 """
+
+"""
+1 выбираем опорный элемент
+2 переставляем. Слева все элементы меньше него, справа больше
+3 рекурсивно применяем к левому и правому подмассивам
+4 1/0 - базовый случай
+
+[5, 3, 8, 4, 2, 7, 1, 7]
+5
+меньше [3, 4, 2, 1]
+больше [8, 7, 6]
+
+первый 
+последний
+случайный
+середина
+медиана 
+"""
+def quick_sort(arr, low, high):
+    if low < high:
+        pivot_index = partition(arr, low, high)
+        quick_sort(arr, low, pivot_index - 1)
+        quick_sort(arr, pivot_index + 1, high)
+
+def partition(arr, low, high, ascending=True):
+    pivot = arr[high]
+    i = low - 1
+
+    for j in range(low, high):
+        if (ascending and arr[j] <= pivot) or (not ascending and arr[j] >= pivot):
+            i += 1
+            arr[i], arr[j] = arr[j], arr[i]
+
+    arr[i + 1], arr[high] = arr[high], arr[i + 1]
+    return i + 1
