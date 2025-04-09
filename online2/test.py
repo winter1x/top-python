@@ -1,63 +1,40 @@
 """
-запрашивает список через пробел
-1 2 3 4 5 5 -> в список целых чисел - в одну строчку
-подсчитать количество перестановок, итераций
-
-добавить возможность выбора пользователем в каком порядке сортировать
+подсчет количества перестановок и итераций
+визуализация дерева кучи на каждом этапе
 """
+def heapify(arr, n, i, ascending):
+    largest_or_smallest = i
+    left = 2 * i + 1
+    right = 2 * i + 2
 
-def merge_sort(arr, ascending=True):
-    # Базовый случай: массив из одного элемента
-    if len(arr) <= 1:
-        return arr, 0, 0
+    if ascending:
+        if left < n and arr[left] > arr[largest_or_smallest]:
+            largest_or_smallest = left
+        if right < n and arr[right] > arr[largest_or_smallest]:
+            largest_or_smallest = right
+    else:
+        if left < n and arr[left] < arr[largest_or_smallest]:
+            largest_or_smallest = left
+        if right < n and arr[right] < arr[largest_or_smallest]:
+            largest_or_smallest = right
 
-    mid = len(arr) // 2
-
-    # Рекурсивно сортируем левую и правую половины, не забываем передавать ascending
-    left, iter_left, swap_left = merge_sort(arr[:mid], ascending)
-    right, iter_right, swap_right = merge_sort(arr[mid:], ascending)
-
-    # Сливаем отсортированные половины
-    merged, merge_iters, merge_swaps = merge(left, right, ascending)
-
-    # Суммируем статистику
-    total_iters = iter_left + iter_right + merge_iters
-    total_swaps = swap_left + swap_right + merge_swaps
-
-    return merged, total_iters, total_swaps
+    if largest_or_smallest != i:
+        arr[i], arr[largest_or_smallest] = arr[largest_or_smallest], arr[i]
+        heapify(arr, n, largest_or_smallest, ascending)
 
 
-def merge(left, right, ascending):
-    result = []
-    i = j = 0
-    swaps = 0
-    iterations = 1  # Считаем 1 итерацию на каждый merge
+def heap_sort(arr, ascending=True):
+    n = len(arr)
 
-    # Пока есть элементы в обоих массивах
-    while i < len(left) and j < len(right):
-        # Сравниваем в зависимости от направления сортировки
-        if (ascending and left[i] <= right[j]) or (not ascending and left[i] >= right[j]):
-            result.append(left[i])
-            i += 1
-        else:
-            result.append(right[j])
-            j += 1
-        swaps += 1
+    #строим кучу
+    for i in range(n // 2 - 1, -1, -1):
+        heapify(arr, n, i, ascending)
 
-    # Добавляем оставшиеся элементы из левой части
-    while i < len(left):
-        result.append(left[i])
-        i += 1
-        swaps += 1
+    #сортируем, вытаскивая корень и уменьшая размер кучи
+    for i in range(n - 1, 0, -1):
 
-    # Добавляем оставшиеся элементы из правой части
-    while j < len(right):
-        result.append(right[j])
-        j += 1
-        swaps += 1
-
-    return result, iterations, swaps
-
+        arr[i], arr[0] = arr[0], arr[i]
+        heapify(arr, i, 0, ascending)
 
 # Ввод от пользователя
 numbers = list(map(int, input("Введите числа через пробел: ").split()))

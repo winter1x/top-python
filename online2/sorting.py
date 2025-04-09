@@ -29,7 +29,7 @@
 .sort() - сортирует список на месте - изменяет его
 sorted() - возвращает новый"""
 
-numbers = [5, 4, 2, 6, 7, 8, 3, 5, 6, 9]
+"""numbers = [5, 4, 2, 6, 7, 8, 3, 5, 6, 9]
 numbers.sort()
 print(numbers)
 
@@ -51,7 +51,7 @@ print(numbers)
 
 numbers = [5, 4, 2, 6, 7, 8, 3, 5, 6, 9]
 sorted_numbers = sorted(numbers, reverse=True)
-print(sorted_numbers)
+print(sorted_numbers)"""
 """
 O(n)
 n - размер входных данных (сколько элементов)
@@ -150,9 +150,9 @@ def selection_sort(arr):
                 min_index = j
         arr[i], arr[min_index] = arr[min_index] ,arr[i]
 
-numbers = [5, 3, 8, 4, 2]
+"""numbers = [5, 3, 8, 4, 2]
 selection_sort(numbers)
-print(numbers)
+print(numbers)"""
 
 def selection_sort(arr):
     n = len(arr)
@@ -331,26 +331,165 @@ def merge(left, right):
         return result
 
 """
-бинарная куча
+
 max-heap: каждый родитель больше или равен своим детям
 min-heap: каждый родитель меньше или равен своим детям
+"""
+"""
+heap - вид бинарного дерева, частично упорядочена
+max-heap (макси-куча): каждый родитель больше или равен своим детям (потомкам)
+min-heap (мини-куча): каждый родитель меньше или равен своим детям (потомкам)
 
-i
-левый 2*i + 1
-правый 2*i + 2
-родитель (i - 1) // 2
+max-heap (макси-куча): на вершине максимальный элемент. Получаем минимальный элемент на O(1)
+min-heap (мини-куча): на вершине наименьший элемент. Получаем минимальный элемент на O(1)
+
+алгоритм Дейкстры 
+heap sort
+реализация приоритетной очереди
+медиана потока данных
+планировщики задач
+системы обработки событий
+сжатия данных
+
+import heapq - минимальная куча на базе списка
+"""
+import heapq
+
+numbers = [5, 3, 8, 1, 2]
+heapq.heapify(numbers)  # на месте в мин кучу. numbers[0] - минимальный. Порядок остальных не гарантирован
+print(numbers)
+
+heapq.heappush(numbers, 0)  # добавляет item в heap и сохраняет ее свойства
+print(numbers)
+
+min_element = heapq.heappop(numbers)  # удаляет и возвращает наименьший элемент из кучи
+print(min_element)
+print(numbers)
+
+#heapq.heappushpop(heap, item) добавляет item, возвращает наименьший элемент
+
+numbers = [5, 3, 8, 1, 2]
+#n самых больших или маленьких элементов
+print(heapq.nlargest(2, numbers))
+print(heapq.nsmallest(3, numbers))
 
 
-heap sort (по возрастанию)
+#приоритетная очередь
+tasks = []
+heapq.heappush(tasks, (2, 'писать отчет'))
+heapq.heappush(tasks, (1, 'проверить почту'))
+heapq.heappush(tasks, (3, 'созвон с коллегами'))
+
+while tasks:
+    task = heapq.heappop(tasks)
+    print(f'выполняется задача {task}')
+
+# макси куча
+
+numbers = [5, 3, 8, 1, 2]
+max_heap = [-x for x in numbers]
+heapq.heapify(max_heap)
+
+max_value = -heapq.heappop(max_heap)
+print(max_value)
+
+heap = [1, 3, 5, 7, 9, 8]
+"""
+        1
+      /   \
+     3     5
+    / \     \
+   7   9     8
+"""
+"""
+бинарная куча, каждый узел имеет не более двух детей
+
+"""
+"""
+
+для любого элемента с i - индекс
+левый потомок на позиции 2*i + 1
+правый потомок на позиции 2*i + 2
+родитель потомок на позиции (i - 1) // 2
+
+        10              <- индекс 0
+      /    \
+     9      8           <- индексы 1 и 2
+    / \    / \
+   7   6  5   4         <- индексы 3,4,5,6
+                                arr[3] = 7
+                                
+arr =[10, 9, 8, 7, 6, 5, 4]
+""""""
+def heapify(arr, n, i):
+    largest = i
+    left = 2 * i + 1
+    right = 2 * i + 2
+
+    if left < n and arr[left] > arr[largest]:
+        largest = left
+    if right < n and arr[right] > arr[largest]:
+        largest = right
+
+    if largest != i:
+        arr[i], arr[largest] = arr[largest], arr[i]
+        heapify(arr, n, largest)"""
+
+"""
++
+экономия памяти
+быстрота доступа
+простота реализации
+универсальность
+"""
+
+def build_heap(arr):
+    n = len(arr)
+    for i in range(n // 2 - 1, -1, -1):
+        heapify(arr, n, i)
+
+"""
+[3, 9, 2, 1, 4, 5]
+i = 2 (последний родитель): 2, 5 - переставлять не надо
+i = 1: 9, 1, 4 (9 остается на месте)
+i = 0: 3, 9, 2 (меняем 3 и 9)
+[9, 3, 2, 1, 4, 5]
+"""
+"""
+для любого элемента с i - индекс
+левый потомок на позиции 2*i + 1
+правый потомок на позиции 2*i + 2
+родитель потомок на позиции (i - 1) // 2
+i   родитель    левый   правый
+0   -   1   2
+1   0   3   4
+2   0   5   6
+3   1   7   8
+4   1   9   10
+
+"""
+"""
+heap sort (по возрастанию) (in-place)
 1 массив в максимальную кучу
 2 максимальный элемент в корне arr[0]
 3 меняем местами с последним элементом в массиве и исключаем из обработки
 4 heapify 
 5 повторяем
 
-1 построение кучи
+1 построение кучи - проходим по массиву снизу вверх и восстанавливаем кучу от каждого элемента
 2 сортировка 
+2.1 берем максимум
+2.2 меняем с последним неотсортированным элементом
+2.3 уменьшаем границу кучи
+2.4 heapify
 
++
+O(nlogn)
+не требует доп памяти
+для больших объемов данных
+-
+не стабильная (одинаковые элементы могут поменять порядок)
+сложная реализация
 heapq
 
 [4, 10, 3, 5, 1]
@@ -361,4 +500,50 @@ heapq
 4              1
 [1, 5, 3, 4, 10]
 [1, 5, 3, 4]
+"""
+
+def heapify(arr, n, i, ascending):
+    largest_or_smallest = i
+    left = 2 * i + 1
+    right = 2 * i + 2
+
+    if ascending:
+        if left < n and arr[left] > arr[largest_or_smallest]:
+            largest_or_smallest = left
+        if right < n and arr[right] > arr[largest_or_smallest]:
+            largest_or_smallest = right
+    else:
+        if left < n and arr[left] < arr[largest_or_smallest]:
+            largest_or_smallest = left
+        if right < n and arr[right] < arr[largest_or_smallest]:
+            largest_or_smallest = right
+
+    if largest_or_smallest != i:
+        arr[i], arr[largest_or_smallest] = arr[largest_or_smallest], arr[i]
+        heapify(arr, n, largest_or_smallest, ascending)
+
+
+def heap_sort(arr, ascending=True):
+    n = len(arr)
+
+    #строим кучу
+    for i in range(n // 2 - 1, -1, -1):
+        heapify(arr, n, i, ascending)
+
+    #сортируем, вытаскивая корень и уменьшая размер кучи
+    for i in range(n - 1, 0, -1):
+
+        arr[i], arr[0] = arr[0], arr[i]
+        heapify(arr, i, 0, ascending)
+"""
+[4, 10, 3, 5, 1]
+        10
+       /  \
+      5    3
+     /
+    4
+[10, 5, 3, 4, 1]
+меняем 10 и 1
+[1, 5, 3, 4, 10]
+heapigy([1, 5, 3, 4]) 
 """
