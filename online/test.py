@@ -1,15 +1,12 @@
 """
-adapter
-старый интерфейс - pay(amount: float)
-новый провайдер, интерфейс - make_payment(data: dict)
+bridge
+email, sms, push +channel
+ошибки регистрация подтверждение
 
-OldPaymentProcessor
-NewPaymentProcessor
-NewPaymentAdapter
-process_payment(process, amount)
+NotifierChannel
+send_message(recipient: str, message: str)
+
+Notification
+
+
 """
-
-old = OldPaymentProcessor()
-new = NewPaymentProcessor()
-process_payment(old, 150.0)
-process_payment(new, 150.0)

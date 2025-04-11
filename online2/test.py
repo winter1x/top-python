@@ -1,33 +1,53 @@
 """подсчет перестановок и итераций"""
-def quick_sort(arr, low, high, ascending=True, counters=None):
-    if counters is None:
-        counters = {"iterations": 0, 'swaps': 0}
+def insertion_sort(arr, left, right):
+    for i in range(left + 1, right + 1):
+        key = arr[i]
+        j = i - 1
+        while j >= left and arr[j] > key:
+            arr[j + 1] = arr[j]
+            j -= 1
+        arr[j + 1] = key
 
-    if low < high:
-        pivot_index = partition(arr, low, high, ascending, counters)
 
-        quick_sort(arr, low, pivot_index - 1, ascending, counters)
-        quick_sort(arr, pivot_index + 1, high, ascending, counters)
-
-    return counters
-
-def partition(arr, low, high, ascending, counters):
-    pivot = arr[high]
-    i = low - 1
-
-    for j in range(low, high):
-        counters['iterations'] += 1
-        if (ascending and arr[j] <= pivot) or (not ascending and arr[j] >= pivot):
+def merge(arr, l, m, r):
+    left = arr[l:m+1]
+    right = arr[m+1:r+1]
+    i = j = 0
+    k = l
+    while i < len(left) and j < len(right):
+        if left[i] <= right[j]:
+            arr[k] = left[i]
             i += 1
-            if i != j:
-                arr[i], arr[j] = arr[j], arr[i]
-                counters['swaps'] += 1
+        else:
+            arr[k] = right[j]
+            j += 1
+        k += 1
+    while i < len(left):
+        arr[k] = left[i]
+        i += 1
+        k += 1
+    while j < len(right):
+        arr[k] = right[j]
+        j += 1
+        k += 1
 
-    if (i + 1) != high:
-        arr[i + 1], arr[high] = arr[high], arr[i + 1]
-        counters['swaps'] += 1
 
-    return i + 1
+def timsort(arr):
+    n = len(arr)
+    RUN = 32  # длина минимального run
+
+    for i in range(0, n, RUN):
+        insertion_sort(arr, i, min(i + RUN - 1, n - 1))
+
+    size = RUN
+    while size < n:
+        for left in range(0, n, 2 * size):
+            mid = min(left + size - 1, n - 1)
+            right = min(left + 2 * size - 1, n - 1)
+            if mid < right:
+                merge(arr, left, mid, right)
+        size *= 2
+
 
 numbers = list(map(int, input().split()))
 order = input()
