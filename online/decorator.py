@@ -3,6 +3,14 @@
 concretecomponent
 декоратор
 конкретный декоратор
+
+@functools.lru_cache
+@staticmethod
+@login_required
+
+adapter
+proxy
+composite
 """
 class MessageSender:
     def send(self, message: str):
@@ -27,3 +35,14 @@ class EncryptedSender(SenderDecorator):
 
     def _encrypt(self, text):
         return ''.join(chr(ord(c) + 1) for c in text)
+
+class LoggingSender(SenderDecorator):
+    def send(self, message: str):
+        print(f"[LOG] {message}")
+        self._wrappee.send(message)
+
+base = SimpleSender()
+logged = LoggingSender(base)
+secure = EncryptedSender(logged)
+
+secure.send("hi")
