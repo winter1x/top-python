@@ -18,6 +18,7 @@ class TreeType:
 
     def draw(self, x, y):
         print(f"рисуем {self.name} ({self.color}, {self.texture}) на ({x}, {y})")
+
 # фабрика приспособленцев
 class TreeFactory:
     _types = {}
@@ -56,7 +57,10 @@ class Forest:
 
 forest = Forest()
 forest.plant_tree(10, 20, "дуб", 'зеленый', "гладкий")
-forest.plant_tree(20, 20, "дуб", 'зеленый', "гладкий")
+forest.plant_tree(20, 20, "дуб2", 'зеленый', "гладкий")
+forest.plant_tree(220, 20, "дуб2", 'зеленый', "гладкий")
+forest.plant_tree(210, 20, "дуб2", 'зеленый', "гладкий")
+forest.plant_tree(250, 20, "дуб2", 'зеленый', "гладкий")
 forest.plant_tree(30, 20, "дуб", 'зеленый', "гладкий")
 
 forest.draw()
