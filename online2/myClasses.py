@@ -13,7 +13,12 @@
     mro - method resolution order - порядок разрешения методов
 isinstance() - проверяет, является ли объект экземпляром класса или его потомка
 issubclass() - проверяет, является ли один класс подклассом другого
+object - корневой класс
+mixins - миксы - небольшие классы, добавляющие одну конкретную функцию
 """
+from tensorflow.python.ops.gen_nn_ops import selu_grad
+
+
 class MyClass:
     pass
 
@@ -80,7 +85,7 @@ class Animal:
         print(f"{self.name} двигается")
 
 class Dog(Animal):
-    def __init__(self, name, age):
+    def __init__(self, name: str, age: int):
         self.age = age
         super().__init__(name)
 
@@ -140,4 +145,29 @@ d = D()
 d.do()
 
 print(D.__mro__)
+"""
+isinstance() - проверяет, является ли объект экземпляром класса или его потомка
+issubclass() - проверяет, является ли один класс подклассом другого"""
+"""print(isinstance(d, D))
+print(isinstance(d, B))
+print(isinstance(d, C))
+print(isinstance(d, A))
+print(isinstance(d, object))
+print(d is D)
+print(d is A)
+print(d is object)
+print(D is D)
+print(D is A)"""
 
+"""print(issubclass(D, B))
+print(issubclass(D, A))
+print(issubclass(B, C))
+print(issubclass(D, object))"""
+#mixins - миксы - небольшие классы, добавляющие одну конкретную функцию
+class LoggerMixin:
+    def log(self, message):
+        print(f"[LOG] {message}")
+
+class Service(LoggerMixin, object):
+    def process(self):
+        self.log("обработка данных начата")
