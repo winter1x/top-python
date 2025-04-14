@@ -6,9 +6,13 @@
     атрибуты экземпляра класса - принадлежат конкретному объекту
 методы - функции в классе
     обычные - say_hello - метод экземпляра класса
-    классовые - @classmethod - получают cls первым аргументов, сам класс а не объект
+    классовые - @classmethod - получают cls первым аргументов, сам класс, а не объект
     статические @staticmethod - не получает ни self ни cls, просто функции внутри класса
 магические методы () - переопределяют стандартное поведение
+наследование
+    mro - method resolution order - порядок разрешения методов
+isinstance() - проверяет, является ли объект экземпляром класса или его потомка
+issubclass() - проверяет, является ли один класс подклассом другого
 """
 class MyClass:
     pass
@@ -90,3 +94,50 @@ class BlackDog(Dog):
 
 blackDog = BlackDog('dog', 1)
 print(blackDog.color)
+
+class Flyer:
+    def action(self):
+        print('летит')
+
+class Swimmer:
+    def action(self):
+        print('плывет')
+
+class Duck(Flyer, Swimmer):
+    def action(self):
+        print('утра начинает действие')
+        super().action()
+        
+d = Duck()
+d.action()
+
+#mro
+print()
+print(Duck.__mro__)
+print()
+
+a = Duck.__mro__
+for i in a:
+    print(i.__name__)
+
+
+class A:
+    def do(self):
+        print("A")
+
+class B:
+    def do(self):
+        print("B")
+
+class C(A):
+    def do(self):
+        print("C")
+
+class D(B, C):
+    pass
+
+d = D()
+d.do()
+
+print(D.__mro__)
+
