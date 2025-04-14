@@ -63,6 +63,30 @@ print(Person.isHuman)
 Person.unHuman()
 print(Person.isHuman)
 
-"""
-создать класс, представляющий точку в декартовой системе координат
-"""
+#наследование
+
+class Animal:
+    def __init__(self, name):
+        self.name = name
+
+    def eat(self):
+        print(f"{self.name} ест")
+
+    def move(self):
+        print(f"{self.name} двигается")
+
+class Dog(Animal):
+    def __init__(self, name, age):
+        self.age = age
+        super().__init__(name)
+
+    def bark(self):
+        print(f"{self.name} гав")
+
+class BlackDog(Dog):
+    def __init__(self, name, age, color='black'):
+        self.color = color
+        super().__init__(name, age)
+
+blackDog = BlackDog('dog', 1)
+print(blackDog.color)
