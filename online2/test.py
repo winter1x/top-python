@@ -26,7 +26,6 @@
 список курсов
 инфо
 """
-from online.outType import student
 
 
 class Student:
