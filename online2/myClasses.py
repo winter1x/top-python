@@ -1,5 +1,4 @@
 """
-класс - шаблон, по которому создаются объекты
 экземпляр класса - объект построенный по шаблону классу
 атрибуты (свойства/поля/переменные) - данные в классе
     атрибуты класса - общие для всех объектов
@@ -15,8 +14,14 @@ isinstance() - проверяет, является ли объект экзем
 issubclass() - проверяет, является ли один класс подклассом другого
 object - корневой класс
 mixins - миксы - небольшие классы, добавляющие одну конкретную функцию
+абстрактный класс - шаблон - базовый класс - интерфейс (в питоне интерфейсом
+является абстрактный класс без реализации), нельзя создать экземпляр, содержит абстрактные методы
+
+    абстрактные методы - методы без реализации @abstactmethod
+pass - подразумевает что далее что-то может быть добавлено
+... - не подразумевает что далее что-то может быть добавлено
 """
-from tensorflow.python.ops.gen_nn_ops import selu_grad
+import math
 
 
 class MyClass:
@@ -171,3 +176,93 @@ class LoggerMixin:
 class Service(LoggerMixin, object):
     def process(self):
         self.log("обработка данных начата")
+
+from abc import ABC, abstractmethod
+
+class Shape(ABC):
+    @abstractmethod
+    def area(self):
+        pass
+
+print(bool(Shape.__abstractmethods__))  # проверка на абстрактность
+
+"""
+True
+
+False:
+""
+''
+[]
+{}
+frozenset()
+set()
+None
+0
+0.0
+
+if []:
+    print(1)
+else:
+    print(2)
+
+"""
+
+class Square(Shape):
+    def __init__(self, side):
+        self.side = side
+
+    def area(self) -> float | int:
+        return self.side * self.side
+
+class Circle(Shape):
+    def __init__(self, radius):
+        self.radius = radius
+
+    def area(self):
+        return math.pi * self.radius ** 2
+
+c = Circle(5)
+print(c.area())
+
+s = Square(5)
+print(s.area())
+
+class Animal(ABC):
+    @abstractmethod
+    def speak(self):
+        pass
+
+    @abstractmethod
+    def move(self):
+        pass
+
+
+class Base(ABC):
+    @abstractmethod
+    def hello(self):
+        print("привет из Base")
+
+class Product(ABC):
+    @property
+    @abstractmethod
+    def price(self):
+        pass
+
+class Report(ABC):
+    def print_header(self):
+        print("отчет")
+
+    @abstractmethod
+    def generate(self):
+        pass
+
+
+class Printable:
+    def my_print(self):
+        print("печатаю")
+
+class Document(ABC, Printable):
+    @abstractmethod
+    def get_content(self):
+        pass
+
