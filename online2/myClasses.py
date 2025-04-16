@@ -9,10 +9,12 @@
     статические @staticmethod - не получает ни self ни cls, просто функции внутри класса
 магические методы () - переопределяют стандартное поведение
 наследование
+    super() - функция, вызывать методы родителя
     mro - method resolution order - порядок разрешения методов
-isinstance() - проверяет, является ли объект экземпляром класса или его потомка
-issubclass() - проверяет, является ли один класс подклассом другого
-object - корневой класс
+    isinstance() - проверяет, является ли объект экземпляром класса или его потомка
+    issubclass() - проверяет, является ли один класс подклассом другого
+    object - корневой класс
+
 mixins - миксы - небольшие классы, добавляющие одну конкретную функцию
 абстрактный класс - шаблон - базовый класс - интерфейс (в питоне интерфейсом
 является абстрактный класс без реализации), нельзя создать экземпляр, содержит абстрактные методы
@@ -20,6 +22,7 @@ mixins - миксы - небольшие классы, добавляющие о
     абстрактные методы - методы без реализации @abstactmethod
 pass - подразумевает что далее что-то может быть добавлено
 ... - не подразумевает что далее что-то может быть добавлено
+композиция - один класс содержит экземпляр другого, а не наследует его
 """
 import math
 
@@ -44,6 +47,7 @@ class Person:
     def birthDay(self):
         self.age += 1
 
+    #плохо
     @staticmethod
     def unHuman():
         Person.isHuman = False
@@ -266,3 +270,122 @@ class Document(ABC, Printable):
     def get_content(self):
         pass
 
+#mixins - миксы - небольшие классы, добавляющие одну конкретную функцию
+"""
+нет __init__() и отрибутов
+предназначен для наследования совместно с другими
+заканчивается на Mixin
+"""
+
+class LoggerMixin:
+    def log(self, message):
+        print(f"[LOG] {message}")
+
+class Worker:
+    def work(self):
+        print('работаю')
+
+class LogginWorker(LoggerMixin, Worker):
+    pass
+
+lw = LogginWorker()
+lw.work()
+lw.log('готово')
+
+
+#композиция - один класс содержит экземпляр другого, а не наследует его
+
+class EngineV6:
+    def start(self):
+        print('двигатель запущен')
+
+class EngineV4:
+    def start(self):
+        print('двигатель запущен')
+
+class Car:
+    def __init__(self, engine):
+        self.engine = engine
+
+    def drive(self):
+        self.engine.start()
+        print("машина едет")
+
+
+
+class A:
+    def do(self):
+        print("A")
+
+class B(A):
+    def do(self):
+        print("B")
+
+class C(A):
+    def do(self):
+        print("C")
+
+class D(B, C):
+    pass
+
+class Animal:
+    def __init__(self, name):
+        self.name = name
+
+    def eat(self):
+        print(f"{self.name} ест")
+
+    def move(self):
+        print(f"{self.name} двигается")
+
+class Dog(Animal):
+    def __init__(self, name: str, age: int):
+        self.age = age
+        super().__init__(name)
+
+    def bark(self):
+        print(f"{self.name} гав")
+
+    def move(self):
+        #хорошо
+        super().move()
+
+        #плохо
+        Animal.speak(self)
+
+        print()
+
+#super(CurrentClass, self)
+
+class Parent:
+    def greet(self):
+        print('hi от родителя')
+
+class Child(Parent):
+    def greet(self):
+        super(Child, self).greet()
+        print("hi от ребенка")
+        
+class A:
+    def do(self):
+        print("A")
+
+class B(A):
+    def do(self):
+        print("B")
+        super().do()
+
+class C(A):
+    def do(self):
+        print("C")
+        super().do()
+
+class D(B, C):
+    def show(self):
+        print("D")
+        super().show()
+
+d = D()
+d.show()
+
+#super(ClassName, instance).method()
