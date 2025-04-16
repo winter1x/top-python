@@ -28,6 +28,8 @@ pass - подразумевает что далее что-то может бы�
     _ protected
     __ private
     name mangling - переименование
+
+полиформизм - один и тот же метод может делать разное в зависимости от объекта
 """
 import math
 
@@ -103,9 +105,20 @@ class Dog(Animal):
         self.age = age
         super().__init__(name)
 
-    def bark(self):
+    def make_sound(self):
         print(f"{self.name} гав")
 
+class Cat(Animal):
+    def __init__(self, name: str, age: int):
+        self.age = age
+        super().__init__(name)
+
+    def make_sound(self):
+        print(f"{self.name} мяу")
+
+animals = [Dog('1', 1), Cat('1', 1)]
+for animal in animals:
+    animal.make_sound()
 class BlackDog(Dog):
     def __init__(self, name, age, color='black'):
         self.color = color
@@ -456,3 +469,4 @@ car.drive()
 car.drive()
 car.drive()
 car.drive()
+
