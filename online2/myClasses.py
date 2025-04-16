@@ -23,6 +23,11 @@ mixins - миксы - небольшие классы, добавляющие о
 pass - подразумевает что далее что-то может быть добавлено
 ... - не подразумевает что далее что-то может быть добавлено
 композиция - один класс содержит экземпляр другого, а не наследует его
+
+инкапсуляция
+    _ protected
+    __ private
+    name mangling - переименование
 """
 import math
 
@@ -381,11 +386,73 @@ class C(A):
         super().do()
 
 class D(B, C):
-    def show(self):
+    def do(self):
         print("D")
-        super().show()
+        super().do()
 
 d = D()
-d.show()
+d.do()
 
 #super(ClassName, instance).method()
+
+#обычные - публичные - по умолчанию
+"""class Person:
+    def __init__(self, name):
+        self.name = name"""
+
+#protected защищенные
+"""class Person:
+    def __init__(self, name):
+        self._name = name"""
+
+#private приватные
+"""class Person:
+    def __init__(self, name):
+        self.__name = name
+
+person = Person("анна")
+#print(person.__name)
+print(person._Person__name)"""
+
+class BankAccount:
+    def __init__(self, balance):
+        self.__balance = balance
+
+    def deposit(self, amount):
+        if amount > 0:
+            self.__balance += amount
+
+    def withdraw(self, amount):
+        if 0 < amount <= self.__balance:
+            self.__balance -= amount
+
+    def get_balance(self):
+        return self.__balance
+
+account = BankAccount(100)
+account.deposit(100)
+account.__balance = 0
+print(account.get_balance())
+print(account.__balance)
+
+class Car:
+    def __init__(self, model, fuel):
+        self.__model = model
+        self.__fuel = fuel
+
+    def drive(self):
+        if self.__fuel > 0:
+            self.__fuel -= 1
+            print(f"{self.__model} поехала. Топливо {self.__fuel}")
+        else:
+            print(f"{self.__model} не может ехать")
+
+    def get_fuel(self):
+        return self.__fuel
+
+car = Car('car', 4)
+car.drive()
+car.drive()
+car.drive()
+car.drive()
+car.drive()
