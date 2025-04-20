@@ -1,39 +1,14 @@
 import socket
-import os
 
-def send_line(sock, line):
-    sock.send(f'{line}\n'.encode())
+hostname = 'google.com'
+ip_address = socket.gethostbyname(hostname)
 
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client_socket.connect(('127.0.0.1', 9000))
+client_socket.connect((ip_address, 80))
+request = "GET / HTTP/1.1\r\nHost: google.com\r\n\r\n"
+client_socket.send(request.encode())
 
-command = input('команда '.strip().upper())
-filename = input('имя файла ').strip()
-
-send_line(client_socket, command)
-send_line(client_socket, filename)
-
-if command == 'UPLOAD':
-    if not os.path.exists(filename):
-        print('файл не найден')
-        client_socket.close()
-    else:
-        with open(filename, 'rb') as f:
-            while chunk := f.read(1024):
-                client_socket.send(chunk)
-            response = client_socket.recv(1024)
-            print('ответ от сервера ', response.decode())
-
-elif command == 'DOWNLOAD':
-    with open(f"загружено_{filename}", 'wb') as f:
-        while True:
-            data = client_socket.recv(1024)
-            if not data:
-                break
-            f.write(data)
-    print('файл сохранен как:', f"загружено_{filename}")
-
-else:
-    print('неизвестная команда')
+respone = client_socket.recv(4096)
+print("ответ сервера", respone.decode(errors='ignore'))
 
 client_socket.close()
