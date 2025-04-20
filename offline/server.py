@@ -1,3 +1,11 @@
+'''
+клиент узнает ip адрес сервера по имени хоста (DNS)
+сервер выводит ip адрес каждого подключившего клиента
+сообщения передаются по TCP
+логируется ip и порт всех входящих соединений
+socket
+'''
+
 import socket
 
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
