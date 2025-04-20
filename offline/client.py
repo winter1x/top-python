@@ -13,5 +13,7 @@ with open(filename, 'rb') as f:
     while chunk := f.read(1024):
         client_socket.send(chunk)
 
+response = client_socket.recv(1024)
+print('ответ сервера: ', response.decode())
 print('файл отправлен')
 client_socket.close()

@@ -1,3 +1,9 @@
+'''
+клиент сначала отправляет команду UPLOAD/DOWNLOAD
+если UPLOAD - передает файл
+если DOWNLOAD - сервер ищет файл и возвращает его содержимое
+'''
+
 import socket
 
 def read_line(conn):
@@ -27,6 +33,7 @@ with open(filename, 'wb') as f:
             break
         f.write(data)
 
+conn.send('файл получен успешно'.encode())
 print('файл сохранен')
 conn.close()
 server_socket.close()
