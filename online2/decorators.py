@@ -112,16 +112,6 @@ def decorator(func):
         return func(*args, **kwargs)
     return wrapper
 
-
-"""@decorator1
-@decorator2
-def f():
-    pass
-
-f = decorator1(decorator2(f))"""
-
-
-
 def repeat(n):
     def decorator(func):
         @wraps(func)
@@ -137,3 +127,101 @@ def say():
 
 
 say()
+
+def count_calls(func):
+    def wrapper(*args, **kwargs):
+        wrapper.calls += 1
+        print(f"функция вызвана {wrapper.calls} раз")
+        return func(*args, **kwargs)
+    wrapper.calls = 0
+    return wrapper
+
+@count_calls
+def f():
+    pass
+
+f()
+
+def cache(func):
+    cached_results = {}
+    def wrapper(*args):
+        if args in cached_results:
+            print('взято из кеша')
+            return cached_results[args]
+        result = func(*args)
+        cached_results[args] = result
+        return result
+    return wrapper
+
+@cache
+def expensive_operation(x, y):
+    print("вычисляем")
+    return x ** y
+
+print(expensive_operation(2, 3))
+print(expensive_operation(2, 3))
+
+def decorator1(func):
+    def wrapper(*args, **kwargs):
+        print('декоратор 1')
+        return func(*args, **kwargs)
+    return wrapper
+
+def decorator2(func):
+    def wrapper(*args, **kwargs):
+        print('декоратор 2')
+        return func(*args, **kwargs)
+    return wrapper
+
+@decorator2
+@decorator1
+def f():
+    pass
+
+f = decorator1(decorator2(f))
+f()
+
+def method_decorator(func):
+    def wrapper(self, *args, **kwargs):
+        print(f"метод {func.__name__} был вызван")
+        return func(self, *args, **kwargs)
+    return wrapper
+
+class MyClass:
+    @method_decorator
+    def say_hello(self):
+        print('привет')
+
+obj: MyClass = MyClass()
+obj.say_hello()
+
+def classmethod_decorator(func):
+    def wrapper(cls, *args, **kwargs):
+        print(f"классовый метод {func.__name__} вызывается")
+        return func(cls, *args, **kwargs)
+    return wrapper
+
+class MyClass:
+    @classmethod
+    @classmethod_decorator
+    def say_hello(cls):
+        print('привет')
+
+MyClass.say_hello()
+
+def repeat(times):
+    def decorator(func):
+        def wrapper(self, *args, **kwargs):
+            for _ in range(times):
+                func(self, *args, **kwargs)
+        return wrapper
+    return decorator
+
+class MyClass:
+    @repeat(3)
+    def say_hello(cls):
+        print('привет')
+
+obj: MyClass = MyClass()
+obj.say_hello()
+
