@@ -3,6 +3,9 @@
 декоратор log
 Вызвана функция имя_функции с аргументами: аргументы
 """
+import random
+
+
 def log(func):
     def wrapper(*args, **kwargs):
         print(f"Вызвана функция {func.__name__} с аргументами: {args}")
@@ -72,3 +75,18 @@ def greet(name, age):
 
 greet("иван", 25)
 greet("иван", '25')
+
+"""
+retry
+количество попыток
+
+если ф выбрасивает исключение, повторить ее выполнение до указанного количества раз
+"""
+
+@retry(3)
+def usable_function():
+    if random.choice([True, False]):
+        raise ValueError("ошибка")
+    print('успешно')
+
+usable_function()
