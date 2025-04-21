@@ -3,7 +3,6 @@
 декоратор log
 Вызвана функция имя_функции с аргументами: аргументы
 """
-import random
 
 
 def log(func):
@@ -73,8 +72,7 @@ def check_types(types):
 def greet(name, age):
     print(f'привет, {name, age}')
 
-greet("иван", 25)
-greet("иван", '25')
+
 
 """
 retry
@@ -82,6 +80,20 @@ retry
 
 если ф выбрасивает исключение, повторить ее выполнение до указанного количества раз
 """
+import random
+
+def retry(n):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            for _ in range(n):
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    print(f"ошибка {e}")
+        return wrapper
+    return decorator
+
+
 
 @retry(3)
 def usable_function():
