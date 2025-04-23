@@ -470,3 +470,151 @@ car.drive()
 car.drive()
 car.drive()
 
+#type()
+
+class Person:
+    def greet(self):
+        print("я человек")
+
+def greet(self):
+    print("я человек")
+
+Person = type("Person", (object, ), {'greet': greet})
+
+p = Person()
+p.greet()
+
+#type(class_name, bases, class_dict)
+
+attrs = {
+    'name': 'иван',
+    'age': 30,
+    'greet': lambda self: print(f"привет, я {self.name}")
+}
+
+Person = type('Person', (object, ), attrs)
+
+p = Person()
+p.greet()
+
+def __init__(self, name, age):
+    self.name = name
+    self.age = age
+
+def greet(self):
+    print(f"привет, я {self.name}")
+
+attrs = {
+    '__init__': __init__,
+    'greet': greet
+}
+
+Person = type('Person', (object, ), attrs)
+
+class Animal:
+    def speak(self):
+        print('hi animal')
+
+Dog = type('Dog', (Animal,), {'bark': lambda self: print("гав")})
+
+d = Dog()
+d.speak()
+d.bark()
+
+class MyClass:
+    pass
+
+MyClass = type('MyClass', (object,), {})
+
+#метакласс
+
+x = 5
+print(type(x))
+print(type(int))
+
+class MyClass:
+    def method(self):
+        return 'привет'
+
+print(MyClass.__name__)
+print(MyClass.mro())
+print(MyClass.__bases__)
+print(MyClass.__dict__)
+print(type(MyClass))
+
+class MyMeta(type):
+    def __new__(cls, name, bases, dct):
+        print(f"создание класса {name}")
+        return super().__new__(cls, name, bases, dct)
+
+class MyClass(metaclass=MyMeta):
+    pass
+
+f = MyClass()
+
+class Meta(type):
+    def __new__(cls, name, bases, dct):
+        print(f'создание нового класса {name}')
+        return super().__new__(cls, name, bases, dct)
+
+    def __init__(cls, name, bases, dct):
+        print(f'инициализация класса {name}')
+        super().__init__(name, bases, dct)
+
+print(type(type))
+print(type(object))
+print(isinstance(type, type))
+print(issubclass(type, object))
+print(issubclass(object, type))
+
+"""
+x = 5
+class MyClass:
+"""
+
+class MyClass(metaclass=MyMeta):
+    attr = 10
+
+MyMeta.__new__(MyMeta, "MyClass", (object, ), {'attr': 10})
+
+class UpperAttrMeta(type):
+    def __new__(cls, name, bases, dct):
+        uppercase_attrs = {}
+        for key, value in dct.items():
+            if not key.startswith('__'):
+                uppercase_attrs[key.upper()] = value
+            else:
+                uppercase_attrs[key] = value
+        return super().__new__(cls, name, bases, uppercase_attrs)
+
+class MyClass(metaclass=UpperAttrMeta):
+    foo = 'bar'
+    def method(self):
+        return 'hello'
+
+print(hasattr(MyClass, 'foo'))
+print(hasattr(MyClass, 'FOO'))
+print(MyClass.FOO)
+
+registry = {}
+
+class AutoRegisterMeta(type):
+    def __init__(cls, name, bases, dct):
+        registry[name] = cls
+        super().__init__(name, bases, dct)
+
+class Animal(metaclass=AutoRegisterMeta):
+    pass
+
+class Dog(Animal):
+    pass
+
+print(registry)
+
+class Meta1(type): pass
+class Meta2(type): pass
+
+class Base1(metaclass=Meta1): pass
+class Base2(metaclass=Meta2): pass
+
+class Child(Base1, Base2): pass
