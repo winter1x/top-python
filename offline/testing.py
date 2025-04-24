@@ -1,25 +1,52 @@
-def capitalize(text):
-    if text == '':
-        return ''
+import pytest
 
-    first_char = text[0].upper()
-    rest_substring = text[1:]
-    return f'{first_char}{rest_substring}'
+from online.iterator import books
 
+stack = []
+print(not stack)
+stack.append(1)
+stack.append(2)
+stack.append(3)
+print(not stack)
+print(stack)
+stack.pop()
+stack.pop()
+stack.pop()
+print(not stack)
 
-if capitalize('hello') != 'Hello':
-    raise Exception("функция работает неверно")
+def test_stack():
+    stack = []
+    stack.append(1)
+    stack.append(2)
 
-if capitalize('') != '':
-    raise Exception("функция работает неверно")
+    assert stack.pop() == 2
+    assert stack.pop() == 1
 
-"""
-''
-None
-int
-"""
+def test_stack():
+    stack = []
+    stack.append(1)
+    stack.append(2)
 
-def get_by_index(elements, index, default):
-    return elements[index] if index < len(elements) else default
+    assert stack.pop() == 2
 
-print(get_by_index(['zero', 'one'], 2, 'value'))
+def test_stack():
+    stack = []
+    stack.append(1)
+    stack.append(2)
+
+    stack.pop()
+    assert stack.pop() == 1
+
+def test_emptines():
+    stack = []
+    assert not stack
+    stack.append(1)
+    assert bool(stack)
+
+    stack.pop()
+    assert not stack
+
+def test_pop_with_empty_stack():
+    stack = []
+    with pytest.raises(IndexError):
+        stack.pop()
