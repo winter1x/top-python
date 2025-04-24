@@ -1,0 +1,6 @@
+mkdir mytest
+cd mytest
+uv init
+uv add --dev pytest
+скопировать и добавить папки my_pytest, tests
+uv run pytest
