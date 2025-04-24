@@ -1,7 +1,18 @@
 mkdir mytest
+
 cd mytest
+
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+
 uv init
+
+добавить в pyproject.toml
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 uv add --dev pytest
+
 скопировать и добавить папки my_pytest, tests
+
 uv run pytest
