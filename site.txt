@@ -4,9 +4,10 @@ power shell
 
 https://github.com/tsenturion/top-python
 
+irm https://astral.sh/uv/install.ps1 | iex
+
 https://code-basics.com/ru/languages/python
 pythontutor.ru
-
 https://leetcode.com/studyplan/
 
 https://developer.mozilla.org/ru/docs/Learn/Server-side/Django
