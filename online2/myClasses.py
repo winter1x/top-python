@@ -30,6 +30,8 @@ pass - подразумевает что далее что-то может бы�
     name mangling - переименование
 
 полиформизм - один и тот же метод может делать разное в зависимости от объекта
+
+
 """
 import math
 
@@ -617,4 +619,112 @@ class Meta2(type): pass
 class Base1(metaclass=Meta1): pass
 class Base2(metaclass=Meta2): pass
 
-class Child(Base1, Base2): pass
+# class Child(Base1, Base2): pass
+class Book:
+    pass
+
+b1 = Book
+print(b1)
+"""
+str()
+len()
++
+==
+"""
+
+"""
+__init__
+__str__
+__repr__
+__new__
+"""
+
+"""
+== __eq__
+!= __ne__
+< __lt__
+<= __le__
+> __gt__
+>= __ge__
+"""
+
+"""
++ __add_
+- __sub__
+* __mul__
+/ __truediv__
+"""
+"""
+int __int__
+float __float__
+bool __bool__
+"""
+
+"""
+доступ по индексу __getitem__
+итерация for x in obj __iter__
+получение следующего элемента  __next__
+= __setitem__
+удаление __delitem__
+
+"""
+
+class Quotes:
+    def __init__(self, quotes):
+        self.quotes = quotes
+
+    def __getitem__(self, index):
+        return self.quotes[index]
+
+    def __len__(self):
+        return len(self.quotes)
+
+    def __iter__(self):
+        return iter(self.quotes)
+
+q = Quotes(['мир', ['труд']])
+print(q[1])
+for quote in q:
+    print(quote)
+
+"""
+__enter__
+__exit__
+"""
+"""
+__getattr__ если атрибут не найден
+__getattribute__ всегда при доступе к атрибуту
+__setattr__ при присваивании
+__delattr__ при удалении
+"""
+
+class Book:
+    def __init__(self, title, pages):
+        self.title = title
+        self.pages = pages
+
+    def __str__(self):
+        return f"{self.title} ({self.pages} стр.)"
+
+    def __repr__(self):
+        return f"Book {self.title}, {self.pages}"
+
+    def __len__(self):
+        return self.pages
+
+    def __eq__(self, other):
+        return self.title == other.title
+
+    def __add__(self, other):
+        return Book(f"{self.title} + {other.title}", self.pages + other.pages)
+
+
+b1 = Book("python", 900)
+b2 = Book('sky', 700)
+print(b1)
+print(len(b2))
+print(b1 == b2)
+b3 = b1 + b2
+print(b3)
+
+print(b1 + 3)
