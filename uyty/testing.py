@@ -1,18 +1,7 @@
-def capitalize(text):
-    if text == '':
-        return ''
-        
-    # return text.capitalize()
-    first_char = text[0].upper()
-    rest_substring = text[1:]
-    return f'{first_char}{rest_substring}'
+def get_by_index(elements, index, default):
+    return elements[index] if index < len(elements) else default
 
-if capitalize('hello') != 'Hello':
-    raise Exception('test failed')
 
-# пустая строка None int
+get_by_index(['zero', 'one'], 2, 'value')
 
-if capitalize('') != '':
-    raise Exception('test failed')
-
-print('test ok')
+print('ok')
