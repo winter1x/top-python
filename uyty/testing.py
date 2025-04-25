@@ -1,7 +1,17 @@
-def get_by_index(elements, index, default):
-    return elements[index] if index < len(elements) else default
+def capitalize(text):
+    if text == '':
+        return ''
+        
+    # return text.capitalize()
+    first_char = text[0].upper()
+    rest_substring = text[1:]
+    return f'{first_char}{rest_substring}'
+
+assert capitalize('hello') == 'He2llo'
+
+assert capitalize('') == ''
+
+# пустая строка None int
 
 
-get_by_index(['zero', 'one'], 2, 'value')
-
-print('ok')
+print('test ok')
