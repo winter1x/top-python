@@ -40,9 +40,9 @@ except requests.exceptions.RequestException as err:
 """
 https://httpbin.org/
 """
-response = requests.get("https://httpbin.org/get", params={'course': "networking"})
+"""response = requests.get("https://httpbin.org/get", params={'course': "networking"})
 print(response.json())
-
+"""
 #import requests
 
 """
@@ -99,23 +99,76 @@ verify
 1
 https://api.github.com
 вывести код ответа, факт юрл, заголовки, тело
+"""
+try:
+    response = requests.get("https://api.github.com")
+    print(response.status_code)
+    print(response.url)
+    print(response.headers)
+    print(response.text)
 
+except requests.exceptions.RequestException as e:
+    print(f"произошла ошибка при выполнении запроса{e}")
+"""
 2
 https://httpbin.org/
 передать ваше имя, course=networking task=get_request
 вывести факт юрл
+"""
+try:
+    params = {
+        'name': "Name",
+        'course': 'networking',
+        'task': 'get_request'
+    }
+    response = requests.get("https://httpbin.org/get", params=params)
+    print(response.url)
 
+except requests.exceptions.RequestException as e:
+    print(f"произошла ошибка при передаче параметров{e}")
+"""
 3
 https://api.github.com/users/tsenturion
 вывести логин login, ссылку на профиль html_url, количество репозиториев public_repos
+"""
+try:
+    response = requests.get("https://api.github.com/users/tsenturion")
+    response.raise_for_status()
+    data = response.json()
+    print(data.get("login"))
+    print(data.get("html_url"))
+    print(data.get('public_repos'))
 
+except requests.exceptions.RequestException as e:
+    print(f"произошла ошибка при получении данных пользователя{e}")
+except ValueError:
+    print('ошибка преобразования ответа в json')
+"""
 4
 https://httpbin.org/headers
 передать юзерагент любой
 вывести тело
-
-5
+"""
+try:
+    headers = {
+        'User-Agent': "my-app/0.0.1"
+    }
+    response = requests.get("https://httpbin.org/headers", headers=headers)
+    print(response.text)
+except requests.exceptions.RequestException as e:
+    print(f"произошла ошибка при отправке заголовков{e}")
+"""
 https://api.github.com/dfbdpfmds
 обработка ошибок, таймаут
-
 """
+try:
+    response = requests.get("https://api.github.com/dfbdpfmds", timeout=5)
+    response.raise_for_status()
+except requests.exceptions.HTTPError as http_err:
+    print(f"HTTP ошибка {http_err}")
+except requests.exceptions.ConnectionError:
+    print("ошибка соединения")
+except requests.exceptions.Timeout:
+    print("время ожидания истекло")
+except requests.exceptions.RequestException as err:
+    print(f"другая ошибка {err}")
