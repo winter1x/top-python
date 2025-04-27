@@ -266,3 +266,10 @@ count_redirects(url: str) -> int
 обработка искл
 если ошибка return -1
 """
+def count_redirects(url: str) -> int:
+    try:
+        response = requests.get(url, timeout=5)
+        return len(response.history)
+    except requests.exceptions.RequestException as e:
+        print(f"ошибка запроса {e}")
+        return -1
