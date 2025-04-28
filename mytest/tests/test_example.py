@@ -15,3 +15,13 @@ def test_stack():
 
     assert stack.pop() == 2
     assert stack.pop() == 1
+
+
+def test_emtines():
+    stack = []
+    assert not stack
+    stack.append(1)
+    assert bool(stack)
+
+    stack.pop()
+    assert not stack
