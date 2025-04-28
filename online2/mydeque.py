@@ -164,8 +164,8 @@ mydeque.append("A")
 mydeque.appendleft("B") # добавление элемента в начало
 mydeque.pop()
 mydeque.popleft()
-first_element = mydeque[0]
-last_element = mydeque[-1]
+"""first_element = mydeque[0]
+last_element = mydeque[-1]"""
 length = len(mydeque)
 if not mydeque:
     print('пусто')
@@ -204,3 +204,174 @@ show_orders() - показать все заказы
 
 учесть пустоту
 """
+
+#from collections import deque
+
+class CafeOrders:
+    def __init__(self, max_orders=10):
+        self.orders = deque(maxlen=max_orders)
+
+    def add_order(self, order):
+        if len(self.orders) == self.orders.maxlen:
+            print("очередь полная, невозможно добавить новый заказ")
+        else:
+            self.orders.append(order)
+            print(f"добавлен заказ {order}")
+
+    def add_priority_order(self, order):
+        if len(self.orders) == self.orders.maxlen:
+            print("очередь полная, невозможно добавить новый заказ")
+        else:
+            self.orders.appendleft(order)
+            print(f"добавлен срочный заказ {order}")
+
+    def serve_order(self):
+        if self.orders:
+            order = self.orders.popleft()
+            print(f"обслуживается заказ {order}")
+        else:
+            print("нет заказов для обслуживания")
+
+    def show_orders(self):
+        if self.orders:
+            print("текущие заказы в очереди")
+            for order in self.orders:
+                print(f"- {order}")
+
+        else:
+            print("очередь пуста")
+
+    def clear_orders(self):
+        self.orders.clear()
+        print("все заказы очищены. кафе закрыто")
+
+    def total_orders(self):
+        count = len(self.orders)
+        print(f"всего заказов в очереди {count}")
+        return count
+
+cafe = CafeOrders(max_orders=5)
+cafe.add_order('капучино')
+cafe.add_order('латте')
+cafe.add_priority_order('эспрессо')
+cafe.add_order('американо')
+cafe.add_order('кофе')
+
+cafe.show_orders()
+
+cafe.add_order('кофе2')
+
+cafe.serve_order()
+cafe.show_orders()
+
+cafe.total_orders()
+
+cafe.clear_orders()
+cafe.show_orders()
+
+from abc import ABC, abstractmethod
+
+class OrderQueueStrategy(ABC):
+    def __init__(self):
+        self.orders = deque()
+
+    @abstractmethod
+    def add_order(self, order):
+        pass
+
+    @abstractmethod
+    def serve_order(self):
+        pass
+
+    def show_orders(self):
+        for order in self.orders:
+            print(f"- {order}")
+
+class PriorityOrderStrategy(OrderQueueStrategy):
+    def add_order(self, order):
+        self.orders.append(order)
+        print(f"добавлен срочный заказ {order}")
+
+    def serve_order(self):
+        if self.orders:
+            order = self.orders.popleft()
+            print(f"обслуживается срочный заказ {order}")
+            return order
+        return None
+
+class NormalOrderStrategy(OrderQueueStrategy):
+    def add_order(self, order):
+        self.orders.append(order)
+        print(f"добавлен обычный заказ {order}")
+        return order
+
+    def serve_order(self):
+        if self.orders:
+            order = self.orders.popleft()
+            print(f"обслуживается обычный заказ {order}")
+            return order
+        return None
+
+class LowPriorityOrderStrategy(OrderQueueStrategy):
+    def add_order(self, order):
+        self.orders.append(order)
+        print(f"добавлен заказ низкого приоритета{order}")
+
+    def serve_order(self):
+        if self.orders:
+            order = self.orders.popleft()
+            print(f"обслуживается заказ низкого приоритета {order}")
+            return order
+        return None
+
+class CafeOrderAdvanced:
+    def __init__(self):
+        self.strategies = {
+            0: PriorityOrderStrategy(),
+            1: NormalOrderStrategy(),
+            2: LowPriorityOrderStrategy()
+        }
+
+    def add_order(self, order, priority=1):
+        strategy = self.strategies.get(priority)
+        if strategy:
+            strategy.add_order(order)
+        else:
+            print(f"неизвестный приоритет {priority} заказ не добавлен")
+
+    def serve_order(self):
+        for priority in sorted(self.strategies.keys()):
+            order = self.strategies[priority].serve_order()
+            if order:
+                break
+        else:
+            print("нет заказов для обслуживания")
+
+    def show_orders(self):
+        has_orders = False
+        for priority, strategy in sorted(self.strategies.items()):
+            if strategy.orders:
+                has_orders = True
+                match priority:
+                    case 0: print("срочные заказы")
+                    case 1: print("обычные заказы")
+                    case 2: print("заказы низкого приоритета")
+                strategy.show_orders()
+        if not has_orders:
+            print("очередь пуста")
+
+
+cafe = CafeOrderAdvanced()
+cafe.add_order('эспрессо', priority=0)
+cafe.add_order('капучино')
+cafe.add_order('латте', priority=2)
+cafe.add_order('американо')
+
+cafe.show_orders()
+
+cafe.serve_order()
+cafe.serve_order()
+cafe.serve_order()
+cafe.serve_order()
+cafe.serve_order()
+cafe.serve_order()
