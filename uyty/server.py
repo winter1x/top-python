@@ -27,7 +27,6 @@ with open(filename, "wb") as file:
         if not data:
             break
         file.write(data)
-
-print("File received")
+conn.send('File received'.encode())
 conn.close()
 server_socket.close()
