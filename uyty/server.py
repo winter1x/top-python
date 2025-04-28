@@ -6,16 +6,23 @@ server_socket.listen(1)
 print("Server started")
 
 conn, addr = server_socket.accept()
-print("Connection established")
+print("Connected to client:", addr)
 
-data = conn.recv(1024)
-print("Received:", data.decode())
+while True:
+    data = conn.recv(1024)
+    if not data:
+        break
+    message = data.decode()
+    print("Received message:", message)
 
-conn.send("Hello, client!".encode())
+    if message.lower() == 'exit':
+        print("Connection closed")
+        break
+    
+    conn.send(f"Server received: {message}".encode())
 
 conn.close()
 server_socket.close()
-
 
 
 
