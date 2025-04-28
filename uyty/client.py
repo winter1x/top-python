@@ -1,8 +1,11 @@
 import socket
 
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client_socket.connect(("127.0.0.1", 8888))
-
+try:
+    client_socket.connect(("127.0.0.1", 8888))
+except ConnectionRefusedError:
+    print("не удается подключиться к серверу")
+    
 while True:
     msg = input()
     client_socket.send(msg.encode())
