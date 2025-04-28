@@ -1,4 +1,5 @@
 import socket
+import os
 
 def read_line(conn):
     line = b''
@@ -12,21 +13,26 @@ def read_line(conn):
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.bind(('127.0.0.1', 8888))
 server_socket.listen(1)
-print("Ожидание клиента...")
+print("Сервер запущен, ожидаем подключение...")
 
 conn, addr = server_socket.accept()
 print(f"Клиент подключился: {addr}")
 
-filename = read_line(conn)
-print(f"Будем сохранять как: {filename}")
+# - Прочитать команду (UPLOAD или DOWNLOAD)
+# - Прочитать имя файла
 
-with open(f"2{filename}", 'wb') as f:
-    while True:
-        data = conn.recv(1024)
-        if not data:
-            break
-        f.write(data)
+# Если команда UPLOAD:
+#   - Открыть файл для записи
+#   - Читать данные из сокета и записывать в файл
+#   - После окончания отправить клиенту сообщение об успешной загрузке
 
-print("Файл успешно получен.")
+# Если команда DOWNLOAD:
+#   - Проверить существует ли файл
+#   - Если нет — отправить сообщение об ошибке
+#   - Если да — открыть файл и отправить его содержимое клиенту
+
+# Если команда неизвестна:
+#   - Отправить сообщение об ошибке
+
 conn.close()
 server_socket.close()
