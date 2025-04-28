@@ -1,33 +1,33 @@
 import socket
-import threading
 
-def handle_client(conn, addr):
-    print("Connected to client:", addr)
-    conn.send("Welcome to the chat server!".encode())
+def read_line(conn):
+    line = b""
     while True:
-        data = conn.recv(1024)
-        if not data:
+        char = conn.recv(1)
+        if char == b"\n" or not char:
             break
-        
-        message = data.decode()
-        print(f"[{addr}] {message}")
-        conn.send(f"Server received: {message}".encode())
-    
-    conn.close()
+        line += char
+    return line.decode()
+
 
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.bind(('127.0.0.1', 8888))
 server_socket.listen(1)
 print("Server started")
 
-while True:
-    conn, addr = server_socket.accept()
-    thread = threading.Thread(target=handle_client, args=(conn, addr))
-    thread.start()
-    print(f"Total connections: {threading.active_count() - 1}")
-    
+conn, addr = server_socket.accept()
+print("Connection established", addr)
 
+filename = read_line(conn)
+print("Requested file:", filename)
 
+with open(filename, "wb") as file:
+    while True:
+        data = conn.recv(1024)
+        if not data:
+            break
+        file.write(data)
 
-
-
+print("File received")
+conn.close()
+server_socket.close()
