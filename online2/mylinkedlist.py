@@ -141,8 +141,132 @@ current.next is None проверка конца списка
 не теряем ссылки на оставшуюся часть при изменениях
 """
 
+"""
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+class LinkedList:
+    def __init__(self):
+        self.head = None
+"""
 # Definition for singly-linked list.
-# class ListNode:
-#     def __init__(self, x):
-#         self.val = x
-#         self.next = None
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
+
+
+# обход списка
+current = head
+while current:
+    print(current.val)
+    current = current.next
+
+#подсчет длины списка
+length = 0
+current = head
+while current:
+    length += 1
+    current = current.next
+
+#поиск узла по значению
+target = 7
+current = head
+while current:
+    if current.val == target:
+        print("найдено")
+        break
+    current = current.next
+
+
+#вставка нового узла после заданного значения
+new_node = ListNode(99)
+current = head
+while current:
+    if current.val == 5:
+        new_node.next = current.next
+        current.next = new_node
+        break
+    current = current.next
+
+#удаление узла по значению (без головы списка)
+target = 3
+current = head
+prev = None
+
+while current:
+    if current.val == target:
+        if prev:
+            prev.next = current.next
+        else:
+            head = current.next
+        break
+    prev = current
+    current = current.next
+
+#разворот односвязного списка (reverse). Три указателя prev current next_node
+prev = None
+current = head
+
+while current:
+    next_node = current.next
+    current.next = prev
+    prev = current
+    current = next_node
+
+head = prev
+
+#поиск середины списка (быстрый и медленный указатель)
+slow = head
+fast = head
+
+while fast and fast.next:
+    slow = slow.next
+    fast = fast.next.next
+
+print('середина', slow.val)
+
+#обнаружение цикла (алгоритм флойда)
+slow = head
+fast = head
+
+while fast and fast.next:
+    slow = slow.next
+    fast = fast.next.next
+    if slow == fast:
+        print("цикл обнаружен")
+        break
+
+#доступ к N-му элементу (по индексу)
+index = 4
+i = 0
+current = head
+
+while current and i < index:
+    current = current.next
+    i += 1
+
+if current:
+    print("значение", current.val)
+else:
+    print('индекс вне диапазона')
+
+#сравнение двух списков (на равенство)
+def are_equal(l1, l2):
+    while l1 and l2:
+        if l1.val != l2.val:
+            return False
+        l1 = l1.next
+        l2 = l2.next
+    return l1 is None and l2 is None
+
+#очистка списка (если нужно вручную)
+current = head
+while current:
+    next_node = current.next
+    del current
+    current = next_node
+head = None
+
