@@ -1,21 +1,29 @@
 import socket
 
-HOSTNAME = 'localhost'  # можно заменить на имя удалённого хоста
-PORT = 12345
+def main():
+    hostname = input("Введите адрес сервера (имя или IP): ").strip()
+    try:
+        ip_address = socket.gethostbyname(hostname)
+        print(f"{hostname} → {ip_address}")
+    except socket.gaierror:
+        print("Ошибка: не удалось разрешить адрес")
+        return
 
-try:
-    server_ip = socket.gethostbyname(HOSTNAME)
-    print(f"[i] IP сервера: {server_ip}")
-except socket.gaierror:
-    print("[!] Не удалось разрешить имя хоста")
-    exit(1)
+    port = 9000
 
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
-    client_socket.connect((server_ip, PORT))
-    print(f"[+] Подключено к серверу {server_ip}:{PORT}")
-    
-    while True:
-        msg = input("Введите сообщение (или 'exit' для выхода): ")
-        if msg.lower() == 'exit':
-            break
-        client_socket.sendall(msg.encode('utf-8'))
+    try:
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client_socket.connect((ip_address, port))
+
+        message = input("Введите сообщение для отправки: ")
+        client_socket.send(message.encode())
+
+        response = client_socket.recv(1024).decode()
+        print(f"Ответ сервера: {response}")
+
+        client_socket.close()
+    except Exception as e:
+        print(f"Ошибка при подключении: {e}")
+
+if __name__ == "__main__":
+    main()
