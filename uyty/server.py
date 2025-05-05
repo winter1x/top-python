@@ -1,70 +1,44 @@
 import socket
-import os
+import threading
+from datetime import datetime
 
-def read_line(conn):
-    line = b''
-    while True:
-        char = conn.recv(1)
-        if not char or char == b'\n':
-            break
-        line += char
-    return line.decode('utf-8')
+LOG_FILE = "connections.log"
+
+def log_connection(ip, port):
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    log_entry = f"[{timestamp}] Подключение с IP: {ip}, порт: {port}\n"
+    with open(LOG_FILE, "a") as f:
+        f.write(log_entry)
+    print(log_entry.strip())
 
 def handle_client(conn, addr):
-    print(f"Клиент подключился: {addr}")
+    ip, port = addr
+    log_connection(ip, port)
+
     try:
-        while True:
-            command = read_line(conn).strip()
-            if not command:
-                break
-            print(f"Команда: {command}")
-
-            if command == "EXIT":
-                print("Клиент завершил соединение.")
-                break
-
-            filename = read_line(conn).strip()
-            print(f"Имя файла: {filename}")
-
-            if command == "UPLOAD":
-                with open(filename, 'wb') as f:
-                    while True:
-                        data = conn.recv(1024)
-                        if not data:
-                            break
-                        f.write(data)
-                print("Файл успешно получен.")
-                conn.sendall("Файл получен\n".encode('utf-8'))
-                break  
-
-            elif command == "DOWNLOAD":
-                if not os.path.exists(filename):
-                    conn.sendall("ОШИБКА: файл не найден\n".encode('utf-8'))
-                    continue
-
-                filesize = os.path.getsize(filename)
-                conn.sendall(f"{filesize}\n".encode('utf-8'))  
-
-                with open(filename, 'rb') as f:
-                    while chunk := f.read(1024):
-                        conn.sendall(chunk)
-                
-                conn.sendall(b"END_OF_FILE\n")
-                print("Файл отправлен.")
-
-
-
+        data = conn.recv(1024).decode()
+        print(f"Сообщение от клиента {ip}: {data}")
+        response = f"Сообщение получено от IP: {ip}"
+        conn.send(response.encode())
     except Exception as e:
-        print("Ошибка:", e)
+        print(f"Ошибка при работе с клиентом {ip}: {e}")
     finally:
         conn.close()
-        print("Соединение закрыто.")
 
-server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server_socket.bind(('127.0.0.1', 9000))
-server_socket.listen()
-print("Сервер запущен. Ожидаем подключения...")
+def start_server():
+    host = "0.0.0.0"  
+    port = 9000
 
-while True:
-    conn, addr = server_socket.accept()
-    handle_client(conn, addr)
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.bind((host, port))
+    server_socket.listen(5)
+
+    print(f"Сервер запущен на {host}:{port}")
+
+    while True:
+        conn, addr = server_socket.accept()
+        thread = threading.Thread(target=handle_client, args=(conn, addr))
+        thread.start()
+
+if __name__ == "__main__":
+    start_server()
