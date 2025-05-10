@@ -72,5 +72,49 @@ json= (Content-Type)
 передача заголовков
 с обработкой ответа от сервера 
 https://reqres.in
-
 """
+
+url = 'https://httpbin.org/post'
+data = {
+    'username': "alice",
+    'password': 'secret'
+}
+
+"""resposne = requests.post(url, data=data)
+
+print(resposne.status_code)
+print(resposne.json())"""
+
+user = {
+    'username': 'alice123',
+    'email': 'alice@example.com',
+    'is_active': True
+}
+
+"""resposne = requests.post(url, json=user)
+print(resposne.status_code)
+print(resposne.json()['json'])
+print(resposne.json())"""
+
+payload = {'task': 'POST headers'}
+headers = {
+    'Authorization': '12345',
+    'Custom-Header': 'CustomValue'
+}
+
+"""response = requests.post(url, json=payload, headers=headers)
+
+print(response.json()['headers'])"""
+
+url = 'https://reqres.in/api/register'
+data = {
+    'email': 'evo.holt@reqres.in',
+    'password': 'pistol'
+}
+headers = {
+    'x-api-key': 'reqres-free-v1'
+}
+response = requests.post(url, json=data, headers=headers)
+
+print(response.status_code)
+print(response.json())
