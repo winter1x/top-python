@@ -2,6 +2,7 @@
 print(pow(2, 3))
 from math import pow
 """
+import math
 import time
 from typing import final
 
@@ -1403,7 +1404,59 @@ def greet_user():
 
 greet_user()
 greet_user()
+"""
 
+def calculate_area_of_circle(radius):
+    return math.pi * radius * radius
+
+def calculate_area_of_square(side):
+    return side * side
+
+def calculate_area_of_rectangle(length, width):
+    return length * width
+
+def calculate_area(shape, *params):
+    if shape == 'circle':
+        return math.pi * params[0] * params[0]
+    elif shape == 'square':
+        return params[0] * params[0]
+    elif shape == 'rectangle':
+        return params[0] * params[1]
+
+def handle_employee(name, salary):
+    print(f"employee {name} has salary {salary}")
+
+def handle_manager(name, salary, bonus):
+    print(f"manager {name} has salary {salary} and bonus {bonus}")
+
+
+class Employee:
+    def __init__(self, name, salary):
+        self.name = name
+        self.salary = salary
+
+    def handle(self):
+        print(f"employee {self.name} has salary {self.salary}")
+
+class Manager(Employee):
+    def __init__(self, name, salary, bonus):
+        super().__init__(name, salary)
+        self.bonus = bonus
+
+    def handle(self):
+        print(f"manager {self.name} has salary {self.salary} and bonus {self.bonus}")
+
+def handle_employee(employee):
+    employee.handle()
+
+employee = Employee("ivan", 1000)
+manager = Manager("petr", 2000, 500)
+
+handle_employee(employee)
+handle_employee(manager)
+
+
+"""
 class Dog:
     def __init__(self, name):
         self.name = name
