@@ -14,3 +14,50 @@ class DiscountCalculator:
             return amount * 0.98
         else:
             return amount
+
+class DiscountStrategy:
+    def calculate(self, amount):
+        return amount
+
+    
+class RegularDiscount(DiscountStrategy):
+    def calculate(self, amount):
+        return amount * 0.95
+
+class VipDiscount(DiscountStrategy):
+    def calculate(self, amount):
+        return amount * 0.9
+
+class EmployeeDiscount(DiscountStrategy):
+    def calculate(self, amount):
+        return amount * 0.85
+
+class DiscountCalculator:
+    def __init__(self, discount_strategy):
+        self.discount_strategy = discount_strategy
+
+    def calculate_discount(self, amount):
+        return self.discount_strategy.calculate(amount)
+    
+
+vip = VipDiscount()
+calc = DiscountCalculator(vip)
+print(calc.calculate_discount(100))
+
+employee = EmployeeDiscount()
+calc = DiscountCalculator(employee)
+print(calc.calculate_discount(100))
+
+def get_discount_strategy(customer_type: str) -> DiscountStrategy:
+    strategies = {
+        'regular': RegularDiscount(),
+        'vip': VipDiscount(),
+        'employee': EmployeeDiscount(),
+        'guest': DiscountStrategy(),
+    }
+    return strategies.get(customer_type, DiscountStrategy())
+
+class StudentDiscount(DiscountStrategy):
+    def calculate(self, amount):
+        return amount * 0.9
+        
