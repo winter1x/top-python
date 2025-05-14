@@ -6,6 +6,8 @@ import math
 import time
 from typing import final
 
+import requests
+
 """print(1, 2, 3, 4, '123' + '123', 5 % 2, 5 // 2, 2 ** 3)
 number = input()  # ввод str с консоли
 number = bool(number)
@@ -1490,33 +1492,80 @@ class Cat(Animal):
 """
 # ----------------------------------------------------------------
 #solid
-#s - srp
+#s - srp - принцип единой ответственности
 
 class Report:
-    def __init__(self, data):
-        self.data = data
+    def __init__(self, title, content):
+        self.title = title
+        self.content = content
 
-    def calculate_statistics(self):
-        return sum(self.data) / len (self.data)
+    def generate(self):
+        return f"{self.title}\n\n{self.content}"
 
     def save_to_file(self, filename):
         with open(filename, "w") as file:
-            file.write(str(self.data))
+            file.write(self.generate())
 
-class Statistics:
-    def __init__(self, data):
-        self.data = data
+class Report:
+    def __init__(self, title, content):
+        self.title = title
+        self.content = content
 
-    def calculate_average(self):
-        return sum(self.data) / len (self.data)
+class ReportFormatter:
+    def format_report(self, report):
+        return f"{report.title}\n\n{report.content}"
 
-
-class FileManager:
-    def save_to_file(selfself, filename, data):
+class ReportSaver:
+    def save_report(self, filename, formatted_text):
         with open(filename, "w") as file:
-            file.write(str(data))
+            file.write(formatted_text)
 
-#o - ocp
+def process_and_send(data):
+    processed = [x * 2 for x in data]
+    print(f"processed: {processed}")
+    requests.post("http://server.com/api", json=processed)
+
+def process(data):
+    processed = [x * 2 for x in data]
+    return processed
+
+def log(data):
+    print(f"processed: {data}")
+
+def send(data):
+    requests.post("http://server.com/api", json=data)
+
+
+#o - ocp - открытости/закрытости
+class SalaryCalculator:
+    def calculate(self, employee):
+        if employee.role == "manager":
+            return employee.salary * 1.2
+        elif employee.role == "developer":
+            return employee.salary * 1.1
+        else:
+            return employee.salary
+
+class Employee:
+    def __init__(self, base_salary):
+        self.base_salary = base_salary
+
+class Manager(Employee):
+    def calculate_salary(self):
+        return self.base_salary * 1.2
+
+class Developer(Employee):
+    def calculate_salary(self):
+        return self.base_salary * 1.1
+
+class Designer(Employee):
+    def calculate_salary(self):
+        return self.base_salary * 1.05
+    
+class SalaryCalculator:
+    def calculate(self, employee: Employee):
+        return employee.calculate_salary()
+
 
 class Discount:
     def __init__(self, price):
@@ -1529,6 +1578,57 @@ class Discount:
             return self.price * 0.9
         else:
             return self.price
+
+from abc import ABC, abstractmethod
+
+class SalaryStrategy(ABC):
+    @abstractmethod
+    def calculate_salary(self, base_salary):
+        pass
+
+class ManagerSalary(SalaryStrategy):
+    def calculate_salary(self, base_salary):
+        return base_salary * 1.2
+
+class DeveloperSalary(SalaryStrategy):
+    def calculate_salary(self, base_salary):
+        return base_salary * 1.1
+
+class DesignerSalary(SalaryStrategy):
+    def calculate_salary(self, base_salary):
+        return base_salary * 1.05
+
+class Employee:
+    def __init__(self, base_salary, salary_strategy: SalaryStrategy):
+        self.base_salary = base_salary
+        self.salary_strategy = salary_strategy
+
+    def calculate_salary(self):
+        return self.salary_strategy.calculate_salary(self.base_salary)
+
+
+
+"""
+if payment.type == "cash":
+    ...
+elif payment.type == "card":
+    ...
+
+class Payment(ABC):
+    @abstractmethod
+    def process(self):
+        pass
+
+class CashPayment(Payment):
+    def process(self):
+        ...
+
+class CardPayment(Payment):
+    def process(self):
+        ...
+
+
+"""
 
 
 class Discount:
@@ -1546,7 +1646,7 @@ class RegularDiscount(Discount):
     def get_discounted_price(self):
         return self.price * 0.9
 
-#l - lsp
+#l - lsp - Лисков
 
 class Bird:
     def fly(self):
@@ -1567,7 +1667,7 @@ class Penguin(Bird):
     def swim(self):
         return Exception("пингвин плавает")
 
-#i - isp
+
 
 class Worker:
     def work(self):
@@ -1596,43 +1696,135 @@ class Robot(Workable):
     def work(self):
         print("Робот работает")
 
+class Rectangle:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
 
-#d - dip
+    def set_width(self, w):
+        self.width = w
+
+    def set_height(self, h):
+         self.height = h
+
+    def area(self):
+        return self.width * self.height
+
+class Square(Rectangle):
+    def set_width(self, w):
+        self.width = w
+        self.height = w
+
+    def set_height(self, h):
+        self.width = h
+        self.height = h
+
+def resize_rectangle(rect: Rectangle):
+    shape.set_width(5)
+    shape.set_height(10)
+    assert rect.area() == 50
+
+#from abc import ABC, abstractmethod
+class Shape(ABC):
+    @abstractmethod
+    def area(self):
+        pass
+
+class Rectangle(Shape):
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+    
+    def area(self):
+        return self.width * self.height
+
+class Square(Shape):
+    def __init__(self, side):
+        self.side = side
+    
+    def area(self):
+        return self.side * self.side
+    
+class FileStorage:
+    def save(self, filename, data):
+        with open(filename, "w") as file:
+            file.write(data)
+
+    def read(self, filename):
+        with open(filename, "r") as file:
+            return file.read()
+
+class ReadOnlyStorage(FileStorage):
+    def save(self, filename, data):
+        raise PermissionError("только для чтения")
+
+from typing import Protocol
+
+class Writer(Protocol):
+    def write(self, data: str) -> None:
+        ...
+
+#d - dip - принцип инверсии зависимостей
+# модули верхнего уровня не должны зависеть от модулей нижнего уровня
+# модули верхнего уровня - компоненты, реализующие бизнес-логику: сервисы, обработчики заказов, логика расчета
+# модули нижнего уровня - (конкретные реализации) компоненты, реализующие инфраструктурную логику: БД, внешние сервисы, файловая система, кэш
+# в идеале модули верхнего уровня не должны знать о деталях модулей нижнего уровня
+# модули верхнего уровня должны зависеть от абстракций (интерфейсов, протоколов, абстрактных базовых классов), а не от конкретных реализаций
+# модули нижнего уровня должны зависеть от конкретных реализаций, а не от абстракций
+
+
 
 class MySQLDatabse:
     def connect(self):
         print("подключение..")
 
-class Application:
+    def save(self, data):
+        print("сохранение в БД")
+
+class OrderService:
     def __init__(self):
         self.database = MySQLDatabse()
 
-    def run(self):
+    def process_order(self, order):
         self.database.connect()
+        self.database.save(order)
 
-class Database:
-    def connect(self):
+#from abc import ABC, abstractmethod
+
+class OrderRepository(ABC):
+    @abstractmethod
+    def save(self, data):
         pass
 
-class MySQLDatabse(Database):
-    def connect(self):
-        print("подключение к MySQL")
+class OrderService:
+    def __init__(self, repository: OrderRepository):
+        self.repository = repository
 
-class PostgreSQLDatabase(Database):
-    def connect(self):
-        print("подключение к PostgreSQL")
+    def process_order(self, order):
+        self.repository.save(order)
 
+class MySQLOrderRepository(OrderRepository):
+    def save(self, data):
+        print(f"сохранение в БД: {data}")
 
-class Application:
-    def __init__(self, database: Database):
-        self.database = database
+repo = MySQLOrderRepository()
+service = OrderService(repo)
+service.process_order("12345")
 
-    def run(self):
-        self.database.connect()
+class FakeRepository(OrderRepository):
+    def __init__(self):
+        self.saved = []
 
-db = PostgreSQLDatabase()
-app = Application(db)
-app.run()
+    def save(self, data):
+        self.saved.append(data)
+
+def test_order_service():
+    fake = FakeRepository()
+    service = OrderService(fake)
+    service.process_order("12345")
+    assert fake.saved == ["12345"]
+
+    
 # ----------------------------------------------------------------
 #yagni
 

@@ -1,23 +1,30 @@
+import json
+
+class Report:
+    def __init__(self, title, content):
+        self.title = title
+        self.content = content
+
+    def generate(self):
+        return f"{self.title}\n\n{self.content}"
+
+    def save_to_file(self, filename):
+        with open(filename, "w") as file:
+            file.write(self.generate())
+
+    def export_to_json(self, filename):
+        return json.dumps({
+            "title": self.title,
+            "content": self.content
+        })
 """
-обычные 5%
-постоянные 10%
-VIP 20% скидки
-
-сумму заказа, тип клиента
+вопросы:
+сколько ответственностей выполняет этот класс?
+какие методы можно отнести к другим сферам ответственности, не связанным напрямую с отчетом?
+почему такой подход может быть проблемным в будущем?
+что будет, если вам нужно будет сохранить отчет в базу данных или экспортировать его в XML?
+как вы можете перераспределить ответственность по другим классам?
 """
-#пример кода с нарушением dry
-def calculate_regular_price(price):
-    discount = price * 0.05
-    return price - discount
-
-def calculate_loyal_price(price):
-    discount = price * 0.10
-    return price - discount
-    
-def calculate_vip_price(price):
-    discount = price * 0.20
-    return price - discount
-
-print(calculate_regular_price(100))
-print(calculate_loyal_price(100))
-print(calculate_vip_price(100))
+# ----------------------------------------------------------------
+#solid
+#s - srp - принцип единой ответственности

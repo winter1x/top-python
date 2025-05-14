@@ -228,3 +228,313 @@ func main() {
         fmt.Println("Нечётное число")
     }
 }
+
+
+package main
+
+import "fmt"
+
+func main() {
+    day := "суббота"
+
+    switch day {
+    case "суббота", "воскресенье":
+        fmt.Println("Выходной") // если день — суббота или воскресенье
+    default:
+        fmt.Println("Будний день") // для всех остальных дней
+    }
+}
+
+
+package main
+
+import "fmt"
+
+func main() {
+    grade := 3
+
+    switch grade {
+    case 5:
+        fmt.Println("Отлично")
+    case 4:
+        fmt.Println("Хорошо")
+    case 3:
+        fmt.Println("Удовлетворительно")
+    default:
+        fmt.Println("Неудовлетворительно")
+    }
+}
+
+
+package main
+
+import "fmt"
+
+func main() {
+    score := 82
+
+    switch {
+    case score >= 90:
+        fmt.Println("Оценка: A")
+    case score >= 75:
+        fmt.Println("Оценка: B")
+    case score >= 60:
+        fmt.Println("Оценка: C")
+    default:
+        fmt.Println("Оценка: F")
+    }
+}
+
+
+package main
+
+import "fmt"
+
+func main() {
+    temp := -5
+
+    switch {
+    case temp < 0:
+        fmt.Println("Мороз") // температура ниже нуля
+    case temp >= 0 && temp < 20:
+        fmt.Println("Прохладно") // от 0 до 19
+    default:
+        fmt.Println("Тепло") // всё остальное (20 и выше)
+    }
+}
+
+package main
+
+import "fmt"
+
+func main() {
+    temp := -5
+
+    switch {
+    case temp < 0:
+        fmt.Println("Мороз") // температура ниже нуля
+    case temp >= 0 && temp < 20:
+        fmt.Println("Прохладно") // от 0 до 19
+    default:
+        fmt.Println("Тепло") // всё остальное (20 и выше)
+    }
+}
+
+
+package main
+
+import "fmt"
+
+func main() {
+    x := 0
+
+    for x < 5 { // пока x меньше 5
+        fmt.Println(x) // выводим значение
+        x++            // увеличиваем x на 1
+    }
+}
+
+package main
+
+import "fmt"
+
+func main() {
+    for i := 0; i < 5; i++ { // начинаем с i = 0, пока i < 5, увеличиваем i на 1
+        fmt.Println(i) // выводим i на каждой итерации
+    }
+}
+
+
+package main
+
+import "fmt"
+
+func main() {
+    counter := 0
+
+    for { // бесконечный цикл
+        fmt.Println("Цикл номер", counter)
+        counter++
+
+        if counter == 3 { // условие выхода
+            break // выход из цикла
+        }
+    }
+}
+
+
+switch {
+case x > 10:
+    // ...
+case x > 5:
+    // ...
+}
+
+
+for i := 0; i < 10; i++ {
+    // обычный цикл
+}
+
+for condition {
+    // как while
+}
+
+for {
+    // бесконечный цикл
+}
+
+for ; i < 10; {
+    // цикл без инициализации и пост-выражения
+}
+
+i := 0
+for i < 5 {
+    fmt.Println(i)
+    // забыли i++
+}
+
+x := 10
+if x > 5 {
+    fmt.Println("A")
+} else if x > 2 {
+    fmt.Println("B")
+} else {
+    fmt.Println("C")
+}
+
+if n := 5; n < 10 {
+    fmt.Println("Less than 10")
+}
+fmt.Println(n)
+
+score := 75
+switch {
+case score >= 90:
+    fmt.Println("A")
+case score >= 70:
+    fmt.Println("B")
+default:
+    fmt.Println("C")
+}
+
+i := 0
+for i < 5 {
+    fmt.Println(i)
+}
+
+for i := 1; i <= 5; i++ {
+    fmt.Println(i)
+}
+
+for {
+    fmt.Println("Ping")
+}
+
+x := 10
+y := 5
+if x > y {
+    fmt.Println("A")
+} else if x == y {
+    fmt.Println("B")
+} else {
+    fmt.Println("C")
+}
+
+x := 10
+for x < 20 {
+    fmt.Println(x)
+}
+
+x := 10
+switch x {
+case 5:
+    fmt.Println("Five")
+case 10:
+    fmt.Println("Ten")
+default:
+    fmt.Println("Other")
+}
+
+x := 7
+if x > 5 && x < 10 {
+    fmt.Println("In range")
+} else {
+    fmt.Println("Out of range")
+}
+
+for i := 0; i < 10; {
+    fmt.Println(i)
+}
+
+x := 3
+switch {
+case x > 5:
+    fmt.Println("Greater")
+case x == 3:
+    fmt.Println("Equal to 3")
+default:
+    fmt.Println("Other")
+}
+
+x := 15
+if x < 10 {
+    fmt.Println("Less")
+} else if x > 10 {
+    fmt.Println("Greater")
+}
+
+
+if x > 10 
+{
+	fmt.Println("x is greater than 10")
+}
+
+
+
+x := 10
+if x = 10 {
+	fmt.Println("x is ten")
+}
+
+
+switch day {
+case "Monday":
+	fmt.Println("Start of the week")
+case "Friday":
+	fmt.Println("End of the week")
+}
+
+
+for i := 1; i < 10; i++ {
+	if i == 4 {
+		break
+	}
+	fmt.Print(i)
+}
+
+
+
+package main
+
+import "fmt"
+
+func main() {
+    // Инициализация переменной для ввода
+    var age int
+
+    // Цикл для 5 пользователей
+    for i := 0; i < 5; i++ {
+        // Запрос возраста у пользователя
+        fmt.Print("Введите возраст: ")
+        fmt.Scan(&age)
+
+        // Определение статуса в зависимости от возраста
+        if age < 18 {
+            fmt.Println("Ребёнок")
+        } else if age >= 18 && age <= 65 {
+            fmt.Println("Взрослый")
+        } else {
+            fmt.Println("Пенсионер")
+        }
+    }
+}
