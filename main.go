@@ -53,6 +53,23 @@ default:
     fmt.Println("Ноль")
 }
 
+switch x := 1; x {
+case 1:
+    fmt.Println("Один")
+    fallthrouagh
+case 2:
+    fmt.Println("Два")
+}
+
+switch x := getValue(); {
+case x > 10:
+    fmt.Println("Больше десяти")
+case x > 5:
+    fmt.Println("Больше пяти")
+default:
+    fmt.Println("Пять или меньше")
+}
+
 if (x > 0) { // ❌ Ошибка
 
 if x > 0 { // ✅ Правильно
@@ -65,6 +82,14 @@ if x := getValue(); x > 10 {
 }
 
 // Здесь x больше не существует ❌
+
+switch x {
+case 1:
+    fmt.Println("Один")
+    fallthrough
+case 2:
+    fmt.Println("Два")
+}
 
 for i := 1; i <= 10; i++ {
     fmt.Println(i)
@@ -105,12 +130,19 @@ for i := 1; i <= 10; i++ {
 for i := 1; i <= 10; {
     fmt.Println(i) // ❌ i не увеличивается
 }
-for i := 1; i > 10; i++
+for i := 1; i > 10; i++ {
+    fmt.Println(i)
+}
 
 
 
-for i := 0; i < 3; i++ {}
-fmt.Println(i)  // ❌ i не существует вне цикла
+
+for i := 0; i < 3; i++ {
+    fmt.Println(i)
+}
+
+fmt.Println(i) // ❌ ошибка — i не существует вне цикла
+
 
 var age int
 fmt.Scan(&age)
