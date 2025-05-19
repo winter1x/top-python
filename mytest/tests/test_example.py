@@ -17,7 +17,7 @@ def test_stack():
     assert stack.pop() == 1
 
 
-def test_emtines():
+def test_emtines_bad():
     stack = []
     assert not stack
     stack.append(1)
