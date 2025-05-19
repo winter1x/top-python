@@ -65,3 +65,12 @@ print(json_str)
 data = {"x": 1, "y": 2}
 binary_data = pickle.dumps(data)
 print(binary_data)
+
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+person = Person("John", 30)
+with open('person.pkl', 'wb') as file:
+    pickle.dump(person, file)
