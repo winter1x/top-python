@@ -124,3 +124,44 @@ with open('students.pkl', 'rb') as file:
 print(obj.name, obj.age)
 
 # {"name": "John", "age": 30}
+
+#import pickle
+data = client_input
+obj = pickle.loads(data)
+
+"""
+import os
+
+class Evil:
+    # def __reduce__(self):
+        # return (os.system, ('rm - rf /'))
+        
+malicious_data = pickle.dumps(Evil())
+"""
+"""import platform
+import platform as pl
+from platform import architecture
+from platform import architecture as arch"""
+
+"""from platform import *
+
+print(architecture())  # архитектура
+print(machine())  # тип машины
+print(node())  # сетевое имя машины
+print(platform())  # строка идентифицирующая базовую платформу
+print(processor())  # имя процессора
+print(system())  # имя ОС
+print(release()) # версия ОС
+print(version()) # доп информация об ОС
+print(python_version()) # версия питона
+print(python_build()) # информация о сборке python
+print(python_compiler()) # о компиляторе
+pickle.loads(malicious_data)
+"""
+"""
+ - не загружаем из неизвестных/ненадежных источников
+ - используем виртуальные окружения или контейнеры для изоляции процесса
+ - возможность подписи данных 
+ - json/marshal/csv (pandas для работы)/yaml, protobuf, msgpack/dill/xml
+"""
+
