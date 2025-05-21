@@ -165,3 +165,96 @@ active: логическое (true, false)
 
 user1 = {'role': 'admin', 'active': True}
 user2 = {'role': 'user', 'active': False}
+
+from abc import ABC, abstractmethod
+
+
+# Абстрактный класс для всех выражений
+class Expression(ABC):
+    @abstractmethod
+    def interpret(self, context: dict) -> bool:
+        pass
+
+
+# Конкретные выражения
+class EqualsExpression(Expression):
+    def __init__(self, key: str, value: str):
+        self.key = key
+        self.value = value.lower()
+
+    def interpret(self, context: dict) -> bool:
+        context_value = str(context.get(self.key)).lower()
+        return context_value == self.value
+
+
+class AndExpression(Expression):
+    def __init__(self, expr1: Expression, expr2: Expression):
+        self.expr1 = expr1
+        self.expr2 = expr2
+
+    def interpret(self, context: dict) -> bool:
+        return self.expr1.interpret(context) and self.expr2.interpret(context)
+
+
+class OrExpression(Expression):
+    def __init__(self, expr1: Expression, expr2: Expression):
+        self.expr1 = expr1
+        self.expr2 = expr2
+
+    def interpret(self, context: dict) -> bool:
+        return self.expr1.interpret(context) or self.expr2.interpret(context)
+
+
+def parse(expression_str: str) -> Expression:
+    tokens = expression_str.split()
+
+    def parse_equals(token1, token2, token3):
+        if token2 != "==":
+            raise ValueError("Ожидался оператор ==")
+        return EqualsExpression(token1, token3)
+
+    i = 0
+    current_expr = None
+
+    while i < len(tokens):
+        if tokens[i + 1] == "==":
+            left = parse_equals(tokens[i], tokens[i + 1], tokens[i + 2])
+            i += 3
+
+            if i < len(tokens):
+                op = tokens[i]
+                i += 1
+                right = parse_equals(tokens[i], tokens[i + 1], tokens[i + 2])
+                i += 3
+
+                if op == "AND":
+                    current_expr = AndExpression(left, right)
+                elif op == "OR":
+                    current_expr = OrExpression(left, right)
+                else:
+                    raise ValueError(f"Неизвестный логический оператор: {op}")
+            else:
+                current_expr = left
+        else:
+            raise ValueError("Неверный формат фильтра")
+
+    return current_expr
+
+
+if __name__ == "__main__":
+    user1 = {"role": "admin", "active": True}
+    user2 = {"role": "user", "active": False}
+
+    expressions = [
+        "role == admin",
+        "active == false",
+        "role == user OR active == true",
+        "role == admin AND active == true"
+    ]
+
+    for expr_str in expressions:
+        expr = parse(expr_str)
+        print(f"Выражение: {expr_str}")
+        print(f"user1: {expr.interpret(user1)}")
+        print(f"user2: {expr.interpret(user2)}")
+        print("-" * 30)
