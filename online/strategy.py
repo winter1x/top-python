@@ -144,3 +144,20 @@ order3 = Order(2, Pickup())
 print(order1.get_delivery_price())
 print(order2.get_delivery_price())
 print(order3.get_delivery_price())
+
+"""
+платежная система
+
+банковская карта
+электронный кошелек
+криптовалюта
+
+Создайте интерфейс стратегии PaymentStrategy с методов pay(amount: float)
+Реализуйте три класса-стратегии:
+
+CreditCardPayment
+EWalletPayment
+CryptoPayment
+
+Релизуйте класс Order, который будет использовать объект стратегии для выполнения оплаты
+"""
