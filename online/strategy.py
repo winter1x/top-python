@@ -161,3 +161,39 @@ CryptoPayment
 
 Релизуйте класс Order, который будет использовать объект стратегии для выполнения оплаты
 """
+#from abc import ABC, abstractmethod
+
+class PaymentStrategy(ABC):
+    @abstractmethod
+    def pay(self, amount: float) -> None:
+        pass
+
+class CreditCardPayment(PaymentStrategy):
+    def pay(self, amount: float) -> None:
+        print(f"Платеж на сумму {amount} через банковскую карту выполнен")
+
+class EWalletPayment(PaymentStrategy):
+    def pay(self, amount: float) -> None:
+        print(f"Платеж на сумму {amount} через электронный кошелек выполнен")
+
+class CryptoPayment(PaymentStrategy):
+    def pay(self, amount: float) -> None:
+        print(f"Платеж на сумму {amount} через криптовалюту выполнен")
+
+class Order:
+    def __init__(self, amount: float, strategy: PaymentStrategy) -> None:
+        self.amount = amount
+        self.strategy = strategy
+
+    def set_payment_strategy(self, strategy: PaymentStrategy) -> None:
+        self.strategy = strategy
+
+    def proces_order(self) -> None:
+        print(f"Обработка заказа на сумму {self.amount}")
+        self.strategy.pay(self.amount)
+
+order = Order(1000, CreditCardPayment())
+order.proces_order()
+
+order.set_payment_strategy(EWalletPayment())
+order.proces_order()

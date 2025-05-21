@@ -570,3 +570,531 @@ func main() {
         }
     }
 }
+
+type ИмяСтруктуры struct {
+    ИмяПоля1 ТипПоля1
+    ИмяПоля2 ТипПоля2
+    ...
+}
+
+type User struct {
+    Name  string
+    Email string
+    Age   int
+}
+
+type Book struct {
+    Title     string
+    Author    string
+    ISBN      string
+    PageCount int
+}
+
+var u User
+
+type Config struct {
+    Port     int    // экспортируемое поле
+    logLevel string // неэкспортируемое поле
+}
+
+// User представляет зарегистрированного пользователя системы.
+type User struct {
+    Name  string // Полное имя
+    Email string // Адрес электронной почты
+    Age   int    // Возраст
+}
+
+type Event struct {
+    ID        int
+    Name      string
+    Handler   func()
+    IsActive  bool
+}
+
+type Empty struct{}
+
+flags := map[string]struct{}{}
+flags["ready"] = struct{}{}
+
+// В Go так делать нельзя:
+type Bad struct {
+    A, B, C int // Это ошибка
+}
+
+type Product struct {
+    ID    int     // Уникальный идентификатор товара
+    Name  string  // Название товара
+    Price float64 // Цена
+}
+
+type User struct {
+    Name string
+    Age  int
+}
+
+var u User
+u.Name = "Иван"
+u.Age = 30
+
+fmt.Println(u.Name) // Выведет: Иван
+fmt.Println(u.Age)  // Выведет: 30
+
+fmt.Println(getUser().Name)
+
+
+type Point struct {
+    X int
+    Y int
+}
+
+p := Point{10, 20}
+fmt.Println(p.X) // 10
+fmt.Println(p.Y) // 20
+
+p := Point{
+    Y: 20,
+    X: 10,
+}
+
+
+var u User
+fmt.Println(u.Name) // пустая строка ""
+fmt.Println(u.Age)  // 0
+
+
+u := new(User) // *User
+u.Name = "Анна"
+fmt.Println(u.Name) // Анна
+
+
+type Product struct {
+    Name  string
+    Price float64
+}
+
+func main() {
+    var p Product
+    p.Name = "Ноутбук"
+    p.Price = 54999.90
+
+    fmt.Println(p.Name)  // Ноутбук
+    fmt.Println(p.Price) // 54999.9
+
+    // Изменим цену:
+    p.Price = 49999.90
+    fmt.Println(p.Price) // 49999.9
+}
+
+
+
+
+type Employee struct {
+    FirstName string
+    LastName  string
+    Position  string
+    Salary    float64
+}
+
+func main() {
+    e := Employee{
+        FirstName: "Олег",
+        LastName:  "Иванов",
+        Position:  "Разработчик",
+        Salary:    85000.0,
+    }
+
+    fmt.Println(e.FirstName, e.LastName) // Олег Иванов
+    fmt.Println(e.Position)              // Разработчик
+
+    // Повышение зарплаты
+    e.Salary += 5000.0
+    fmt.Println("Новая зарплата:", e.Salary) // 90000.0
+}
+
+
+
+type Car struct {
+    Brand string
+    Year  int
+}
+
+func main() {
+    car := &Car{
+        Brand: "Toyota",
+        Year:  2021,
+    }
+
+    fmt.Println(car.Brand) // Toyota
+
+    // Обновим год выпуска
+    car.Year = 2022
+    fmt.Println(car.Year) // 2022
+}
+
+
+func NewUser(name string, age int) User {
+    return User{
+        Name: name,
+        Age:  age,
+    }
+}
+
+
+type User struct {
+    Name string
+    Age  int
+}
+
+func updateAge(u User) {
+    u.Age = u.Age + 1
+    fmt.Println("Внутри функции:", u.Age)
+}
+
+func main() {
+    user := User{Name: "Анна", Age: 30}
+    updateAge(user)
+    fmt.Println("Снаружи функции:", user.Age)
+}
+
+
+
+func updateAgePtr(u *User) {
+    u.Age = u.Age + 1
+    fmt.Println("Внутри функции:", u.Age)
+}
+
+func main() {
+    user := User{Name: "Анна", Age: 30}
+    updateAgePtr(&user)
+    fmt.Println("Снаружи функции:", user.Age)
+}
+
+
+type Product struct {
+    Name  string
+    Price float64
+}
+
+func printProduct(p Product) {
+    fmt.Println("Товар:", p.Name, "Цена:", p.Price)
+}
+
+func main() {
+    pr := Product{"Ноутбук", 59990.0}
+    printProduct(pr)
+}
+
+
+func applyDiscount(p *Product, discount float64) {
+    p.Price = p.Price * (1 - discount)
+}
+
+func main() {
+    pr := Product{"Телевизор", 89990.0}
+    applyDiscount(&pr, 0.1) // скидка 10%
+    fmt.Println("После скидки:", pr.Price)
+}
+
+
+func newUser(name string, age int) User {
+    return User{Name: name, Age: age}
+}
+
+func main() {
+    u := newUser("Алексей", 28)
+    fmt.Println(u.Name, u.Age)
+}
+
+
+func newUserPtr(name string, age int) *User {
+    return &User{Name: name, Age: age}
+}
+
+func main() {
+    u := newUserPtr("Ольга", 35)
+    fmt.Println(u.Name, u.Age)
+}
+
+
+type Address struct {
+    City    string
+    ZipCode string
+}
+
+type User struct {
+    Name    string
+    Age     int
+    Address Address
+}
+
+
+type ContactInfo struct {
+    Email string
+    Phone string
+}
+
+type Employee struct {
+    Name        string
+    Department  string
+    Contact     ContactInfo
+}
+
+
+type Person struct {
+    Name string
+    Age  int
+}
+
+type Employee struct {
+    Person     // анонимное встраивание
+    Position   string
+    Department string
+}
+
+
+type Address struct {
+    City    string
+    ZipCode string
+}
+
+type User struct {
+    Name    string
+    Address Address
+}
+Объявим переменную:
+
+user := User{
+    Name: "Ольга",
+    Address: Address{
+        City:    "Москва",
+        ZipCode: "101000",
+    },
+}
+
+fmt.Println(user.Address.City) // Выведет: Москва
+
+user.Address.ZipCode = "105005"
+
+user.Profile.Contact.Email
+
+
+
+
+type Address struct {
+    City    string
+    Street  string
+    ZipCode string
+}
+
+type User struct {
+    Name    string
+    Age     int
+    Address Address
+}
+
+func main() {
+    user := User{
+        Name: "Андрей",
+        Age:  27,
+        Address: Address{
+            City:    "Казань",
+            Street:  "Улица Ленина",
+            ZipCode: "420000",
+        },
+    }
+
+    fmt.Println("Город:", user.Address.City)
+    fmt.Println("Улица:", user.Address.Street)
+}
+
+
+
+type Position struct {
+    Title string
+    Level int
+}
+
+type Employee struct {
+    Name     string
+    Position Position
+}
+
+func promote(e *Employee) {
+    e.Position.Level++
+}
+
+func main() {
+    emp := Employee{
+        Name: "Сергей",
+        Position: Position{
+            Title: "Инженер",
+            Level: 1,
+        },
+    }
+
+    promote(&emp)
+    fmt.Println("Новый уровень:", emp.Position.Level) // 2
+}
+
+
+
+type ContactInfo struct {
+    Email string
+    Phone string
+}
+
+type Profile struct {
+    Username    string
+    ContactInfo ContactInfo
+}
+
+type Account struct {
+    ID      int
+    Profile Profile
+}
+
+func main() {
+    acc := Account{
+        ID: 1001,
+        Profile: Profile{
+            Username: "ivan_dev",
+            ContactInfo: ContactInfo{
+                Email: "ivan@example.com",
+                Phone: "+79991234567",
+            },
+        },
+    }
+
+    fmt.Println("Email:", acc.Profile.ContactInfo.Email)
+}
+
+
+type User struct {
+    Name string
+}
+
+func (u User) Greet() {
+    fmt.Println("Привет,", u.Name)
+}
+
+user := User{Name: "Анна"}
+user.Greet() // Привет, Анна
+
+
+func (r TypeName) MethodName() {
+    // тело метода
+}
+
+
+type Rectangle struct {
+    Width  float64
+    Height float64
+}
+
+// Метод, привязанный к Rectangle
+func (r Rectangle) Area() float64 {
+    return r.Width * r.Height
+}
+
+
+type Counter struct {
+    Value int
+}
+
+// Метод с получателем-значением
+func (c Counter) IncrementByValue() {
+    c.Value++
+}
+
+// Метод с получателем-указателем
+func (c *Counter) IncrementByPointer() {
+    c.Value++
+}
+
+
+
+func main() {
+    c := Counter{Value: 10}
+
+    c.IncrementByValue()
+    fmt.Println(c.Value) // 10 — значение не изменилось
+
+    c.IncrementByPointer()
+    fmt.Println(c.Value) // 11 — значение изменилось
+}
+
+
+type Rectangle struct {
+    Width  float64
+    Height float64
+}
+
+func (r Rectangle) Area() float64 {
+    return r.Width * r.Height
+}
+
+func main() {
+    rect := Rectangle{Width: 5, Height: 3}
+    fmt.Println("Площадь:", rect.Area()) // 15
+}
+
+
+type User struct {
+    Name string
+    Age  int
+}
+
+func (u *User) SetAge(newAge int) {
+    u.Age = newAge
+}
+
+func main() {
+    user := User{Name: "Иван", Age: 25}
+    user.SetAge(30)
+    fmt.Println(user.Age) // 30
+}
+
+
+
+type BankAccount struct {
+    Owner  string
+    Balance float64
+}
+
+// Метод просмотра баланса
+func (b BankAccount) GetBalance() float64 {
+    return b.Balance
+}
+
+// Метод пополнения
+func (b *BankAccount) Deposit(amount float64) {
+    b.Balance += amount
+}
+
+// Метод списания
+func (b *BankAccount) Withdraw(amount float64) bool {
+    if amount > b.Balance {
+        return false
+    }
+    b.Balance -= amount
+    return true
+}
+
+func main() {
+    account := BankAccount{Owner: "Мария", Balance: 1000}
+    account.Deposit(500)
+    success := account.Withdraw(300)
+
+    fmt.Println("Баланс:", account.GetBalance()) // 1200
+    fmt.Println("Списание прошло:", success)    // true
+}
+
+
+func (r Rectangle) Area() float64 {
+    return r.Width * r.Height
+}
+Функция:
+
+func Area(r Rectangle) float64 {
+    return r.Width * r.Height
+}
