@@ -1098,3 +1098,347 @@ func (r Rectangle) Area() float64 {
 func Area(r Rectangle) float64 {
     return r.Width * r.Height
 }
+
+var numbers [5]int // Объявляется массив из 5 элементов типа int
+
+var numbers [5]int
+
+var days [7]string // Объявляется массив из 7 строк
+
+var numbers = [3]int{10, 20, 30}
+
+var numbers = [...]int{5, 15, 25, 35}
+
+var numbers = [5]int{1: 100, 3: 300}
+
+
+
+var numbers = [3]int{10, 20, 30}
+
+fmt.Println(numbers[0]) // Выводит: 10
+fmt.Println(numbers[2]) // Выводит: 30
+
+
+numbers[1] = 99 // Заменяем второй элемент (индекс 1) на 99
+
+fmt.Println(numbers) // Выводит: [10 99 30]
+
+
+fmt.Println(numbers[3]) // Ошибка: индекс выходит за границы (index out of range)
+
+
+var numbers = [4]int{5, 10, 15, 20}
+
+fmt.Println(len(numbers)) // Вывод: 4
+
+
+var emptyArray [10]string
+
+fmt.Println(len(emptyArray)) // Вывод: 10
+
+
+
+var numbers = [4]int{10, 20, 30, 40}
+
+for i := 0; i < len(numbers); i++ {
+    fmt.Println("Индекс:", i, "Значение:", numbers[i])
+}
+
+
+var numbers = [4]int{10, 20, 30, 40}
+
+for index, value := range numbers {
+    fmt.Println("Индекс:", index, "Значение:", value)
+}
+
+
+for _, value := range numbers {
+    fmt.Println("Значение:", value)
+}
+
+
+
+var squares [5]int // Создаём массив из 5 целых чисел
+
+for i := 0; i < len(squares); i++ {
+    squares[i] = (i + 1) * (i + 1) // Записываем квадрат числа (индекс + 1)
+}
+
+fmt.Println(squares) // Вывод: [1 4 9 16 25]
+
+
+
+var numbers = [5]int{3, 7, 1, 9, 5}
+var target = 9
+var found = false
+
+for i := 0; i < len(numbers); i++ {
+    if numbers[i] == target {
+        fmt.Println("Найдено на позиции:", i)
+        found = true
+        break // Прерываем цикл после нахождения
+    }
+}
+
+if !found {
+    fmt.Println("Элемент не найден")
+}
+
+
+
+var original = [3]string{"Go", "Java", "Python"}
+var copy [3]string // Массив такой же длины
+
+for i := 0; i < len(original); i++ {
+    copy[i] = original[i] // Копируем каждый элемент
+}
+
+fmt.Println("Исходный:", original)
+fmt.Println("Копия   :", copy)
+
+
+
+
+package main
+
+import "fmt"
+
+func modify(s []int) {
+    s[0] = 999            // изменяем первый элемент
+}
+
+func main() {
+    nums := []int{1, 2, 3}
+    modify(nums)          // передаём срез в функцию
+
+    fmt.Println(nums)     // [999 2 3]
+}
+
+
+
+
+package main
+
+import "fmt"
+
+func main() {
+    arr := [5]int{1, 2, 3, 4, 5}
+    s := arr[1:3]       // элементы 2, 3
+
+    fmt.Println("len:", len(s)) // 2
+    fmt.Println("cap:", cap(s)) // 4 (считает от s[0] до конца массива)
+}
+
+
+
+
+package main
+
+import "fmt"
+
+func main() {
+    var a []int          // nil-срез
+    b := []int{}         // пустой срез, не nil
+
+    fmt.Println("a == nil:", a == nil) // true
+    fmt.Println("b == nil:", b == nil) // false
+
+    fmt.Println("len(a):", len(a))     // 0
+    fmt.Println("len(b):", len(b))     // 0
+}
+
+
+
+package main
+
+import "fmt"
+
+func main() {
+    base := []int{1, 2, 3}
+    sub := base[:2]                 // создаём срез из первых двух элементов
+
+    sub = append(sub, 100, 200)     // добавляем два элемента — может произойти переаллокация
+
+    fmt.Println("base:", base)      // [1 2 3]
+    fmt.Println("sub:", sub)        // [1 2 100 200]
+}
+
+
+
+package main
+
+import "fmt"
+
+func main() {
+    arr := [5]int{1, 2, 3, 4, 5}   // обычный массив
+    slice := arr[1:4]             // создаём срез с элементами 2, 3, 4
+
+    slice[0] = 100                // меняем первый элемент среза (это arr[1])
+
+    fmt.Println("Массив:", arr)   // [1 100 3 4 5]
+    fmt.Println("Срез:", slice)   // [100 3 4]
+}
+
+
+
+package main
+
+import "fmt"
+
+func main() {
+    numbers := []int{1, 2, 3, 4, 5, 6}   // исходный срез
+    evens := []int{}                    // создаём пустой срез для чётных чисел
+
+    for _, num := range numbers {       // обходим все элементы исходного среза
+        if num%2 == 0 {                 // проверяем, делится ли число на 2 без остатка
+            evens = append(evens, num)  // добавляем чётное число в новый срез
+        }
+    }
+
+    fmt.Println("Чётные числа:", evens) // [2 4 6]
+}
+
+
+
+package main
+
+import "fmt"
+
+func main() {
+    a := []int{1, 2, 3}          // создаём срез
+    b := append(a, 4, 5)         // добавляем два элемента
+    fmt.Println("b:", b)         // [1 2 3 4 5]
+
+    c := make([]int, len(b))     // создаём новый срез нужной длины
+    copy(c, b)                   // копируем элементы из b в c
+    fmt.Println("c:", c)         // [1 2 3 4 5]
+}
+
+
+
+package main
+
+import "fmt"
+
+func main() {
+    numbers := []int{1, 2, 3}  // создаём срез из трёх чисел
+
+    numbers[0] = 10            // изменяем первый элемент
+    numbers[2] = 30            // изменяем третий элемент
+
+    fmt.Println(numbers)       // [10 2 30]
+}
+
+
+for _, value := range slice {
+    fmt.Println(value)
+}
+
+
+
+package main
+
+import "fmt"
+
+func main() {
+    slice := []string{"a", "b", "c"}
+
+    for i, value := range slice {
+        fmt.Println("Индекс:", i, "Значение:", value)
+    }
+}
+
+
+
+package main
+
+import "fmt"
+
+func main() {
+    src := []int{1, 2, 3}
+    dst := make([]int, 3) // создаём срез-назначение нужной длины
+
+    copied := copy(dst, src) // копируем src → dst
+    fmt.Println("dst:", dst) // [1 2 3]
+    fmt.Println("Скопировано элементов:", copied) // 3
+}
+
+
+
+package main
+
+import "fmt"
+
+func main() {
+    nums := []int{10, 20, 30, 40, 50}
+    part := nums[1:4] // берём элементы с индексами 1, 2, 3
+    fmt.Println(part) // [20 30 40]
+}
+
+
+package main
+
+import "fmt"
+
+func main() {
+    slice := make([]int, 2, 2) // длина и ёмкость 2
+    fmt.Println("До append:", slice, "cap:", cap(slice))
+
+    slice = append(slice, 100) // добавляем третий элемент → ёмкость будет увеличена
+    fmt.Println("После append:", slice, "cap:", cap(slice))
+}
+
+
+package main
+
+import "fmt"
+
+func main() {
+    slice := []int{1, 2, 3}         // создаём срез из трёх чисел
+    slice = append(slice, 4, 5)     // добавляем два элемента
+    fmt.Println(slice)              // [1 2 3 4 5]
+}
+
+
+package main
+
+import "fmt"
+
+func main() {
+    slice := make([]int, 3, 5) // создаём срез длиной 3 и ёмкостью 5
+
+    fmt.Println("Длина:", len(slice)) // 3
+    fmt.Println("Ёмкость:", cap(slice)) // 5
+}
+
+
+package main
+
+import "fmt"
+
+func main() {
+    slice := make([]int, 3, 5) // создаём срез из 3 элементов, ёмкостью 5
+    fmt.Println(slice)         // [0 0 0]
+}
+
+
+package main
+
+import "fmt"
+
+func main() {
+    slice := []string{"яблоко", "банан", "вишня"} // создаём срез строк
+    fmt.Println(slice) // [яблоко банан вишня]
+}
+
+
+package main
+
+import "fmt"
+
+func main() {
+    arr := [5]int{10, 20, 30, 40, 50} // создаём массив из 5 элементов
+    slice := arr[1:4]                 // создаём срез с элементами от индекса 1 до 3 (не включая 4)
+
+    fmt.Println(slice) // [20 30 40]
+}
