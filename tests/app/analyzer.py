@@ -1,0 +1,12 @@
+def print_summary(messages):
+    print(f"Total messages: {len(messages)}")
+    print(f"Empty messages: {sum(1 for m in messages if not m.strip())}")
+    print(f"Longest message: {max(messages, key=len)}")
+
+def contains_urgent(messages):
+    return any('urgent' in m.lower() for m in messages)
+
+def get_average_length(messages):
+    if not messages:
+        return 0
+    return sum(len(m) for m in messages) / len(messages)
