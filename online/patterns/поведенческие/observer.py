@@ -178,3 +178,61 @@ Subject
 ChatRoom
 User
 """
+
+#from abc import ABC, abstractmethod
+
+class Observer(ABC):
+    @abstractmethod
+    def update(self, message: str):
+        pass
+
+class Subject(ABC):
+    @abstractmethod
+    def attach(self, observer: Observer):
+        pass
+
+    @abstractmethod
+    def detach(self, observer: Observer):
+        pass
+
+    @abstractmethod
+    def notify(self, message: str):
+        pass
+    
+class User(Observer):
+    def __init__(self, name: str):
+        self.name = name
+
+    def update(self, message: str):
+        print(f'{self.name} получил уведомление {message}')
+        
+class ChatRoom(Subject):
+    def __init__(self):
+        self._observers = []
+        
+    def attach(self, observer: Observer):
+        if observer not in self._observers:
+            self._observers.append(observer)
+    
+    def detach(self, observer: Observer):
+        if observer in self._observers:
+            self._observers.remove(observer)
+    
+    def notify(self, message: str):
+        for observer in self._observers:
+            observer.update(message)
+    
+    def add_message(self, message: str):
+        print(f'добавлено сообщение {message}')
+        self.notify(message)
+
+chat_room = ChatRoom()
+user1 = User('alise')
+user2 = User('matvey')
+
+chat_room.attach(user1)
+chat_room.attach(user2)
+
+chat_room.add_message('hi')
+chat_room.detach(user1)
+chat_room.add_message('bye')
