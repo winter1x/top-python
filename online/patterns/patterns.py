@@ -121,7 +121,6 @@ ConcreteProduct
 strategy
 interpreter
 visitor
-
 template method
 """
 
