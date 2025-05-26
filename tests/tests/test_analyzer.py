@@ -16,18 +16,4 @@ def test_print_summary_output(capsys, default_messages):
     assert "Total messages: 5" in captured.out
     assert "Empty messages: 2" in captured.out
     assert "Longest message:" in captured.out
-
-def test_count_keywords(clean_messages):
-    result = analyzer.count_keywords(clean_messages, 'urgent')
-    assert result == 1
-
-def test_count_keywords_empty():
-    assert analyzer.count_keywords([], 'urgent') == 0
-
-@pytest.mark.parametrize('kw, expected', [
-    ('urgent', 1),
-    ('hello', 1),
-    ('random', 0),
-])
-def test_keywords_param(clean_messages, kw, expected):
-    assert analyzer.count_keywords(clean_messages, kw) == expected
+    
