@@ -10,3 +10,6 @@ def get_average_length(messages):
     if not messages:
         return 0
     return sum(len(m) for m in messages) / len(messages)
+
+def count_keywords(messages, keywords):
+    return sum(1 for m in messages if keyword.lower() in m.lower())
