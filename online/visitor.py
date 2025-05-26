@@ -5,6 +5,18 @@
 выносит обработку объектов в отдельный класс - посетитель
 новое добавить отдельным классом
 объекты принимают посетителя и передают ему управление
+accept(visitor)
+visitor.visit(self)
+
+
+(+)
+добавляем новые операции, не меняя классы объектов
+упрощает поддержку и расширение кода
+соблюдает OCP - открыт для расширения, закрыт для модификации
+
+(-)
+может усложняет код, если объектов много
+новые типы объекта требуют добавления метода в Visitor
 """
 #плохой код
 """class Text:
@@ -37,7 +49,7 @@ class Text(Element):
         self.context = context
 
     def accept(self, visitor):
-        visitor.visit_text(self)
+        return visitor.visit_text(self)
 
 
 class Image(Element):
@@ -45,7 +57,7 @@ class Image(Element):
         self.file_name = file_name
 
     def accept(self, visitor):
-        visitor.visit_image(self)
+        return visitor.visit_image(self)
 
 class Visitor(ABC):
     @abstractmethod
@@ -69,8 +81,9 @@ for elem in elements:
     elem.accept(html_renderer)
 
 """
-JSONExporter
+реализуйтеп JSONExporter
 
+пример вывода
 {"type": "text", "content": "привет мир"}
 {"type": "image", "content": "cat.jpg"}
 """
@@ -78,11 +91,30 @@ import json
 
 class JSONExporter(Visitor):
     def visit_text(self, text):
-        return json.dumps({"type": "text", "content": text.content}, ensure_ascii=False)
+        return json.dumps({"type": "text", "context": text.context}, ensure_ascii=False)
 
     def visit_image(self, image):
-        return json.dumps({"type": "image", "content": image.file_name}, ensure_ascii=False)
+        return json.dumps({"type": "image", "context": image.file_name}, ensure_ascii=False)
 
 json_exporter = JSONExporter()
 for elem in elements:
     print(elem.accept(json_exporter))
+
+
+"""
+система обработки различных геометрических фигур (круг, прямоугольник, треугольник)
+разные операции (вычисление площади, периметра, "рисование в консоли")
+
+Circle, Rectangle, Triangle
+
+фигуры реализовывают интерфейс Shape
+def accept(self, visitor):
+
+интерфейс ShapeVisitor
+def visit_circle(self, circle):
+def visit_rectangle(self, rectangle):
+def visit_triangle(self, triangle):
+
+реализовать два конкретных посетителя
+AreaCalculator, ShapePrinter
+"""
