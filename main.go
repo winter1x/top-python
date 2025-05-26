@@ -1442,3 +1442,551 @@ func main() {
 
     fmt.Println(slice) // [20 30 40]
 }
+
+
+package main
+
+import "fmt"
+
+// Объявляем интерфейс
+type Speaker interface {
+    Speak()
+}
+
+// Объявляем структуру
+type Dog struct{}
+
+// Реализуем метод Speak для Dog
+func (d Dog) Speak() {
+    fmt.Println("Гав-гав!")
+}
+
+func main() {
+    var s Speaker     // переменная интерфейсного типа
+    s = Dog{}         // присваиваем значение структуры
+
+    s.Speak()         // вызов метода через интерфейс
+}
+
+
+
+type Person struct {
+    Name string
+    Age  int
+}
+
+
+type Mover interface {
+    Move()
+}
+
+
+
+var s Speaker
+s = Dog{}
+s.Speak()   // "Гав-гав!"
+
+s = Person{Name: "Иван"}
+s.Speak()   // "Привет, меня зовут Иван!"
+
+
+
+type Printer interface {
+    Print()
+}
+
+func SendToPrint(p Printer) {
+    p.Print()
+}
+
+
+
+
+type ИмяИнтерфейса interface {
+    Метод1(параметры) возвращаемые_значения
+    Метод2(параметры) возвращаемые_значения
+}
+
+type Speaker interface {
+    Speak()
+}
+
+
+
+type Animal interface {
+    Speak()
+    Walk()
+}
+
+
+
+
+package main
+
+import "fmt"
+
+// Объявляем интерфейс
+type Speaker interface {
+    Speak()
+}
+
+// Объявляем структуру
+type Human struct {
+    Name string
+}
+
+// Реализуем метод Speak
+func (h Human) Speak() {
+    fmt.Println("Привет, меня зовут", h.Name)
+}
+
+func main() {
+    var s Speaker       // переменная интерфейсного типа
+    s = Human{"Анна"}   // присваиваем значение, реализующее интерфейс
+
+    s.Speak()           // вызываем метод через интерфейс
+}
+
+
+
+
+type Dog struct {
+    Name string
+}
+
+func (d Dog) Speak() {
+    fmt.Println("Гав! Я", d.Name)
+}
+
+
+
+var s Speaker
+
+s = Human{"Анна"}
+s.Speak()    // Привет, меня зовут Анна
+
+s = Dog{"Шарик"}
+s.Speak()    // Гав! Я Шарик
+
+
+
+type Animal interface {
+    Speak()
+    Walk()
+}
+
+type Cat struct {
+    Name string
+}
+
+func (c Cat) Speak() {
+    fmt.Println("Мяу! Я", c.Name)
+}
+
+func (c Cat) Walk() {
+    fmt.Println(c.Name, "идёт гулять")
+}
+
+
+type Empty interface{}
+
+var _ Speaker = Human{}
+
+
+type Greeter interface {
+    Greet()
+}
+
+
+
+
+type Person struct {
+    Name string
+}
+
+func (p Person) Greet() {
+    fmt.Println("Привет! Меня зовут", p.Name)
+}
+
+type Dog struct {
+    Name string
+}
+
+func (d Dog) Greet() {
+    fmt.Println("Гав-гав! Я", d.Name)
+}
+
+type Robot struct {
+    Model string
+}
+
+func (r Robot) Greet() {
+    fmt.Println("Здравствуйте. Модель", r.Model, "включена.")
+}
+
+
+func SayHello(g Greeter) {
+    g.Greet()
+}
+
+
+
+
+func main() {
+    p := Person{Name: "Анна"}
+    d := Dog{Name: "Шарик"}
+    r := Robot{Model: "XJ-9"}
+
+    SayHello(p) // Привет! Меня зовут Анна
+    SayHello(d) // Гав-гав! Я Шарик
+    SayHello(r) // Здравствуйте. Модель XJ-9 включена.
+}
+
+
+
+type Transporter interface {
+    Move(passenger string)
+}
+
+
+
+type Car struct {
+    Brand string
+}
+
+func (c Car) Move(passenger string) {
+    fmt.Printf("%s едет в машине %s\n", passenger, c.Brand)
+}
+
+type Bicycle struct {
+    Color string
+}
+
+func (b Bicycle) Move(passenger string) {
+    fmt.Printf("%s едет на велосипеде цвета %s\n", passenger, b.Color)
+}
+
+
+
+func StartRide(t Transporter, name string) {
+    t.Move(name)
+}
+
+
+
+func main() {
+    car := Car{Brand: "Toyota"}
+    bike := Bicycle{Color: "красный"}
+
+    StartRide(car, "Олег")
+    StartRide(bike, "Ирина")
+}
+
+
+
+func main() {
+    p := Person{Name: "Алексей"}
+    d := Dog{Name: "Бим"}
+    r := Robot{Model: "RX-78"}
+
+    greeters := []Greeter{p, d, r}
+
+    for _, g := range greeters {
+        g.Greet()
+    }
+}
+
+
+
+func Describe(g Greeter) {
+    switch v := g.(type) {
+    case Person:
+        fmt.Println("Это человек по имени", v.Name)
+    case Dog:
+        fmt.Println("Это собака по кличке", v.Name)
+    case Robot:
+        fmt.Println("Это робот модели", v.Model)
+    default:
+        fmt.Println("Неизвестный тип")
+    }
+}
+
+
+interface{}
+
+
+func PrintAnything(v interface{}) {
+    fmt.Println("Значение:", v)
+}
+
+
+func main() {
+    PrintAnything(42)
+    PrintAnything("текст")
+    PrintAnything(true)
+    PrintAnything([]int{1, 2, 3})
+}
+
+
+
+func main() {
+    var x interface{} = "Привет"
+
+    s, ok := x.(string)
+    if ok {
+        fmt.Println("Строка:", s)
+    } else {
+        fmt.Println("Не строка")
+    }
+}
+
+
+
+type error interface {
+    Error() string
+}
+
+
+
+func Divide(a, b float64) (float64, error) {
+    if b == 0 {
+        return 0, fmt.Errorf("деление на ноль недопустимо")
+    }
+    return a / b, nil
+}
+
+
+
+func main() {
+    result, err := Divide(10, 0)
+    if err != nil {
+        fmt.Println("Ошибка:", err)
+        return
+    }
+    fmt.Println("Результат:", result)
+}
+
+
+type MyError struct {
+    Code int
+    Msg  string
+}
+
+func (e MyError) Error() string {
+    return fmt.Sprintf("Код ошибки %d: %s", e.Code, e.Msg)
+}
+
+
+func DoSomething() error {
+    return MyError{Code: 123, Msg: "Что-то пошло не так"}
+}
+
+
+func main() {
+    err := DoSomething()
+    if err != nil {
+        fmt.Println("Ошибка:", err)
+    }
+}
+
+
+
+
+type SuperService interface {
+    Save()
+    Load()
+    Delete()
+    Export()
+    Import()
+    Validate()
+    Print()
+}
+
+
+
+type Saver interface {
+    Save()
+}
+
+type Loader interface {
+    Load()
+}
+
+type Validator interface {
+    Validate()
+}
+
+
+
+type User struct {
+    ID   interface{}
+    Name interface{}
+    Age  interface{}
+}
+
+
+
+
+type User struct {
+    ID   int
+    Name string
+    Age  int
+}
+
+
+
+type FileService struct {}
+
+func (fs FileService) Save(path string, data []byte) error {
+    // сохранение в файл
+    return nil
+}
+
+
+
+type Saver interface {
+    Save(path string, data []byte) error
+}
+
+
+
+
+type FileService struct {}
+
+func (fs FileService) Save(...) error { ... }
+
+
+
+type Storage interface {
+    Save(path string, data []byte) error
+}
+
+
+
+
+
+
+
+
+
+package main
+
+import (
+    "fmt"
+    "math"
+)
+
+// 1. Объявляем интерфейс Shape
+type Shape interface {
+    // Метод, возвращающий площадь фигуры
+    Area() float64
+}
+
+// 2. Объявляем структуру Rectangle
+type Rectangle struct {
+    Width, Height float64
+}
+
+// 2. Объявляем структуру Circle
+type Circle struct {
+    Radius float64
+}
+
+// 3. Реализация метода Area для Rectangle
+func (r Rectangle) Area() float64 {
+    // Площадь прямоугольника = ширина * высота
+    return r.Width * r.Height
+}
+
+// 3. Реализация метода Area для Circle
+func (c Circle) Area() float64 {
+    // Площадь круга = π * r²
+    return math.Pi * c.Radius * c.Radius
+}
+
+// 4. Функция суммирует площади всех фигур из среза
+func TotalArea(shapes []Shape) float64 {
+    var total float64
+    for _, s := range shapes {
+        // Для каждого элемента вызываем метод Area()
+        total += s.Area()
+    }
+    return total
+}
+
+func main() {
+    // Создаём несколько фигур
+    rect1 := Rectangle{Width: 3, Height: 4}
+    rect2 := Rectangle{Width: 5, Height: 2}
+    circle1 := Circle{Radius: 2.5}
+
+    // Собираем их в срез интерфейсного типа
+    shapes := []Shape{rect1, rect2, circle1}
+
+    // Вычисляем и выводим суммарную площадь
+    fmt.Printf("Суммарная площадь: %.2f\n", TotalArea(shapes))
+}
+
+
+
+
+
+
+
+
+
+
+package main
+
+import "fmt"
+
+// 1. Объявляем интерфейс Notifier
+type Notifier interface {
+    // Метод отправки уведомления
+    Notify(message string)
+}
+
+// 2. Объявляем EmailNotifier
+type EmailNotifier struct {
+    EmailAddress string
+}
+
+// 2. Объявляем SMSNotifier
+type SMSNotifier struct {
+    PhoneNumber string
+}
+
+// 3. Реализация Notify для EmailNotifier
+func (e EmailNotifier) Notify(message string) {
+    // В реальном приложении здесь был бы SMTP-сервер
+    fmt.Printf("Email to %s: %s\n", e.EmailAddress, message)
+}
+
+// 3. Реализация Notify для SMSNotifier
+func (s SMSNotifier) Notify(message string) {
+    // Здесь мог бы быть вызов SMS-шлюза
+    fmt.Printf("SMS to %s: %s\n", s.PhoneNumber, message)
+}
+
+// 4. Универсальная функция для рассылки уведомлений
+func SendNotifications(nots []Notifier, msg string) {
+    for _, n := range nots {
+        // Для каждого Notifier вызываем Notify
+        n.Notify(msg)
+    }
+}
+
+func main() {
+    // 5. Создаём конкретные Notifier
+    email := EmailNotifier{EmailAddress: "user@example.com"}
+    sms := SMSNotifier{PhoneNumber: "+71234567890"}
+
+    // Собираем их в срез интерфейсного типа
+    notifiers := []Notifier{email, sms}
+
+    // Тестовое сообщение
+    message := "Ваш отчёт готов!"
+
+    // Отправляем всем сразу
+    SendNotifications(notifiers, message)
+}
