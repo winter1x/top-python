@@ -1990,3 +1990,42 @@ func main() {
     // Отправляем всем сразу
     SendNotifications(notifiers, message)
 }
+
+
+
+package main
+
+import (
+    "fmt"
+    "uuidlib" // воображаемая внешняя библиотека
+)
+
+func main() {
+    id := uuidlib.Generate()
+    fmt.Println("Сгенерированный UUID:", id)
+}
+
+
+package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("Привет, Go!")
+}
+
+
+import "example.org/somepkg"
+
+
+package main
+
+import (
+    "fmt"
+    "example.org/somepkg"
+)
+
+func main() {
+    result := somepkg.DoSomething()
+    fmt.Println(result)
+}
