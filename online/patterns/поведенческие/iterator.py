@@ -9,6 +9,17 @@ StopIteration
 
 iter()
 next()
+
+(+)
+разделение коллекции и способа перебора
+несколько разных способов перебора
+ленивая загрузка данных
+единый интерфейс
+
+(-)
+увеличивает сложноть кода если обход простой
+итераторы обычно не могут быть перебраны несколько раз
+не всегда эффективно по памяти
 """
 class Library:
     def __init__(self, books):
@@ -79,3 +90,9 @@ def book_generator(books):
 books = ["1984", "Гарри Поттер", "Игра престолов"]
 for book in book_generator(books):
     print(book)
+
+
+def book_generator(books):
+    for book in books:
+        yield book
+        
