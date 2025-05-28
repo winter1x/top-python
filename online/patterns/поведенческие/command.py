@@ -92,7 +92,7 @@ remote.press_button()
 """
 отмена команд (undo)
 """
-from abc import ABC, abstractmethod
+#from abc import ABC, abstractmethod
 
 class Command(ABC):
     @abstractmethod
@@ -165,7 +165,7 @@ command
 несколько устройств телевизор, кондиционер
 комбинировация команд в макрос например, Включить всё  включает сразу несколько устройств
 """
-from abc import ABC, abstractmethod
+#from abc import ABC, abstractmethod
 from collections import deque
 
 class Command(ABC):
@@ -340,3 +340,82 @@ Kitchen: получатель, который содержит логику вы
 Waiter: инициатор, который создает и выполняет команды, а также отменяет заказы, если необходимо.
 
 """
+
+#from abc import ABC, abstractmethod
+class Command(ABC):
+    @abstractmethod
+    def execute(self):
+        pass
+
+    @abstractmethod
+    def undo(self):
+        pass
+
+class Kitchen:
+    def make_coffee(self):
+        print("Кофе готовится")
+
+    def make_tea(self):
+        print("Чай готовится")
+
+    def make_sandwich(self):
+        print("Сэндвич готовится")
+
+class MakeCoffeeCommand(Command):
+    def __init__(self, kitchen: Kitchen):
+        self.kitchen = kitchen
+
+    def execute(self):
+        self.kitchen.make_coffee()
+
+    def undo(self):
+        print("Кофе отменен")
+
+class MakeTeaCommand(Command):
+    def __init__(self, kitchen: Kitchen):
+        self.kitchen = kitchen
+
+    def execute(self):
+        self.kitchen.make_tea()
+
+    def undo(self):
+        print("Чай отменен")
+
+class MakeSandwichCommand(Command):
+    def __init__(self, kitchen: Kitchen):
+        self.kitchen = kitchen
+
+    def execute(self):
+        self.kitchen.make_sandwich()
+
+    def undo(self):
+        print("Сэндвич отменен")
+
+class Waiter:
+    def __init__(self):
+        self.history = []
+
+    def take_order(self, command: Command):
+        command.execute()
+        self.history.append(command)
+
+    def cancel_last_order(self):
+        if self.history:
+            last_command = self.history.pop()
+            last_command.undo()
+        else:
+            print("Нет заказов для отмены")
+
+kitchen = Kitchen()
+
+coffee_cmd = MakeCoffeeCommand(kitchen)
+tea_cmd = MakeTeaCommand(kitchen)
+sandwich_cmd = MakeSandwichCommand(kitchen)
+
+waiter = Waiter()
+
+waiter.take_order(coffee_cmd)
+waiter.take_order(tea_cmd)
+waiter.take_order(sandwich_cmd)
+
+waiter.cancel_last_order()
