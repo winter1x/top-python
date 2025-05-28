@@ -352,70 +352,112 @@ class Command(ABC):
         pass
 
 class Kitchen:
-    def make_coffee(self):
-        print("Кофе готовится")
+    def make_coffee(self, with_milk=False):
+        drink = "Кофе с молоком" if with_milk else "Черный кофе"
+        print(f"{drink} готов")
 
-    def make_tea(self):
-        print("Чай готовится")
-
-    def make_sandwich(self):
-        print("Сэндвич готовится")
+    def make_tea(self, sugar=False):
+        tea = "Чай с сахаром" if sugar else "Чай без сахара"
+        print(f"{tea} готов")
+    
+    def make_sandwich(self, with_cheese=False):
+        sandwich = "Сэндвич с сыром" if with_cheese else "Сэндвич без сыра"
+        print(f"{sandwich} готов")
 
 class MakeCoffeeCommand(Command):
-    def __init__(self, kitchen: Kitchen):
+    def __init__(self, kitchen: Kitchen, with_milk: bool):
         self.kitchen = kitchen
+        self.with_milk = with_milk
 
     def execute(self):
-        self.kitchen.make_coffee()
+        self.kitchen.make_coffee(self.with_milk)
 
     def undo(self):
-        print("Кофе отменен")
+        print(f"Отмена: {'Кофе с молоком' if self.with_milk else 'Черный кофе'}.")
 
 class MakeTeaCommand(Command):
-    def __init__(self, kitchen: Kitchen):
+    def __init__(self, kitchen: Kitchen, sugar: bool):
         self.kitchen = kitchen
+        self.sugar = sugar
 
     def execute(self):
-        self.kitchen.make_tea()
+        self.kitchen.make_tea(self.sugar)
 
     def undo(self):
-        print("Чай отменен")
+        print(f"Отмена: {'Чай с сахаром' if self.sugar else 'Чай без сахара'}.")
 
 class MakeSandwichCommand(Command):
-    def __init__(self, kitchen: Kitchen):
+    def __init__(self, kitchen: Kitchen, with_cheese: bool):
         self.kitchen = kitchen
+        self.with_cheese = with_cheese
 
     def execute(self):
-        self.kitchen.make_sandwich()
+        self.kitchen.make_sandwich(self.with_cheese)
 
     def undo(self):
-        print("Сэндвич отменен")
+        print(f"Отмена: {'Сэндвич с сыром' if self.with_cheese else 'Сэндвич без сыра'}.")
+
+from collections import deque
 
 class Waiter:
     def __init__(self):
-        self.history = []
+        self.executed_commands = []
+        self.redo_stack = []
+        self.all_orders = []
+        self.delayed_qeque = deque()
 
     def take_order(self, command: Command):
         command.execute()
-        self.history.append(command)
+        self.executed_commands.append(command)
+        self.all_orders.append(command)
+        self.redo_stack.clear()
 
     def cancel_last_order(self):
-        if self.history:
-            last_command = self.history.pop()
+        if self.executed_commands:
+            last_command = self.executed_commands.pop()
             last_command.undo()
+            self.redo_stack.append(last_command)
         else:
             print("Нет заказов для отмены")
 
-kitchen = Kitchen()
+    def redo_last_order(self):
+        if self.redo_stack:
+            command = self.redo_stack.pop()
+            command.execute()
+            self.executed_commands.append(command)
+        else:
+            print("Нет команд для повторения")
 
-coffee_cmd = MakeCoffeeCommand(kitchen)
-tea_cmd = MakeTeaCommand(kitchen)
-sandwich_cmd = MakeSandwichCommand(kitchen)
+    def add_to_queue(self, command: Command):
+        print('добавление заказа в отложенную очередь')
+        self.delayed_qeque.append(command)
+        self.all_orders.append(command)
+
+    def process_queue(self):
+        print('обработка отложенной очереди')
+        while self.delayed_qeque:
+            command = self.delayed_qeque.popleft()
+            command.execute()
+            self.executed_commands.append(command)
+            self.all_orders.append(command)
+        
 
 waiter = Waiter()
+kitchen = Kitchen()
 
-waiter.take_order(coffee_cmd)
-waiter.take_order(tea_cmd)
-waiter.take_order(sandwich_cmd)
+cmd1 = MakeCoffeeCommand(kitchen, with_milk=True)
+cmd2 = MakeTeaCommand(kitchen, sugar=False)
+cmd3 = MakeSandwichCommand(kitchen, with_cheese=True)
+
+waiter.take_order(cmd1)
+waiter.take_order(cmd2)
+
+waiter.cancel_last_order()
+
+waiter.redo_last_order()
+
+waiter.add_to_queue(cmd3)
+
+waiter.process_queue()
 
 waiter.cancel_last_order()
