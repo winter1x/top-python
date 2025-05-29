@@ -17,12 +17,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django_blog import views
-from django_blog.views import IndexView, about
+from django_blog.views import IndexView, about, med_info_view
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    #path('admin/', admin.site.urls),
     path('', IndexView.as_view(), name='index'),
     path("about/", views.about),
     path('articles/', include("django_blog.article.urls")),
     #path(route, view)
+    #/users/~bob/books/
+    path('project/', include("django_blog.project.urls")),
+    path('users/<int:user_id>/pets/<int:pet_id>/med_info/', med_info_view),
 ]
