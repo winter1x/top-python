@@ -28,4 +28,9 @@ urlpatterns = [
     #/users/~bob/books/
     path('project/', include("django_blog.project.urls")),
     path('users/<int:user_id>/pets/<int:pet_id>/med_info/', med_info_view),
+    path(
+        '<int:user_id>/pets/<int:pet_id>/med_info/',
+        views.med_info_view,
+        name='pet_med_info',
+    ),
 ]
