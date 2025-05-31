@@ -18,7 +18,7 @@ def test_last():
     # проверка
 """
 
-# import pytest
+import pytest
 
 @pytest.fixture
 def result():
