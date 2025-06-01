@@ -19,14 +19,6 @@ html = """
 print(links)"""
 from bs4 import BeautifulSoup
 
-def test_extract_links():
-    with_links_path = 'tests/test_data/withLinks.html'
-    with open(with_links_path, 'r', encoding='utf-8') as file:
-        html = file.read()
-        links = extract_links(html)
-        assert len(links) == 2
-
-
 def extract_links(html):
     soup = BeautifulSoup(html, 'html.parser')
     return [link.get('href') for link in soup.find_all('a')]
@@ -45,4 +37,82 @@ def test_read():
     html = read_file('withLinks.html')
     links = extract_links(html)
     assert len(links) == 2
+
+html = """
+<div class="content">
+   <a href="/home">Главная</a>
+   <div class="nav">
+       <a href="/about">О нас</a>
+       <a href="/contacts">Контакты</a>
+   </div>
+   <div class="footer">
+       <a href="/terms">Условия</a>
+       <a href="https://external.com">Внешняя ссылка</a>
+   </div>
+</div>
+"""
+
+"""links = extract_links(html)
+assert len(links) == 5"""
+
+"""
+if send_greeting_email(user):
+    pass
+
+assert send_greeting_email(user) is True
+"""
+
+# user_names = read_user_names(path='/etc/passwd')
+
+"""def test_read_user_names():
+    passwd_path = 'fixtures/passwd'
+    user_name = read_user_names(passwd_path)
+    assert user_name == ['root', 'test_user']
+
+log = Logger('development.log')
+log('first message')
+log('second message')"""
+
+"""from mailer import send_email
+mailer.test = True
+
+def register_user(send=send_email, **params):
+    user = User(**params)
+    user.save()
+    send("registration", user)
+    return user.id
+
+def fake_send_email(*args, **kwargs):
+    print('sending...', args, kwargs)
+
+def test_register_user():
+    id = register_user(name='Mike', send=fake_send_email)
+    user = User.objects.get(id)
+    assert user.name == 'Mike'
     
+"""
+
+def test_create_file(tmp_path):
+    d = tmp_path / 'sub'
+    d.mkdir()
+    p = d / 'hello.txt'
+    p.write_text('hello')
+
+    assert p.read_text() == 'hello'
+    assert len(list(tmp_path.iterdir())) == 1
+
+def my_fakefs_test(fs):
+    fs.create_file('/var/data/xx1.txt')
+    assert os.path.exists('/var/data/xx1.txt')
+
+"""
+@pytest.fixture(autouse=True)
+def transaction(conection):
+    conection.begin()
+    yield
+    conection.rollback()
+
+def test_register_user():
+    id = register_user(name='Mike')
+    user = User.objects.get(id)
+    assert user.name == 'Mike'"""
