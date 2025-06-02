@@ -224,3 +224,46 @@ class PersonalDataFilter(ContentFilter):
         content = re.sub(r'\+7\(\d{3}\)-\d{3}-\d{2}-\d{2}', '[телефон удален]', content)
         return super().handle(content)
 
+class SpamFilter(ContentFilter):
+    def handle(self, content: str) -> str:
+        print('Проверка на спам')
+
+        words = content.lower().split()
+        for word in set(words):
+            if words.count(word) > 3:
+                return 'Сообщение заблокировано'
+
+        return super().handle(content)
+
+class LengthFilter(ContentFilter):
+    def handle(self, content: str) -> str:
+        print('Проверка на длину сообщения')
+        if len(content) > 100:
+            return 'Сообщение слишком длинное'
+
+        return super().handle(content)
+
+def run_filter_chain(content: str):
+    f1 = ProfanityFilter()
+    f2 = SpamFilter()
+    f3 = LengthFilter()
+    f4 = PersonalDataFilter()
+
+    f1.set_next(f3).set_next(f2).set_next(f4)
+
+    result = f1.handle(content)
+    print("Результат фильтрации:", result)
+    print()
+
+messages = [
+    "Я люблю программирование!",
+    "Я буду говорить о плохом слово.",
+    'спам спам спам спам',
+    "длинное" * 100,
+    "Я получил важное сообщение на адрес myemail@gmail.com",
+    "Мой номер телефона: 12345678901",
+    "Мой номер телефона: +7(999)-123-45-67",
+]
+
+for msg in messages:
+    run_filter_chain(msg)
