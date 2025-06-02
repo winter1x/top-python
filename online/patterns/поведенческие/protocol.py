@@ -149,3 +149,51 @@ UsernameValidator - валидация "username" - наличие, длинна
 
 run_validators(data: dict, validators: List[DataValidator]) -> List[str]
 """
+#from typing import Protocol
+from typing import List
+import re
+
+class DataValidator(Protocol):
+    def validate(self, data: dict) -> bool:
+        ...
+
+class EmailValidator:
+    def validate(self, data: dict) -> bool:
+        email = data.get('email', '')
+        return isinstance(email, str) and re.match(r'\S+@\S+\.\S+', email)
+
+class AgeValidator:
+    def validate(self, data: dict) -> bool:
+        age = data.get('age')
+        return isinstance(age, int) and 0 <= age <= 120
+
+class UsernameValidator:
+    def validate(self, data: dict) -> bool:
+        username = data.get('username', '')
+        return isinstance(username, str) and username.isalnum() and 3 <= len(username) <= 20
+
+def run_validators(data: dict, validators: List[DataValidator]) -> List[str]:
+    errors = []
+    for validator in validators:
+        if not validator.validate(data):
+            errors.append(f"Ошибка валидации: {validator.__class__.__name__}")
+    return errors
+
+validators = [EmailValidator(), AgeValidator(), UsernameValidator()]
+
+data1 = {'email': 'user@example.com', 'age': 30, 'username': 'user123'}
+data2 = {'email': 'invalid_email', 'age': 150, 'username': 'user!'}
+data3 = {'email': 'invalid_email', 'age': 25, 'username': 'validusername'}
+data4 = {'email': '', 'age': None, 'username': ''}
+
+for i, data in enumerate([data1, data2, data3, data4], start=1):
+    print(f"Данные {i}:")
+    result = run_validators(data, validators)
+    if not result:
+        print("Данные валидны.")
+    else:
+        print("Ошибки валидации:")
+        for error in result:
+            print(error)
+    print()
+    
