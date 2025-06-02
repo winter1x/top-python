@@ -5,17 +5,23 @@ mypy
 """
 
 """
+преимущества:
 полиформизм без наследования
 статическая проверка типов (mypy)
+гибкость и масштабируемость
+разделение поведения и структуры
 """
 
 """
+Возможности:
 методы
 свойства
 операторные методы (магические)
+@property
 """
 
 """
+при исполозновании:
 не требует явного наследования
 можем наследовать явно для intellisense
 """
@@ -47,6 +53,13 @@ class PrintCommand:
         self.text = text
 
     def execute(self) -> None:
+        print(self.text)
+
+class SaveCommand:
+    def __init__(self, text: str):
+        self.text = text
+        
+    def execute(self) -> None:
         with open("output.txt", 'w') as f:
             f.write(self.text)
 
@@ -58,6 +71,7 @@ class HasName(Protocol):
     def name(self) -> str:
         ...
 
+#from typing import Protocol, Iterable
 class SequenceLike(Protocol):
     def __getitem__(self, index: int) -> str:
         ...
@@ -68,3 +82,70 @@ def print_elements(s: SequenceLike):
     for i in range(len(s)):
         print(s[i])
 
+"""
+protocol
+протокол Drawable
+классы Circle, Square, Image - для каждого draw()
+без наследования
+"""
+
+from typing import Protocol
+
+class Drawable(Protocol):
+    def draw(self) -> None:
+        ...
+
+class Circle:
+    def __init__(self, radius: int):
+        self.radius = radius
+
+    def draw(self) -> None:
+        print(f"рисуем с радиус {self.radius}")
+
+class Square:
+    def __init__(self, side: int):
+        self.side = side
+
+    def draw(self) -> None:
+        print(f"квадрат с сторона {self.side}")
+
+class TextBlock:
+    def __init__(self, text: str):
+        self.text = text
+
+    def draw(self) -> None:
+        print(f"текст {self.text}")
+
+def render_scene(drawables: list[Drawable]) -> None:
+    print('начало')
+    for drawable in drawables:
+        drawable.draw()
+    print('конец')
+
+
+circle1 = Circle(10)
+square1 = Square(5)
+text1 = TextBlock("hi")
+
+scene_objects = [circle1, square1, text1]
+
+render_scene(scene_objects)
+
+"""
+модуль проверки данных
+json файлы
+csv файлы
+api ответы
+
+определить интерфейс валидатора 
+
+DataValidator
+    validate
+
+EmailValidator - валидация - проверка наличия и формат "email"
+AgeValidator - валидация "age" - наличие, положительное число, меньше 0 - 120
+UsernameValidator - валидация "username" - наличие, длинна больше 3 символов до 20, 
+наличие только буквенно-цифровых символов
+
+run_validators(data: dict, validators: List[DataValidator]) -> List[str]
+"""
