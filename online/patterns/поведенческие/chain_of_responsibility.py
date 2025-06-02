@@ -186,3 +186,41 @@ print(payment.handle(order4))
 конкретные фильтры
     ProfanityFilter, SpamFilter, LengthFilter, PersonalDataFilter
 """
+
+import re
+
+class ContentFilter:
+    def __init__(self):
+        self._next_filter = None
+
+    def set_next(self, next_filter):
+        self._next_filter = next_filter
+        return next_filter
+
+    def handle(self, content: str) -> str:
+        if self._next_filter:
+            return self._next_filter.handle(content)
+        return content
+
+class ProfanityFilter(ContentFilter):
+    def handle(self, content: str) -> str:
+        print('Проверка на цензуру')
+        bad_words = ['плохое', 'слово']
+
+        def mask_word(match):
+            word = match.group()
+            return '*' * len(word)
+
+        for word in bad_words:
+            content = re.sub(rf'\b{word}\b', mask_word, content, flags=re.IGNORECASE)
+
+        return super().handle(content)
+
+class PersonalDataFilter(ContentFilter):
+    def handle(self, content: str) -> str:
+        print('Проверка на чувствительные данные')
+        content = re.sub(r'\b\S+@\S+\b', '[email удален]', content)
+        content = re.sub(r'\b\d{11}\b', '[телефон удален]', content)
+        content = re.sub(r'\+7\(\d{3}\)-\d{3}-\d{2}-\d{2}', '[телефон удален]', content)
+        return super().handle(content)
+
