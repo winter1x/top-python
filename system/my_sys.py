@@ -83,3 +83,51 @@ file_filder.py
 
 os.walk()
 """
+
+import os
+import sys
+
+def print_error(message):
+    sys.stderr.write(f"Ошибка: {message}\n")
+    sys.exit(1)
+
+def main():
+    if len(sys.argv) < 3:
+        print_error("Необходимо передать два аргумента: путь к папке и расширение файлов.")
+
+    directory = sys.argv[1]
+    extension = sys.argv[2]
+
+    if not os.path.exists(directory):
+        print_error(f"Путь '{directory}' не существует.")
+    if not os.path.isdir(directory):
+        print_error(f"Путь '{directory}' не является директорией.")
+
+    total_files = 0
+    total_size = 0
+    matched_files = []
+
+    for root, dirs, files in os.walk(directory):
+        for name in files:
+            if name.endswith(extension):
+                file_path = os.path.join(root, name)
+                try:
+                    size = os.path.getsize(file_path)
+                except OSError:
+                    continue
+
+                total_files += 1
+                total_size += size
+
+                relative_path = os.path.relpath(file_path, start=directory)
+                matched_files.append((relative_path, size))
+
+    print(f'Найдено {total_files} файлов с расширением "{extension}":')
+
+    for path, size in matched_files:
+        print(f"- {os.path.join(directory, path)} ({size} байт)")
+
+    print(f"\nОбщий размер: {total_size} байт")
+
+if __name__ == "__main__":
+    main()
