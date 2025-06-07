@@ -55,10 +55,16 @@ elif os.name == 'posix':
 else:
     print('Other')
     
-print(os.system('dir'))
+# print(os.system('dir'))
 
 
 """
 проходит по папке, ищет файлы с расширением .txt, выводит их размер
 (предполагается 4 строчки кода)
 """
+folder = '.'
+
+for name in os.listdir(folder):
+    path = os.path.join(folder, name)
+    if os.path.isfile(path) and name.endswith('.txt'):
+        print(f'{path}: {os.path.getsize(path)}')
