@@ -64,18 +64,52 @@ def sleeper(seconds, process_number):
     time.sleep(seconds)
     print(f"[{process_number}] Время проснулся!")
 
+# if __name__ == '__main__':
+#     delays = [3, 2, 4, 1, 5]
+#     processes = []
+
+#     for i, delay in enumerate(delays, start=1):
+#         p = Process(target=sleeper, args=(delay, i))
+#         processes.append(p)
+#         print(f"[{i}] Процесс запущен!")
+#         p.start()
+    
+#     for p in processes:
+#         p.join()
+
+#     print("Все процессы завершены!")
+    
+# 4 параллельных процесса. Каждый находит сумму квадратов в диапазоне
+# from multiprocessing import Process
+# import time
+
+def sum_of_squares(start, end):
+    print(f"процесс считает сумму квадратов от {start} до {end}")
+    t1 = time.time()
+    result = sum(x * x for x in range(start, end + 1))
+    t2 = time.time()
+    print(f"сумма квадратов от {start} до {end} равна {result} (время работы {t2 - t1} сек)")
+
 if __name__ == '__main__':
-    delays = [3, 2, 4, 1, 5]
+    ranges = [
+        (1, 250_000),
+        (250_001, 500_000),
+        (500_001, 750_000),
+        (750_001, 1_000_000)
+    ]
+
     processes = []
 
-    for i, delay in enumerate(delays, start=1):
-        p = Process(target=sleeper, args=(delay, i))
+    start_time = time.time()
+
+    for r in ranges:
+        p = Process(target=sum_of_squares, args=r)
         processes.append(p)
-        print(f"[{i}] Процесс запущен!")
+        print("процесс запущен для диапазона", r)
         p.start()
-    
+
     for p in processes:
         p.join()
 
-    print("Все процессы завершены!")
-    
+    print("все процессы завершены")
+    print("общее время работы", time.time() - start_time)
