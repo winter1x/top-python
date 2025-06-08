@@ -45,30 +45,7 @@ def worker(n):
 ожидает завершения / ожидаемый (после p.join() - блокирует, пока не завершится)
 завершен (после завршения функции)
 """
-if __name__ == '__main__':
-    # p = Process(target=print_square, args=(2,)
-    # p = Process(target=show_info, name='процесс-1')
-    # p = MyProcess("текст")
-    # p.start()
-    # p.join()
-    print('-' * 40)
-    processes = []
-    for i in range(5):
-        p = Process(target=worker, args=(i,))
-        processes.append(p)
-        p.start()
-        print(p.name, p.is_alive())
-    print('-' * 40)
-    time.sleep(1)
-    for p in processes:
-        print(p.name, p.is_alive())
-        if p.is_alive():
-            p.terminate()
-            print("процесс {0} остановлен".format(p.name))
-            
-    for p in processes:
-        p.join()
-        print("процесс {0} завершен".format(p.name))
+
 
     
 """
@@ -79,3 +56,26 @@ if __name__ == '__main__':
 использовать args
 использовать join
 """
+# from multiprocessing import Process
+# import time
+
+def sleeper(seconds, process_number):
+    print(f"[{process_number}] Сон {seconds} секунд...")
+    time.sleep(seconds)
+    print(f"[{process_number}] Время проснулся!")
+
+if __name__ == '__main__':
+    delays = [3, 2, 4, 1, 5]
+    processes = []
+
+    for i, delay in enumerate(delays, start=1):
+        p = Process(target=sleeper, args=(delay, i))
+        processes.append(p)
+        print(f"[{i}] Процесс запущен!")
+        p.start()
+    
+    for p in processes:
+        p.join()
+
+    print("Все процессы завершены!")
+    
