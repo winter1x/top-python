@@ -97,3 +97,22 @@ file.stat().st_mtime - время последнего изменения фай
 datetime.fromtimestamp() - для даты изменения
 datetime.now() - текущая дата и время
 """
+
+#from pathlib import Path
+from datetime import datetime, timedelta
+
+target_dir = Path('.')
+min_size = 10_000 # минимальный размер файла в байтах
+days = 30 # количество дней
+
+now = datetime.now()
+time_limit = now - timedelta(days=days)
+
+for file in target_dir.rglob('*'):
+    if file.is_file():
+        stat = file.stat()
+        file_size = stat.st_size
+        file_mtime = datetime.fromtimestamp(stat.st_mtime)
+
+        if file_size >= min_size and file_mtime >= time_limit:
+            print(f"- {file.resolve()}\n  размер: {file_size} байт\n  время изменения: {file_mtime}")
