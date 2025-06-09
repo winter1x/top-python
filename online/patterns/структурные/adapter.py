@@ -85,3 +85,35 @@ old = OldPaymentProcessor()
 new = NewPaymentAdapter(NewPaymentProvider())
 process_payment(old, 150.0)
 process_payment(new, 150.0)
+
+"""
+реализовано
+Rectangle (координаты левого верхнего угла, ширину и высоту)
+
+надо добавить
+LegacySquare (координаты центра и длина стороны)
+
+Rectangle 
+    x 
+    y
+    width
+    height
+LegacySquare
+    cx
+    cy
+    side
+
+создать интерфейс или базовый класс Drawable с draw()
+Rectangle реализует Drawable
+Reactangle.draw()
+
+SquareAdapter принимает объект LegacySquare и реализует интерфейс Drawable
+"""
+shapes = [
+    Rectangle(0, 0, 100, 50),
+    SquareAdapter(LegacySquare(50, 50, 40))
+]
+
+for shape in shapes:
+    shape.draw()
+    
