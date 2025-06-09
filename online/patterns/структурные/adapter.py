@@ -109,6 +109,43 @@ Reactangle.draw()
 
 SquareAdapter принимает объект LegacySquare и реализует интерфейс Drawable
 """
+
+
+from abc import ABC, abstractmethod
+class Drawable(ABC):
+    @abstractmethod
+    def draw(self):
+        pass
+
+class Rectangle(Drawable):
+    def __init__(self, x, y, width, height):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+
+    def draw(self):
+        print(f"рисуем прямоугольник ({self.x}, {self.y}, {self.width}, {self.height})")
+
+class LegacySquare:
+    def __init__(self, cx, cy, side):
+        self.cx = cx
+        self.cy = cy
+        self.side = side
+    
+class SquareAdapter(Drawable):
+    def __init__(self, legacy_square: LegacySquare):
+        self.legacy_square = legacy_square
+    
+    def draw(self):
+        half_side = self.legacy_square.side / 2
+        x = self.legacy_square.cx - half_side
+        y = self.legacy_square.cy - half_side
+        width = self.legacy_square.side
+        height = self.legacy_square.side
+
+        print(f"рисуем квадрат ({x}, {y}, {width}, {height})")
+
 shapes = [
     Rectangle(0, 0, 100, 50),
     SquareAdapter(LegacySquare(50, 50, 40))
@@ -116,4 +153,3 @@ shapes = [
 
 for shape in shapes:
     shape.draw()
-    
