@@ -1,13 +1,19 @@
 """
-абстракция
-расширенная абстракция
-интерфейс реализации
-конкретные реализации
+Структура:
+abstraction абстракция
+refined abstraction расширенная абстракция
+impementor интерфейс реализации
+concreteImplementor конкретные реализации
 
-adapter
-decorator
-strategy
-absract factory
+не используем
+если реализация будет только одна
+расширение абстракции и реализации может быть зависимым или небольшим
+если использование усложнит понимание
+
+adapter соединяет интерфейсы
+decorator добавляет новые функции 
+strategy замена поведения
+absract factory может использоваться вместе с bridge
 """
 class DrawingApi:
     def draw_circle(self, x: int, y: int, radius: int):
@@ -43,3 +49,78 @@ circle2 = Circle(100, 200, 50, DirectXAPI())
 
 circle1.draw()
 circle2.draw()
+
+"""
+bridge
+email, sms, pushchannel
+типы уведомлений
+ошибки регистрация подтверждение
+"""
+
+class NotifierChannel:
+    def send_message(self, recipient: str, message: str):
+        raise NotImplementedError("dfve")
+
+class EmailChannel(NotifierChannel):
+    def send_message(self, recipient: str, message: str):
+        print(f"[EMAIL] {recipient} {message}")
+
+class SMSChannel(NotifierChannel):
+    def send_message(self, recipient: str, message: str):
+        print(f"[SMS] {recipient} {message}")
+
+class PushChannel(NotifierChannel):
+    def send_message(self, recipient: str, message: str):
+        print(f"[PUSH] {recipient} {message}")
+
+class Notification:
+    def __init__(self, channel: NotifierChannel):
+        self.channel = channel
+
+    def notify(self, recipient: str):
+        raise NotImplementedError
+
+class ErrorNotification(Notification):
+    def notify(self, recipient: str):
+        message = "ErrorNotification"
+        self.channel.send_message(recipient, message)
+
+class RegistrationNotification(Notification):
+    def notify(self, recipient: str):
+        message = "RegistrationNotification"
+        self.channel.send_message(recipient, message)
+
+class ConfirmationNotification(Notification):
+    def notify(self, recipient: str):
+        message = "ConfirmationNotification"
+        self.channel.send_message(recipient, message)
+
+email = EmailChannel()
+sms = SMSChannel()
+push = PushChannel()
+
+notif1 = ErrorNotification(email)
+notif2 = RegistrationNotification(sms)
+notif3 = ConfirmationNotification(push)
+
+notif1.notify('почта')
+notif2.notify('телефон')
+notif3.notify('юзер')
+
+"""
+Система тестирования
+
+иерарахия вопросов
+Question def check_answer(self, user_answer):
+SingleChoiceQuestion один правильный ответ
+MultipleChoiceQuestion несколько правильных ответов
+
+интерфейс проверок
+AnswerChecker def check()
+
+реализации
+StrictChecker точное совпадение
+PartialChecker частичное совпадение
+
+Question содержит ссылку на AnswerChecker
+"""
