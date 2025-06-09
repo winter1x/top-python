@@ -17,9 +17,13 @@ target - целевой интерфейс
 adaptee - адаптируемый объект
 adapter
 
-facade
-decorator
-bridge
+не используем когда:
+можем поменять старый код
+приходится адаптировать много объектов/методов
+
+facade - не меняет интерфейс
+decorator - добавляет функционал
+bridge - отделяет абстракцию от реализации
 """
 
 class OldPrinter:
@@ -46,3 +50,38 @@ client_code(old)
 new = NewPrinter()
 adapter = PrintAdapter(new)
 client_code(adapter)
+
+"""
+adapter
+старый интерфейс - pay(amount: float)
+новый провайдер, интерфейс - make_payment(data: dict)
+
+OldPaymentProcessor
+NewPaymentProvider
+NewPaymentAdapter
+process_payment(process, amount)
+"""
+class OldPaymentProcessor:
+    def pay(self, amount: float):
+        print(f'[old] Оплата {amount} руб.')
+
+class NewPaymentProvider:
+    def make_payment(self, data: dict):
+        amount = data.get('amount')
+        print(f'[new] Оплата {amount} руб.')
+
+class NewPaymentAdapter():
+    def __init__(self, new_provider: NewPaymentProvider):
+        self.new_provider = new_provider
+
+    def pay(self, amount: float):
+        payment_data = {'amount': amount}
+        self.new_provider.make_payment(payment_data)
+
+def process_payment(processor, amount):
+    processor.pay(amount)
+
+old = OldPaymentProcessor()
+new = NewPaymentAdapter(NewPaymentProvider())
+process_payment(old, 150.0)
+process_payment(new, 150.0)
