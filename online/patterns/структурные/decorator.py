@@ -132,3 +132,63 @@ VipAccessDecorator - цена * 1.5 с вип доступом
 InsuranceDecorator - цена + 100 со страховкой
 LastMinuteDecorator - цена * 1.3 за срочную покупку
 """
+
+from abc import ABC, abstractmethod
+
+class Ticket(ABC):
+    @abstractmethod
+    def get_price(self) -> float:
+        pass
+
+    @abstractmethod
+    def get_description(self) -> str:
+        pass
+
+class BaseTicket(Ticket):
+    def __init__(self, base_price: float):
+        self.base_price = base_price
+
+    def get_price(self) -> float:
+        return self.base_price
+
+    def get_description(self) -> str:
+        return f"Base price: {self.base_price}"
+
+class TicketDecorator(Ticket):
+    def __init__(self, wrapped_ticket: Ticket):
+        self.wrapped_ticket = wrapped_ticket
+
+    def get_price(self) -> float:
+        return self.wrapped_ticket.get_price()
+
+    def get_description(self) -> str:
+        return self.wrapped_ticket.get_description
+
+class VipAccessDecorator(TicketDecorator):
+    def get_price(self) -> float:
+        return self.wrapped_ticket.get_price() * 1.5
+
+    def get_description(self) -> str:
+        return f"{self.wrapped_ticket.get_description()}, VIP access"
+
+class InsuranceDecorator(TicketDecorator):
+    def get_price(self) -> float:
+        return self.wrapped_ticket.get_price() + 100
+
+    def get_description(self) -> str:
+        return f"{self.wrapped_ticket.get_description()}, Insurance"
+
+class LastMinuteDecorator(TicketDecorator):
+    def get_price(self) -> float:
+        return self.wrapped_ticket.get_price() * 1.3
+
+    def get_description(self) -> str:
+        return f"{self.wrapped_ticket.get_description()}, Last minute"
+
+ticket = BaseTicket(base_price=100)
+ticket = VipAccessDecorator(ticket)
+ticket = InsuranceDecorator(ticket)
+ticket = LastMinuteDecorator(ticket)
+
+print(f"Price: {ticket.get_price()}")
+print(f"Description: {ticket.get_description()}")
