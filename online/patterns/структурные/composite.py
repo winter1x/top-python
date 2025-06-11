@@ -122,8 +122,86 @@ class Expression def evaluate
 Addition, Subtraction, Multiplication, Division принимают два дочерних выражения, которые реализуют интерфейс Expression
 
 """ 
+
+
+from abc import ABC, abstractmethod
+
+class Expression(ABC):
+    @abstractmethod
+    def evaluate(self) -> float:
+        pass
+
+    @abstractmethod
+    def __str__(self) -> str:
+        pass
+
+class Number(Expression):
+    def __init__(self, value: float):
+        self.value = value
+    
+    def evaluate(self) -> float:
+        return self.value
+    
+    def __str__(self) -> str:
+        return str(self.value)
+
+class Addition(Expression):
+    def __init__(self, left: Expression, right: Expression):
+        self.left = left
+        self.right = right
+    
+    def evaluate(self) -> float:
+        return self.left.evaluate() + self.right.evaluate()
+    
+    def __str__(self) -> str:
+        return f"({self.left} + {self.right})"
+
+class Subtraction(Expression):
+    def __init__(self, left: Expression, right: Expression):
+        self.left = left
+        self.right = right
+    
+    def evaluate(self) -> float:
+        return self.left.evaluate() - self.right.evaluate()
+    
+    def __str__(self) -> str:
+        return f"({self.left} - {self.right})"
+
+class Multiplication(Expression):
+    def __init__(self, left: Expression, right: Expression):
+        self.left = left
+        self.right = right
+    
+    def evaluate(self) -> float:
+        return self.left.evaluate() * self.right.evaluate()
+    
+    def __str__(self) -> str:
+        return f"({self.left} * {self.right})"
+
+class Division(Expression):
+    def __init__(self, left: Expression, right: Expression):
+        self.left = left
+        self.right = right
+    
+    def evaluate(self) -> float:
+        divisor = self.right.evaluate()
+        if divisor == 0:
+            raise ZeroDivisionError("Деление на ноль невозможно")
+        return self.left.evaluate() / divisor
+    
+    def __str__(self) -> str:
+        return f"({self.left} / {self.right})"
+
 expr = Multiplication(
     Addition(Number(2), Number(3)),
     Subtraction(Number(4), Number(1))
 )
+"""
+        *
+       / \
+     +     -
+     / \  / \
+    2   3 4   1
+
+"""
 print(expr.evaluate()) #15

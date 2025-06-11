@@ -124,3 +124,67 @@ PartialChecker частичное совпадение
 
 Question содержит ссылку на AnswerChecker
 """
+
+from abc import ABC, abstractmethod
+
+class AnswerChecker(ABC):
+    @abstractmethod
+    def check(self, correct_answer, user_answer) -> bool:
+        pass
+
+class StrictChecker(AnswerChecker):
+    def check(self, correct_answer, user_answer) -> bool:
+        return correct_answer == user_answer
+
+class PartialChecker(AnswerChecker):
+    def check(self, correct_answer, user_answer) -> bool:
+        if not isinstance(correct_answer, set) or not isinstance(user_answer, set):
+            return False
+        intersection = correct_answer & user_answer
+        return len(intersection) / len(user_answer) >= 0.5
+
+class Question(ABC):
+    def __init__(self, text: str, correct_answer, checker: AnswerChecker):
+        self.text = text
+        self.correct_answer = correct_answer
+        self.checker = checker
+
+    @abstractmethod
+    def check_answer(self, user_answer) -> bool:
+        pass
+
+class SingleChoiceQuestion(Question):
+    def check_answer(self, user_answer) -> bool:
+        return self.checker.check(self.correct_answer, user_answer)
+
+class MultipleChoiceQuestion(Question):
+    def check_answer(self, user_answer) -> bool:
+        return self.checker.check(self.correct_answer, user_answer)
+    
+q1 = SingleChoiceQuestion(
+    'Какой язык программирования мы изучаем?',
+    'Python',
+    checker=StrictChecker()
+)
+
+q2 = MultipleChoiceQuestion(
+    'выбрать нечетные',
+    correct_answer={1, 3, 5},
+    checker=PartialChecker()
+)
+
+q3 = MultipleChoiceQuestion(
+    'выбрать четные',
+    correct_answer={2, 4, 6},
+    checker=StrictChecker()
+)
+
+print(q1.check_answer('Python'))
+print(q1.check_answer('sql'))
+
+print(q2.check_answer({3, 5}))
+print(q2.check_answer({3, 5, 1}))
+print(q2.check_answer({7}))
+
+print(q3.check_answer({2, 4, 6}))
+print(q3.check_answer({2, 4}))
