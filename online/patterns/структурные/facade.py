@@ -159,3 +159,34 @@ InsuranceService buy_insurance()
 
 TravelFacade: book_all()
 """
+class FlightBooking:
+    def book_flight(self):
+        print("Бронирование авиабилета")
+
+class HotelBooking:
+    def book_hotel(self):
+        print("Бронирование отеля")
+
+class TransferService:
+    def book_transfer(self):
+        print("Бронирование автобуса")
+
+class InsuranceService:
+    def buy_insurance(self):
+        print("Покупка страховки")
+
+class TravelFacade:
+    def __init__(self):
+        self.flight_booking = FlightBooking()
+        self.hotel_booking = HotelBooking()
+        self.transfer_service = TransferService()
+        self.insurance_service = InsuranceService()
+
+    def book_all(self):
+        self.flight_booking.book_flight()
+        self.hotel_booking.book_hotel()
+        self.transfer_service.book_transfer()
+        self.insurance_service.buy_insurance()
+        
+travel = TravelFacade()
+travel.book_all()
