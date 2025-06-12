@@ -162,3 +162,36 @@ StickerFactory хранит и переиспользует StickerType
 StickerMessage содержит ссылку на StickerType внеш
 
 """
+class StickerType:
+    def __init__(self, name: str, image_path: str):
+        self.name = name
+        self.image_path = image_path
+    
+    def display(self, sender: str, receiver: str, timestamp: str):
+        print(f"{timestamp} {sender} -> {receiver}: {self.name}")
+        print(f"отображается изображение {self.image_path}")
+
+class StickerFactory:
+    _stickers: dict[str, StickerType] = {}
+
+    @classmethod
+    def get_sticker_type(cls, name: str, image_path: str) -> StickerType:
+        if name not in cls._stickers:
+            print(f"[Factory] новый стикер: {name}")
+            cls._stickers[name] = StickerType(name, image_path)
+        else:
+            print(f"[Factory] существующий стикер: {name}")
+        return cls._stickers[name]
+
+class StickerMessage:
+    def __init__(self, sticker_type: StickerType, sender: str, receiver: str, timestamp: str):
+        self.sticker_type = sticker_type
+        self.sender = sender
+        self.receiver = receiver
+        self.timestamp = timestamp
+    
+    def send(self):
+        self.sticker_type.display(self.sender, self.receiver, self.timestamp)
+
+from datetime import datetime
+import random
