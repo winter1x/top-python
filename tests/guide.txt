@@ -6,13 +6,13 @@ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | ie
 
 uv init
 
-добавить в pyproject.toml
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
 uv add --dev pytest
 
-скопировать и добавить папки my_pytest, tests
+скопировать и добавить папки src, tests
 
 uv run pytest
+
+
+uv pip install --group dev
+uv pip install pytest pytest-cov
+uv run pytest --cov
