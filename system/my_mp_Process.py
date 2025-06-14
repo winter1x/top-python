@@ -392,3 +392,66 @@ Queue
 1) один или несколько производителей, которые генерируют задания (случайные числа от 1 до 100)
 2) один или несколько потребителей получают задания из очереди и выполняют их обработку (простое что-то)
 """
+
+#from multiprocessing import Queue, Process, current_process
+#import time
+import random
+import math
+
+def is_prime(n):
+    if n <= 1:
+        return False
+    if n <= 2:
+        return True
+    if n % 2 == 0:
+        return False
+    for i in range(3, int(math.sqrt(n)) + 1, 2):
+        if n % i == 0:
+            return False
+    return True
+
+def producer(q, count):
+    for _ in range(count):
+        num = random.randint(1, 100)
+        print(f"[{current_process().name}] Производитель создал задание {num}")
+        q.put(num)
+        time.sleep(random.uniform(0.1, 0.3))
+    q.put(None)
+    print(f"[{current_process().name}] Производитель отправил сигнал завершения")
+
+def consumer(q):
+    while True:
+        num = q.get()
+        if num is None:
+            q.put(None)
+            print(f"[{current_process().name}] Потребитель получил сигнал завершения")
+            break
+        result = is_prime(num)
+        print(f"[{current_process().name}] Потребитель обработал задание {num}, результат {result}")
+
+if __name__ == '__main__':
+    q = Queue()
+    producers = [
+        Process(target=producer, args=(q, 10), name="Производитель 1"),
+        Process(target=producer, args=(q, 10), name='Производитель 2'),
+    ]
+
+    consumers = [
+        Process(target=consumer, args=(q,), name=f"Потребитель {i+1}")
+        for i in range(3)
+    ]
+
+    for p in producers:
+        p.start()
+
+    for c in consumers:
+        c.start()
+
+    for p in producers:
+        p.join()
+
+    for c in consumers:
+        c.join()
+    
+    print("Все процессы завершены")
+    
