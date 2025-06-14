@@ -7,8 +7,28 @@ Queue - очередь (IPC) (FIFO) (Pipe, Lock, Semaphore, Thread)
     процессы должны параллельно менять общую структуру
     когда объем данных достаточно большой
 Pipe - канал
+    не используем когда
+    больше 2 процесса
+    очередь задач с несколькими исполнителями
+    нужна безопасность
+    когда объем данных достаточно большой
+
 Pool - для работы с группой процессов
 Value, Array, Manager - механизмы для общего доступа к данным между процессами
+
+активное ожидание busy waiting
+while not queue.empty():
+    item = queue.get()
+(-)
+нагрузка на CPU
+нет гарантии точности
+проблемы с масштабированием
+
+конкурентная среда
+race condition условная гонка
+deadlock взаимные блокировки
+starvation голодание
+приоритеты
 """
 
 from multiprocessing import Process
@@ -429,7 +449,7 @@ def consumer(q):
         result = is_prime(num)
         print(f"[{current_process().name}] Потребитель обработал задание {num}, результат {result}")
 
-if __name__ == '__main__':
+"""if __name__ == '__main__':
     q = Queue()
     producers = [
         Process(target=producer, args=(q, 10), name="Производитель 1"),
@@ -453,5 +473,132 @@ if __name__ == '__main__':
     for c in consumers:
         c.join()
     
-    print("Все процессы завершены")
-    
+    print("Все процессы завершены")"""
+
+#from multiprocessing import Queue, Process
+
+def worker(data, queue):
+    result = sum(x ** 2 for x in data)
+    queue.put(result)
+
+"""if __name__ == '__main__':
+    q = Queue()
+    chunks = [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9]
+    ]
+
+    processes = []
+
+    for chunk in chunks:
+        p = Process(target=worker, args=(chunk, q))
+        processes.append(p)
+        p.start()
+
+    results = []
+
+    for _ in range(len(processes)):
+        result = q.get(timeout=5)
+        #if result is None:
+            #завершения += 1
+        results.append(result)
+
+    for p in processes:
+        p.join()
+
+    print(results)
+    print(sum(results))"""
+
+
+def worker(q):
+    time.sleep(1)
+    q.get()
+
+"""if __name__ == '__main__':
+    q = Queue()
+    p = Process(target=worker, args=(q,))
+    p.start()
+
+    if not q.empty():
+        q.get()
+    item = queue.get(timeout=5)
+    p.join()"""
+
+
+#конкурентный доступ к переменной
+import threading
+
+counter = 0
+
+def increment():
+    global counter
+    for _ in range(10):
+        time.sleep(0.001)
+        counter += 1
+
+"""if __name__ == '__main__':
+
+    t1 = threading.Thread(target=increment)
+    t2 = threading.Thread(target=increment)
+
+    t1.start()
+    t2.start()
+
+    t1.join()
+    t2.join()
+
+    print(counter)"""
+
+
+from multiprocessing import Pipe
+"""
+conn.send(obj) - отправить объект в другой конец канала
+conn.recv() - получить объект из канала
+conn.close() - закрыть канал
+conn.fileno() - вернуть дескриптор файла канала
+conn.poll(timeout=None) - проверить, доступен ли объект в канале в течение заданного времени
+"""
+def worker(conn):
+    conn.send('привет от дочернего процесса')
+    conn.close()
+
+"""if __name__ == '__main__':
+    parent_conn, child_conn = Pipe(duplex=False)
+
+    p = Process(target=worker, args=(child_conn,))
+    p.start()
+
+    if parent_conn.poll(1):
+        print(parent_conn.recv())
+    else:
+        print('нет данных')
+    p.join()
+"""
+
+def child(conn):
+    msg = conn.recv()
+    print(f'получено сообщение: {msg}')
+    conn.send('привет от дочернего процесса')
+    conn.close()
+
+if __name__ == '__main__':
+    parent_conn, child_conn = Pipe()
+    p = Process(target=child, args=(child_conn,))
+    p.start()
+
+    parent_conn.send('привет от родительского процесса')
+    msg = parent_conn.recv()
+    print(f'получено сообщение main: {msg}')
+
+    p.join()
+
+"""
+Pipe
+1 создать дочерний процесс, отправляющий родительскому дату время datetime.now()
+родитель получает выводит
+
+2 диалог. Родитель отправляет число, дочерний выводит его в квадрате, родитель печатет результат
+
+3 доделать 2, проверка poll() 3 секунды
+"""
