@@ -8,6 +8,11 @@ Queue - очередь (IPC) (FIFO) (Pipe, Lock, Semaphore, Thread)
     когда объем данных достаточно большой
 
 JoinableQueue
+    используем когда
+    много задач
+    нужно убедиться что все задачи выполнены
+    контроль порядка и завершения
+
 Pipe - канал
     не используем когда
     больше 2 процесса
@@ -698,7 +703,7 @@ def worker(name, q):
     for p in processes:
         p.join()
 
-    while not queue.empty():
+    for _ in range(len(processes)):
         print(queue.get())"""
 
 # производитель и потребитель
@@ -751,7 +756,7 @@ def calc_factorial(n, q):
     for p in processes:
         p.join()
 
-    while not queue.empty():
+    for _ in range(len(numbers)):
         n, result = queue.get()
         print(f"Факториал числа {n} равен {result}")"""
 
@@ -789,8 +794,10 @@ def consumer(q):
 #import time
 
 def consumer(q):
-    while not q.empty():
+    while True:
         item = q.get()
+        if item is None:
+            break
         print(f"Потребитель {current_process().name} получил элемент {item}")
         time.sleep(0.3)
 
@@ -798,6 +805,10 @@ def consumer(q):
     queue = Queue()
     for i in range(10):
         queue.put(i)
+
+    num_consumers = 2
+    for _ in range(num_consumers):
+        queue.put(None)
 
     p1 = Process(target=consumer, args=(queue,), name="Потребитель 1")
     p2 = Process(target=consumer, args=(queue,), name="Потребитель 2")
@@ -930,7 +941,7 @@ def child(conn):
         else:
             conn.send(f"вы сказали {question}")
 
-if __name__ == '__main__':
+"""if __name__ == '__main__':
     parent_conn, child_conn = Pipe()
     p = Process(target=child, args=(child_conn,))
     p.start()
@@ -940,4 +951,57 @@ if __name__ == '__main__':
         answer = parent_conn.recv()
         print(f"ответ: {answer}")
 
-    p.join()
+    p.join()"""
+
+# JoinableQueue
+"""
+tasl_done()
+join()
+"""
+from multiprocessing import JoinableQueue
+
+"""queue = JoinableQueue()
+
+for i in range(10):
+    queue.put(i)"""
+
+def worker(q):
+    while True:
+        item = q.get()
+        if item is None:
+            q.task_done()
+            break
+        print(f"Получен элемент {item}")
+        time.sleep(0.3)
+        q.task_done()
+        
+if __name__ == '__main__':
+    queue = JoinableQueue()
+
+    processes = []
+    for _ in range(2):
+        p = Process(target=worker, args=(queue,))
+        processes.append(p)
+        p.start()
+
+    for i in range(5):
+        queue.put(f"задача {i}")
+
+    for _ in processes:
+        queue.put(None)
+
+    queue.join()
+
+    for p in processes:
+        p.join()
+        
+    print("Все задания выполнены")
+
+
+"""item = queue.get()
+try:
+    обработка(item)
+finally:
+    queue.task_done()"""
+
+
