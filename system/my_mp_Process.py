@@ -1019,6 +1019,112 @@ try/finally
 после join показать все результаты
 """
 
+def worker(q):
+    while True:
+        task = q.get()
+        if task is None:
+            q.task_done()
+            break
+        print(f'{task} - выполняется')
+        time.sleep(1)
+        print(f'{task} - выполнено')
+        q.task_done()
+
+"""if __name__ == '__main__':
+    q = JoinableQueue()
+
+    workers = [
+        Process(target=worker, args=(q,))
+        for _ in range(2)
+    ]
+
+    for w in workers:
+        w.start()
+
+    for i in range(5):
+        q.put(f'задача {i}')
+
+    for _ in workers:
+        q.put(None)
+
+    q.join()
+    print('Все задачи выполнены')"""
+
+def worker(q):
+    while True:
+        task = q.get()
+        try:
+            if task is None:
+                break
+            if task.endswith('3'):
+                raise ValueError
+            print(f'{task} - выполняется')
+            time.sleep(1)
+            print(f'{task} - выполнено')
+        except Exception as e:
+            print(f'ошибка в задаче {task}: {type(e)}')
+        finally:
+            q.task_done()
+            
+if __name__ == '__main__':
+    q = JoinableQueue()
+
+    workers = [
+        Process(target=worker, args=(q,))
+        for _ in range(2)
+    ]
+
+    for w in workers:
+        w.start()
+
+    for i in range(5):
+        q.put(f'задача {i}')
+
+    for _ in workers:
+        q.put(None)
+
+    q.join()
+    print('Все задачи выполнены')
+        
+
+def worker(task_q, result_q):
+    while True:
+        task = task_q.get()
+        try:
+            if task is None:
+                break
+            time.sleep(1)
+            result = f'{task} - выполнено'
+            result_q.put(result)
+        finally:
+            task_q.task_done()
+      
+if __name__ == '__main__':
+    task_q = JoinableQueue()
+    result_q = Queue()
+
+    workers = [
+        Process(target=worker, args=(task_q, result_q))
+        for _ in range(2)
+    ]
+
+    for w in workers:
+        w.start()
+
+    for i in range(5):
+        task_q.put(f'задача {i}')
+
+    for _ in workers:
+        task_q.put(None)
+
+    task_q.join()
+    print('Все задачи выполнены')
+
+    for _ in range(5):
+        print(result_q.get())
+
+    print('Все результаты получены')
+
 
 
 from multiprocessing import Pool
@@ -1070,9 +1176,9 @@ def power(x):
 def callback(result):
     print(f"результат: {result}")
 
-if __name__ == '__main__':
+"""if __name__ == '__main__':
     with Pool(processes=2) as pool:
         for i in range(5):
             pool.apply_async(power, args=(i,), callback=callback)
         pool.close()
-        pool.join()
+        pool.join()"""
