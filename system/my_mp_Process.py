@@ -6,6 +6,8 @@ Queue - очередь (IPC) (FIFO) (Pipe, Lock, Semaphore, Thread)
     не используем когда
     процессы должны параллельно менять общую структуру
     когда объем данных достаточно большой
+
+JoinableQueue
 Pipe - канал
     не используем когда
     больше 2 процесса
@@ -582,7 +584,7 @@ def child(conn):
     conn.send('привет от дочернего процесса')
     conn.close()
 
-if __name__ == '__main__':
+"""if __name__ == '__main__':
     parent_conn, child_conn = Pipe()
     p = Process(target=child, args=(child_conn,))
     p.start()
@@ -591,7 +593,7 @@ if __name__ == '__main__':
     msg = parent_conn.recv()
     print(f'получено сообщение main: {msg}')
 
-    p.join()
+    p.join()"""
 
 """
 Pipe
@@ -602,3 +604,340 @@ Pipe
 
 3 доделать 2, проверка poll() 3 секунды
 """
+
+#from multiprocessing import Pipe, Process
+from datetime import datetime
+
+
+def send_datetime(conn):
+    now = datetime.now()
+    conn.send(str(now)) 
+    conn.close()
+
+
+"""if __name__ == '__main__':
+    parent_conn, child_conn = Pipe()
+
+    p = Process(target=send_datetime, args=(child_conn,))
+    p.start()
+
+    message = parent_conn.recv()
+    print(f"Получено сообщение от дочернего процесса: {message}")
+
+    p.join()"""
+
+def square_worker(conn):
+    number = conn.recv()
+    result = number ** 2
+    conn.send(result)
+    conn.close()
+
+"""if __name__ == '__main__':
+    parent_conn, child_conn = Pipe()
+
+    p = Process(target=square_worker, args=(child_conn,))
+    p.start()
+
+    number_to_send = 7
+    print(f"Отправка числа {number_to_send} в дочерний процесс")
+    parent_conn.send(number_to_send)
+    
+    result = parent_conn.recv()
+    print(f"Получен результат: {result}")
+
+    p.join()"""
+
+#import time
+
+def delayed_square_worker(conn):
+    number = conn.recv()
+    time.sleep(2)
+    result = number ** 2
+    conn.send(result)
+    conn.close()
+
+"""if __name__ == '__main__':
+    parent_conn, child_conn = Pipe()
+
+    p = Process(target=delayed_square_worker, args=(child_conn,))
+    p.start()
+
+    number_to_send = 8
+    print(f"Отправка числа {number_to_send} в дочерний процесс")
+    parent_conn.send(number_to_send)
+
+    if parent_conn.poll(3):
+        result = parent_conn.recv()
+        print(f"Получен результат: {result}")
+    else:
+        print("Время ожидания истекло")
+
+    p.join()"""
+
+
+#from multiprocessing import Queue, Process
+#import time
+
+# от нескольких в родительский
+
+def worker(name, q):   
+    msg = f"Привет, я процесс {name}!"
+    time.sleep(1)
+    q.put(msg)
+
+"""if __name__ == '__main__':
+    queue = Queue()
+    processes = [
+        Process(target=worker, args=(f"процесс {i}", queue))
+        for i in range(1, 3)
+    ]
+
+    for p in processes:
+        p.start()
+
+    for p in processes:
+        p.join()
+
+    while not queue.empty():
+        print(queue.get())"""
+
+# производитель и потребитель
+
+#import random
+
+def producer(q):
+    for i in range(5):
+        value = random.randint(1, 100)
+        print(f"Производитель добавил элемент {value}")
+        q.put(value)
+        time.sleep(1)
+
+def consumer(q):
+    for _ in range(5):
+        value = q.get()
+        print(f"Потребитель получил элемент {value}")
+        time.sleep(1)
+
+"""if __name__ == '__main__':
+    queue = Queue()
+
+    p1 = Process(target=producer, args=(queue,))
+    p2 = Process(target=consumer, args=(queue,))
+
+    p1.start()
+    p2.start()
+
+    p1.join()
+    p2.join()
+    """
+# очередь для сбора результатов параллельных вычислений
+#import math
+
+def calc_factorial(n, q):
+    result = math.factorial(n)
+    q.put((n, result))
+
+"""if __name__ == '__main__':
+    numbers = [5, 10, 15, 20]
+    queue = Queue()
+    processes = []
+
+    for n in numbers:
+        p = Process(target=calc_factorial, args=(n, queue))
+        processes.append(p)
+        print(f"запустили процесс {p.name} для вычисления факториала {n}")
+        p.start()
+
+    for p in processes:
+        p.join()
+
+    while not queue.empty():
+        n, result = queue.get()
+        print(f"Факториал числа {n} равен {result}")"""
+
+# maxsize
+
+def producer(q):
+    for i in range(5):
+        print(f"Производитель пытается добавить элемент {i}")
+        q.put(i)
+        print(f"Производитель добавил элемент {i}")
+        time.sleep(0.5)
+
+def consumer(q):
+    time.sleep(1)
+    while True:
+        value = q.get()
+        print(f"Потребитель получил элемент {value}")
+        time.sleep(1)
+
+"""if __name__ == '__main__':
+    queue = Queue(maxsize=2)
+
+    p1 = Process(target=producer, args=(queue,))
+    p2 = Process(target=consumer, args=(queue,))
+
+    p1.start()
+    p2.start()
+
+    p1.join()
+    p2.terminate()"""
+    
+
+# конкрунция за очередь
+#from multiprocessing import Queue, Process, current_process
+#import time
+
+def consumer(q):
+    while not q.empty():
+        item = q.get()
+        print(f"Потребитель {current_process().name} получил элемент {item}")
+        time.sleep(0.3)
+
+"""if __name__ == '__main__':
+    queue = Queue()
+    for i in range(10):
+        queue.put(i)
+
+    p1 = Process(target=consumer, args=(queue,), name="Потребитель 1")
+    p2 = Process(target=consumer, args=(queue,), name="Потребитель 2")
+
+    p1.start()
+    p2.start()
+
+    p1.join()
+    p2.join()"""
+
+
+# таймауты
+#from multiprocessing import Queue, Process
+#import time
+
+def safe_get(q):
+    try:
+        itme = q.get(timeout=2)
+        print(f"Получен элемент {item}")
+    except Exception as e:
+        print(f"ничего не получили: {type(e)}")
+
+"""if __name__ == '__main__':
+    queue = Queue()
+
+    p = Process(target=safe_get, args=(queue,))
+    p.start()
+    p.join()"""
+
+
+# from multiprocessing import Pipe, Process
+
+# одностороння от дочерний к родителю
+
+def child(conn):
+    message = 'Привет от дочернего процесса!'
+    conn.send(message)
+    conn.close()
+
+"""if __name__ == '__main__':
+    parent_conn, child_conn = Pipe()
+    p = Process(target=child, args=(child_conn,))
+    p.start()
+    received_message = parent_conn.recv()
+    print(f"Получено сообщение от дочернего процесса: {received_message}")
+    p.join()"""
+
+# двусторонняя от родителя к дочернему
+
+def child(conn):
+    number = conn.recv()
+    result = number ** 2
+    conn.send(result)
+    conn.close()
+
+"""if __name__ == '__main__':
+    parent_conn, child_conn = Pipe()
+    p = Process(target=child, args=(child_conn,))
+    p.start()
+    parent_conn.send(5)
+    result = parent_conn.recv()
+    print(f"Результат: {result}")
+    p.join()"""
+
+
+#poll
+
+def delayed_sender(conn):
+    time.sleep(2)
+    conn.send("Привет от дочернего процесса!")
+    conn.close()
+
+"""if __name__ == '__main__':
+    parent_conn, child_conn = Pipe()
+    p = Process(target=delayed_sender, args=(child_conn,))
+    p.start()
+    print('ожидание 3 секунд...')
+    if parent_conn.poll(3):
+        received_message = parent_conn.recv()
+        print(f"Получено сообщение от дочернего процесса: {received_message}")
+    else:
+        print("Время ожидания истекло")
+    p.join()"""
+
+# несколько сообщений от дочернего к родителю
+
+def child(conn):
+    for i in range(3):
+        time.sleep(1)
+        conn.send(f"Сообщение {i+1} от дочернего процесса")
+    conn.send('конец')
+    conn.close()
+
+"""if __name__ == '__main__':
+    parent_conn, child_conn = Pipe()
+    p = Process(target=child, args=(child_conn,))
+    p.start()
+    while True:
+        message = parent_conn.recv()
+        if message == 'конец':
+            break
+        print(f"Получено сообщение от дочернего процесса: {message}")
+    p.join()"""
+
+#структурированный обмен
+
+def child(conn):
+    data = {'name': 'Дочерний процесс', 'message': 'Привет от дочернего процесса!'}
+    conn.send(data)
+    conn.close()
+
+"""if __name__ == '__main__':
+    parent_conn, child_conn = Pipe()
+    p = Process(target=child, args=(child_conn,))
+    p.start()
+
+    data = parent_conn.recv()
+    for key, value in data.items():
+        print(f"{key}: {value}")
+    p.join()"""
+
+# чат между процессами
+
+def child(conn):
+    while True:
+        question = conn.recv()
+        if question.lower() == 'пока':
+            conn.send('Пока!')
+            break
+        else:
+            conn.send(f"вы сказали {question}")
+
+if __name__ == '__main__':
+    parent_conn, child_conn = Pipe()
+    p = Process(target=child, args=(child_conn,))
+    p.start()
+
+    for msg in ['Привет', 'Как дела?', 'Пока']:
+        parent_conn.send(msg)
+        answer = parent_conn.recv()
+        print(f"ответ: {answer}")
+
+    p.join()
