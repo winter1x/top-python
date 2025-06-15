@@ -1005,6 +1005,22 @@ finally:
     queue.task_done()"""
 
 
+"""
+1 создать
+заполнить 5 задачами
+2 воркера 
+
+2 доделать 1
+каждая третья задача ValueError 
+try/finally
+
+3 расширить 1
+добавить вторую обычную Queue, в которую воркеры будут добавлять результаты
+после join показать все результаты
+"""
+
+
+
 from multiprocessing import Pool
 
 """with Pool(processes=4) as pool:
