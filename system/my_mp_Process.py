@@ -20,7 +20,7 @@ Pipe - канал
     нужна безопасность
     когда объем данных достаточно большой
 
-Pool - для работы с группой процессов
+Pool - для работы с группой процессов (Process, Queue)
 Value, Array, Manager - механизмы для общего доступа к данным между процессами
 
 активное ожидание busy waiting
@@ -975,7 +975,7 @@ def worker(q):
         time.sleep(0.3)
         q.task_done()
         
-if __name__ == '__main__':
+"""if __name__ == '__main__':
     queue = JoinableQueue()
 
     processes = []
@@ -995,7 +995,7 @@ if __name__ == '__main__':
     for p in processes:
         p.join()
         
-    print("Все задания выполнены")
+    print("Все задания выполнены")"""
 
 
 """item = queue.get()
@@ -1005,3 +1005,58 @@ finally:
     queue.task_done()"""
 
 
+from multiprocessing import Pool
+
+"""with Pool(processes=4) as pool:
+    ...
+"""
+"""
+map(func, iterable) - многопроцессная версия map
+apply(func, args) - Вызывает func(*args). Блокирует выполнение до завершения работы процесса. 
+apply_async(func, args) - Вызывает func(*args) асинхронно, не блокируя выполнение. AsyncResult - объект, который содержит результат работы функции
+imap(func, iterable) - аналогичен map(), но возвращает результаты по мере их готовности. Возвращает итератор
+close() - закрывает доступ к очереди для добавления новых элементов
+join() - ждет завершения всех процессов в пуле
+"""
+
+def square(x):
+    return x * x
+
+"""if __name__ == '__main__':
+    with Pool(processes=4) as pool:
+        results = pool.map(square, range(1, 11))
+    print(results)"""
+        
+def slow_square(x):
+    time.sleep(1)
+    return x * x
+
+"""if __name__ == '__main__':
+    with Pool(2) as pool:
+        results = pool.apply_async(slow_square, args=(5,))
+        print('задача запущена')
+        print('Результат:', results.get())"""
+
+def fail(x):
+    raise ValueError('Что-то пошло не так')
+
+"""if __name__ == '__main__':
+    with Pool(processes=1) as pool:
+        res = pool.apply_async(fail, args=(10,))
+        try:
+            res.get()
+        except Exception as e:
+            print(e)"""
+
+def power(x):
+    return x ** 3
+
+def callback(result):
+    print(f"результат: {result}")
+
+if __name__ == '__main__':
+    with Pool(processes=2) as pool:
+        for i in range(5):
+            pool.apply_async(power, args=(i,), callback=callback)
+        pool.close()
+        pool.join()
