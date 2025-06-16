@@ -122,3 +122,41 @@ ReportProxy реализует тот же интерфейс, создает н
 Report - интерфейс
     display()
 """
+
+from abc import ABC, abstractmethod
+import time
+
+class Report(ABC):
+    @abstractmethod
+    def display(self):
+        pass
+
+class RealReport(Report):
+    def __init__(self):
+        print('Отчет создан')
+        time.sleep(3)
+        self.data = 'все данные отчета'
+    
+    def display(self):
+        print('Отчет показан')
+        print(self.data)
+
+class ReportProxy(Report):
+    def __init__(self):
+        print('Подготовка отчета')
+        self._real_report = None
+
+    def display(self):
+        if self._real_report is None:
+            print('Отчет создается')
+            self._real_report = RealReport()
+        else:
+            print('Отчет уже готов')
+        print('Отчет показан')
+        self._real_report.display()
+print('-' * 20)
+report = ReportProxy()
+print('-' * 20)
+report.display()
+print('-' * 20)
+report.display()
