@@ -132,6 +132,7 @@ conf1 = Configuration()
 conf2 = Configuration()
 
 print(conf1 is conf2)
+print('#------------------------------------------------------------------------------')
 
 """
 Система настроек приложения
@@ -145,3 +146,55 @@ settings1
 settings2
 указывают на один и тот же экземпляр класса - при создании через get_instance
 """
+
+class AppSetting:
+    _instance = None
+
+    def __init__(self):
+        print('инициализация экземпляра класса')
+        self._settings = {}
+
+    @classmethod
+    def get_instance(cls):
+        if cls._instance is None:
+            cls._instance = cls()
+        else:
+            print('возвращаем ранее созданный экземпляр класса')
+        return cls._instance
+
+    @classmethod
+    def reset_instance(cls):
+        print('сброс экземпляра класса')
+        cls._instance = None
+
+    def set_param(self, key, value):
+        self._settings[key] = value
+        print(f'установлен параметр {key} = {value}')
+
+    def get_param(self, key, default=None):
+        value = self._settings.get(key, default)
+        print(f'получен параметр {key} => {value}')
+        return value
+
+    def show_all(self):
+        print('все параметры:')
+        for key, value in self._settings.items():
+            print(f'  {key}: {value}')
+
+s1 = AppSetting.get_instance()
+s1.set_param('language', 'ru')
+s1.set_param('theme', 'dark')
+
+s2 = AppSetting.get_instance()
+s2.get_param('theme')
+s2.get_param('language', default='en')
+
+print(s1 is s2)
+
+s2.show_all()
+
+AppSetting.reset_instance()
+s3 = AppSetting.get_instance()
+s3.show_all()
+s3.set_param('language', 'en')
+s3.show_all()
