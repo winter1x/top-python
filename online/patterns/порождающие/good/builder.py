@@ -38,6 +38,25 @@ builder.set_engine(engine=1.6)
 builder.set_wheels(wheels=4)
 car = builder.build()
 """
+"""
+создаем сложные объекты пошагово, когда есть параметры/несколько этапов
+"""
+
+"""
+builder 
+интерфейс строителя 
+абстрактный интерфейс
+
+concrete builders
+конкретные строители 
+реализуют builder
+
+product
+наш сложный объект
+
+director
+управление, порядок вызова методов строителя, строителей
+"""
 from abc import ABC, abstractmethod
 
 #интерфейс строителя
@@ -184,3 +203,79 @@ TourBuilder интерфейс сборки
 StandardTourBuilder конкретный билдер собирает обект Tour
 TourDirector задает порядок шагов билдера
 """
+
+class Tour:
+    def __init__(self):
+        self.parts = []
+
+    def add(self, part: str):
+        self.parts.append(part)
+
+    def __str__(self):
+        print("Tour parts:", ', '.join(self.parts))
+
+#from abc import ABC, abstractmethod
+
+class TourBuilder(ABC):
+    @abstractmethod
+    def add_acommodation(self): pass
+
+    @abstractmethod
+    def add_excursions(self): pass
+
+    @abstractmethod
+    def add_transport(self): pass
+
+    @abstractmethod
+    def add_meals(self): pass
+
+    @abstractmethod
+    def add_insurance(self): pass
+
+    @abstractmethod
+    def get_result(self) -> Tour: pass
+
+class StandardTourBuilder(TourBuilder):
+    def __init__(self):
+        self.tour = Tour()
+
+    def add_acommodation(self): self.tour.add('accommodation')
+
+    def add_excursions(self): self.tour.add('excursions')
+
+    def add_transport(self): self.tour.add('transport')
+
+    def add_meals(self): self.tour.add('meals')
+
+    def add_insurance(self): self.tour.add('insurance')
+
+    def get_result(self) -> Tour: return self.tour
+
+class TourDirector:
+    def __init__(self, builder: TourBuilder):
+        self.builder = builder
+
+    def build_minimal_tour(self):
+        self.builder.add_acommodation()
+        self.builder.add_excursions()
+
+    def build_full_tour(self):
+        self.builder.add_acommodation()
+        self.builder.add_excursions()
+        self.builder.add_transport()
+        self.builder.add_meals()
+        self.builder.add_insurance()
+
+builder1 = StandardTourBuilder()
+director1 = TourDirector(builder1)
+director1.build_minimal_tour()
+tour1 = builder1.get_result()
+tour1.__str__()
+print()
+
+builder2 = StandardTourBuilder()
+director2 = TourDirector(builder2)
+director2.build_full_tour()
+tour2 = builder2.get_result()
+tour2.__str__()
+print()
