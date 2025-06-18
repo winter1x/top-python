@@ -162,6 +162,7 @@ render_ui(factory)
 
 factory = MacFactory()
 render_ui(factory)
+print('#------------------------------------------------------------------------------')
 
 
 """
@@ -192,3 +193,90 @@ HistoryMaterialFactory
 
 клиентская функция принимает фабрику и создаёт комплекты материалов курс тест задание
 """
+
+#from abc import ABC, abstractmethod
+
+class Course(ABC):
+    @abstractmethod
+    def get_content(self) -> str:
+        pass
+
+class Test(ABC):
+    @abstractmethod
+    def get_questions(self) -> list:
+        pass
+
+class Assignment(ABC):
+    @abstractmethod
+    def get_task(self) -> str:
+        pass
+
+class LearningMaterialFactory(ABC):
+    @abstractmethod
+    def create_course(self) -> Course:
+        pass
+
+    @abstractmethod
+    def create_test(self) -> Test:
+        pass
+
+    @abstractmethod
+    def create_assignment(self) -> Assignment:
+        pass
+
+class ProgrammingCourse(Course):
+    def get_content(self) -> str:
+        return "Текст темы по программированию"
+
+class ProgrammingTest(Test):
+    def get_questions(self) -> list:
+        return ["Вопрос 1", "Вопрос 2"]
+
+class ProgrammingAssignment(Assignment):
+    def get_task(self) -> str:
+        return "Задание по программированию"
+
+class HistoryCourse(Course):
+    def get_content(self) -> str:
+        return "Текст темы по истории"
+
+class HistoryTest(Test):
+    def get_questions(self) -> list:
+        return ["Вопрос 1", "Вопрос 2"]
+
+class HistoryAssignment(Assignment):
+    def get_task(self) -> str:
+        return "Задание по истории"
+
+class ProgrammingMaterialFactory(LearningMaterialFactory):
+    def create_course(self) -> Course:
+        return ProgrammingCourse()
+
+    def create_test(self) -> Test:
+        return ProgrammingTest()
+
+    def create_assignment(self) -> Assignment:
+        return ProgrammingAssignment()
+
+class HistoryMaterialFactory(LearningMaterialFactory):
+    def create_course(self) -> Course:
+        return HistoryCourse()
+
+    def create_test(self) -> Test:
+        return HistoryTest()
+
+    def create_assignment(self) -> Assignment:
+        return HistoryAssignment()
+
+def generate_learning_kit(factory: LearningMaterialFactory):
+    course = factory.create_course()
+    test = factory.create_test()
+    assignment = factory.create_assignment()
+
+    print(course.get_content())
+    print(test.get_questions())
+    print(assignment.get_task())
+    print()
+
+generate_learning_kit(ProgrammingMaterialFactory())
+generate_learning_kit(HistoryMaterialFactory())
