@@ -1502,7 +1502,7 @@ def partial_sum(arr, start, end, result, lock):
     with lock:
         result.value += local_sum
 
-if __name__ == '__main__':
+"""if __name__ == '__main__':
     arr = Array('i', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
     result = Value('i', 0)
     lock = Lock()
@@ -1516,7 +1516,7 @@ if __name__ == '__main__':
     p1.join()
     p2.join()
 
-    print("Сумма:", result.value)
+    print("Сумма:", result.value)"""
 
 """
 параллельная обработка массива с сохранением статистики
@@ -1527,3 +1527,34 @@ if __name__ == '__main__':
 подсчитать общее количество операций, выполненных процессами
 lock
 """
+
+def increase_even(arr, lock, counter):
+    for i in range(len(arr)):
+        if arr[i] % 2 == 0:
+            with lock:
+                arr[i] += 10
+                counter.value += 1
+
+def increase_odd(arr, lock, counter):
+    for i in range(len(arr)):
+        if arr[i] % 2 != 0:
+            with lock:
+                arr[i] += 20
+                counter.value += 1
+
+if __name__ == '__main__':
+    arr = Array('i', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+    counter = Value('i', 0)
+    lock = Lock()
+
+    p1 = Process(target=increase_even, args=(arr, lock, counter))
+    p2 = Process(target=increase_odd, args=(arr, lock, counter))
+
+    p1.start()
+    p2.start()
+
+    p1.join()
+    p2.join()
+
+    print("Результат:", list(arr))
+    print("Общее количество операций:", counter.value)
