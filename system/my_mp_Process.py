@@ -24,6 +24,9 @@ Pipe - канал
 Pool - для работы с группой процессов (Process, Queue)
 Value, Array, Manager - механизмы для общего доступа к данным между процессами
 
+Lock - блокировка, одна задача выполняется одновременно
+RLock - рекурсивная блокировка
+
 активное ожидание busy waiting
 while not queue.empty():
     item = queue.get()
@@ -1272,4 +1275,255 @@ def on_error(error):
 """
 
 
+"""
 
+Value, Array
+shared_memory
+"""
+
+def worker(data):
+    data[0] = 999 # копия
+
+"""if __name__ == '__main__':
+    numbers = [1, 2, 3]
+    p = Process(target=worker, args=(numbers,))
+    p.start()
+    p.join()
+    print(numbers)"""
+
+
+# Value для одной переменной
+"""
+i = integer
+d = double/float
+c = char
+"""
+from multiprocessing import Value
+
+v = Value('i', 0)
+
+def increment(v):
+    for _ in range(5):
+        time.sleep(0.1)
+        v.value += 1
+
+
+"""if __name__ == '__main__':
+    val = Value('i', 0)
+    p1 = Process(target=increment, args=(val,))
+    p2 = Process(target=increment, args=(val,))
+
+    p1.start()
+    p2.start()
+
+    p1.join()
+    p2.join()
+
+    print("Значение:", val.value)"""
+
+# Array для массива
+from multiprocessing import Array
+
+a = Array('i', [1, 2, 3])
+
+def double(arr):
+    for i in range(len(arr)):
+        arr[i] *= 2
+
+
+"""if __name__ == '__main__':
+    shared_array = Array('i', [1, 2, 3, 4])
+    p = Process(target=double, args=(shared_array,))
+    p.start()
+    p.join()
+    print("Результат:", list(shared_array))"""
+
+# Lock - 
+"""
+lock.acquire() - захватить замок, если он свободен, иначе ожидать его освобождения.
+lock.release() - освободить замок
+with lock: - контекстный менеджер для безопасного доступа к защищенному ресурсу.
+    # Критическая секция
+
+lock.acquire()
+try:
+    # Критическая секция
+    pass
+finally:
+    lock.release()
+"""
+# RLock -
+val = Value('i', 0, lock=False) # небезопасно
+
+from multiprocessing import Lock
+
+lock = Lock()
+val = Value('i', 0, lock=lock)
+
+def safe_increment(v):
+    with v.get_lock():
+        v.value += 1
+
+def increment(shared_val, lock):
+    for _ in range(1000):
+        with lock:
+            shared_val.value += 1
+
+"""if __name__ == '__main__':
+    val = Value('i', 0)
+    lock = Lock()
+
+    p1 = Process(target=increment, args=(val, lock))
+    p2 = Process(target=increment, args=(val, lock))
+
+    p1.start()
+    p2.start()
+
+    p1.join()
+    p2.join()
+
+    print("Значение:", val.value)"""
+
+
+def square_elements(arr, lock):
+    with lock:
+        for i in range(len(arr)):
+            arr[i] *= arr[i]
+
+"""if __name__ == '__main__':
+    data = Array('i', [1, 2, 3, 4])
+    lock = Lock()
+
+    p1 = Process(target=square_elements, args=(data, lock))
+    p2 = Process(target=square_elements, args=(data, lock))
+
+    p1.start()
+    p2.start()
+
+    p1.join()
+    p2.join()
+
+    print("Результат:", list(data))"""
+
+# подсчет общего количества операций
+def increment(counter, lock):
+    for _ in range(1000):
+        with lock:
+            counter.value += 1
+
+"""if __name__ == '__main__':
+    counter = Value('i', 0)
+    lock = Lock()
+
+    p1 = Process(target=increment, args=(counter, lock))
+    p2 = Process(target=increment, args=(counter, lock))
+
+    p1.start()
+    p2.start()
+
+    p1.join()
+    p2.join()
+
+    print("Общее количество операций:", counter.value)"""
+
+# параллельная обработка списка
+
+def square_elements(arr, start, end):
+    for i in range(start, end):
+        arr[i] = arr[i] ** 2
+
+"""if __name__ == '__main__':
+    arr = Array('i', [1, 2, 3, 4, 5])
+
+    p1 = Process(target=square_elements, args=(arr, 0, 3))
+    p2 = Process(target=square_elements, args=(arr, 3, 5))
+
+    p1.start()
+    p2.start()
+
+    p1.join()
+    p2.join()
+
+    print("Результат:", list(arr))"""
+
+
+# гонка
+
+def unsafe_increment(counter):
+    for _ in range(1000):
+        counter.value += 1
+
+"""if __name__ == '__main__':
+    counter = Value('i', 0)
+
+    p1 = Process(target=unsafe_increment, args=(counter,))
+    p2 = Process(target=unsafe_increment, args=(counter,))
+
+    p1.start()
+    p2.start()
+
+    p1.join()
+    p2.join()
+
+    print("Значение:", counter.value)"""
+
+# одновременное чтение и запись в массив
+def writer(arr, lock):
+    for i in range(len(arr)):
+        with lock:
+            arr[i] += 1
+            time.sleep(0.1)
+
+def reader(arr, lock):
+    for _ in range(5):
+        with lock:
+            print("Чтение:", list(arr))
+        time.sleep(0.15)
+
+"""if __name__ == '__main__':
+    arr = Array('i', [0, 0, 0, 0, 0])
+    lock = Lock()
+
+    p1 = Process(target=writer, args=(arr, lock))
+    p2 = Process(target=reader, args=(arr, lock))
+
+    p1.start()
+    p2.start()
+
+    p1.join()
+    p2.join()
+
+    print("Результат:", list(arr))"""
+
+# параллельное суммирование массива
+
+def partial_sum(arr, start, end, result, lock):
+    local_sum = sum(arr[start:end])
+    with lock:
+        result.value += local_sum
+
+if __name__ == '__main__':
+    arr = Array('i', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+    result = Value('i', 0)
+    lock = Lock()
+
+    p1 = Process(target=partial_sum, args=(arr, 0, 5, result, lock))
+    p2 = Process(target=partial_sum, args=(arr, 5, 10, result, lock))
+
+    p1.start()
+    p2.start()
+
+    p1.join()
+    p2.join()
+
+    print("Сумма:", result.value)
+
+"""
+параллельная обработка массива с сохранением статистики
+массив из 10 чисел
+    1процесс: увеличивает каждый четный элемент на 10
+    2процесс: увеличивает каждый нечетный элемент на 20
+
+подсчитать общее количество операций, выполненных процессами
+lock
+"""
