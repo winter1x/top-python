@@ -1614,7 +1614,7 @@ def add_data(shared_dict, key, value):
 def worker(ns):
     ns.value += 1
 
-if __name__ == '__main__':
+"""if __name__ == '__main__':
     manager = Manager()
     ns = manager.Namespace()
     ns.value = 0
@@ -1627,7 +1627,7 @@ if __name__ == '__main__':
     for p in processes:
         p.join()
 
-    print("Результат:", ns.value)
+    print("Результат:", ns.value)"""
 
 """
 работа с общими объектами с помощью Manager
@@ -1635,17 +1635,102 @@ list
 dict
 Namespace
 
+1
 запустите 5 процессов. Каждый из них должен добавить в общий список строку
 Привет от процесса N, где N - номер процесса
 После завершения всех процессов выведите содержимое списка
 
+2
 создайте 3 процесса. Каждый из них должен добавить в общий словарь ключ-значение
 ключ = имя процесса, значение = квадрат числа i, где i - [1, 2, 3]
 
+3
 смоделировать общий счетчик в Namespace. Запустить 5 процессов, каждый из которых увеличивает счетчик на 1. 
 Вывести результат.
 
+4
 5 процессов, каждый
     добавить свое имя в общий список
     добавить в словарь ключ = имя процесса, значение = длина имени
 """
+
+def add_message(shared_list, num):
+    shared_list.append(f"Привет от процесса {num}")
+
+"""if __name__ == '__main__':
+    manager = Manager()
+    messages = manager.list()
+
+    processes = [Process(target=add_message, args=(messages, i)) for i in range(5)]
+
+    for p in processes:
+        p.start()
+
+    for p in processes:
+        p.join()
+
+    print("Список сообщений:", list(messages))"""
+
+def write_to_dict(shared_dict, name, value):
+    shared_dict[name] = value
+
+"""if __name__ == '__main__':
+    manager = Manager()
+    data = manager.dict()
+
+    processes = []
+
+    for i in range(1, 4):
+        p = Process(target=write_to_dict, args=(data, f"proc-{i}", i**2))
+        processes.append(p)
+        p.start()
+
+    for p in processes:
+        p.join()
+
+    print("Словарь:", dict(data))"""
+
+def inrement_counter(ns):
+    temp = ns.counter
+    time.sleep(0.1)
+    ns.counter = temp + 1
+
+"""if __name__ == '__main__':
+    manager = Manager()
+    ns = manager.Namespace()
+    ns.counter = 0
+
+    processes = [Process(target=inrement_counter, args=(ns,)) for _ in range(5)]
+
+    for p in processes:
+        p.start()
+
+    for p in processes:
+        p.join()
+
+    print("Результат:", ns.counter)"""
+
+def update_all(shared_list, shared_dict, name):
+    shared_list.append(name)
+    shared_dict[name] = len(name)
+
+if __name__ == '__main__':
+    manager = Manager()
+    shared_list = manager.list()
+    shared_dict = manager.dict()
+
+    process_names = [f'процесс_{i}' for i in range(5)]
+    processes = [
+        Process(target=update_all, args=(shared_list, shared_dict, name))
+        for name in process_names
+    ]
+
+    for p in processes:
+        p.start()
+
+    for p in processes:
+        p.join()
+
+    print("Список имен:", list(shared_list))
+    print("Словарь:", dict(shared_dict))
+    
