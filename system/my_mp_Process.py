@@ -1542,7 +1542,7 @@ def increase_odd(arr, lock, counter):
                 arr[i] += 20
                 counter.value += 1
 
-if __name__ == '__main__':
+"""if __name__ == '__main__':
     arr = Array('i', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
     counter = Value('i', 0)
     lock = Lock()
@@ -1557,4 +1557,95 @@ if __name__ == '__main__':
     p2.join()
 
     print("Результат:", list(arr))
-    print("Общее количество операций:", counter.value)
+    print("Общее количество операций:", counter.value)"""
+
+"""
+Manager - серверный процесс для доступа к обычным структурам
+manager.list() - общий список
+manager.dict() - общий словарь
+manager.Queue() - общая очередь
+manager.Value() 
+manager.Namespace() - для произвольных атрибутов
+"""
+
+from multiprocessing import Manager
+
+def worker(shared_list, name):
+    shared_list.append(f"привет от {name}")
+
+"""if __name__ == '__main__':
+    manager = Manager()
+    result_list = manager.list()
+
+    processes = [
+        Process(target=worker, args=(result_list, f"процесс {i}"))
+        for i in range(5)
+    ]
+
+    for p in processes:
+        p.start()
+
+    for p in processes:
+        p.join()
+
+    print("Результат:", list(result_list))"""
+
+def add_data(shared_dict, key, value):
+    shared_dict[key] = value
+
+"""if __name__ == '__main__':
+    manager = Manager()
+    data_dict = manager.dict()
+
+    processes = [
+        Process(target=add_data, args=(data_dict, f"ключ_{i}", i*10))
+        for i in range(4)
+    ]
+
+    for p in processes:
+        p.start()
+
+    for p in processes:
+        p.join()
+
+    print("Результат:", dict(data_dict))"""
+
+
+def worker(ns):
+    ns.value += 1
+
+if __name__ == '__main__':
+    manager = Manager()
+    ns = manager.Namespace()
+    ns.value = 0
+
+    processes = [Process(target=worker, args=(ns,)) for _ in range(5)]
+
+    for p in processes:
+        p.start()
+
+    for p in processes:
+        p.join()
+
+    print("Результат:", ns.value)
+
+"""
+работа с общими объектами с помощью Manager
+list
+dict
+Namespace
+
+запустите 5 процессов. Каждый из них должен добавить в общий список строку
+Привет от процесса N, где N - номер процесса
+После завершения всех процессов выведите содержимое списка
+
+создайте 3 процесса. Каждый из них должен добавить в общий словарь ключ-значение
+ключ = имя процесса, значение = квадрат числа i, где i - [1, 2, 3]
+
+смоделировать общий счетчик в Namespace. Запустить 5 процессов, каждый из которых увеличивает счетчик на 1. 
+Вывести результат.
+
+5 процессов, каждый
+    добавить свое имя в общий список
+    добавить в словарь ключ = имя процесса, значение = длина имени
+"""
