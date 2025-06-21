@@ -1,4 +1,5 @@
 """
+multiprocessing - для работы с процессами
 GIL
 
 Process - отдельный процесс
@@ -1066,7 +1067,7 @@ def worker(q):
         finally:
             q.task_done()
             
-if __name__ == '__main__':
+"""if __name__ == '__main__':
     q = JoinableQueue()
 
     workers = [
@@ -1084,7 +1085,7 @@ if __name__ == '__main__':
         q.put(None)
 
     q.join()
-    print('Все задачи выполнены')
+    print('Все задачи выполнены')"""
         
 
 def worker(task_q, result_q):
@@ -1098,7 +1099,7 @@ def worker(task_q, result_q):
             result_q.put(result)
         finally:
             task_q.task_done()
-      
+"""      
 if __name__ == '__main__':
     task_q = JoinableQueue()
     result_q = Queue()
@@ -1123,7 +1124,7 @@ if __name__ == '__main__':
     for _ in range(5):
         print(result_q.get())
 
-    print('Все результаты получены')
+    print('Все результаты получены')"""
 
 
 
@@ -1134,6 +1135,7 @@ from multiprocessing import Pool
 """
 """
 map(func, iterable) - многопроцессная версия map
+starmap - аналогично map, но с возможностью передачи нескольких аргументов в функцию
 apply(func, args) - Вызывает func(*args). Блокирует выполнение до завершения работы процесса. 
 apply_async(func, args) - Вызывает func(*args) асинхронно, не блокируя выполнение. AsyncResult - объект, который содержит результат работы функции
 imap(func, iterable) - аналогичен map(), но возвращает результаты по мере их готовности. Возвращает итератор
@@ -1182,3 +1184,92 @@ def callback(result):
             pool.apply_async(power, args=(i,), callback=callback)
         pool.close()
         pool.join()"""
+
+
+# параллельная обработка с map
+#from multiprocessing import Pool
+#import time
+
+def square(x):
+    time.sleep(1)
+    return x ** 2
+
+"""if __name__ == '__main__':
+    numbers = [1, 2, 3, 4, 5]
+
+    with Pool(2) as pool:
+        results = pool.map(square, numbers)
+
+    print(results)
+"""
+
+# параллельная обаботка starmap - аналогично map, но с возможностью передачи нескольких аргументов в функцию
+
+def power(base, exponent):
+    return base ** exponent
+
+"""if __name__ == '__main__':
+    data = [(2, 3), (3, 2), (4, 2), (5, 3)]
+
+    with Pool(processes=2) as pool:
+        results = pool.starmap(power, data)
+
+    print(results)
+"""
+
+# apply / apply_async
+
+def double(n):
+    time.sleep(1)
+    return n * 2
+
+"""if __name__ == '__main__':
+    with Pool(processes=2) as pool:
+        result_sync = pool.apply(double, args=(5,))
+        print("Результат синхронного вызова:", result_sync)
+
+        async_result = pool.apply_async(double, args=(10,))
+        print("Асинхронный вызов запущен")
+        result_async = async_result.get()
+        print("Результат асинхронного вызова:", result_async)"""
+
+# callback
+
+def multiply(n):
+    time.sleep(1)
+    return n * 3
+
+def on_done(result):
+    print("Результат получен через колбэк:", result)
+
+"""if __name__ == '__main__':
+    with Pool(processes=2) as pool:
+        pool.apply_async(multiply, args=(5,), callback=on_done)
+        
+        print("основной процесс продолжает работу...")
+        time.sleep(2)  """    
+
+# error_calback
+
+def unsafe_divide(x):
+    if x == 0:
+        raise ValueError("Деление на ноль!")
+    return 10 / x
+
+def on_result(result):
+    print("Результат:", result)
+
+def on_error(error):
+    print("Ошибка:", error)
+
+"""if __name__ == '__main__':
+    with Pool(processes=2) as pool:
+        pool.apply_async(unsafe_divide, args=(2,), callback=on_result, error_callback=on_error)
+        pool.apply_async(unsafe_divide, args=(0,), callback=on_result, error_callback=on_error)
+        
+        pool.close()
+        pool.join()
+"""
+
+
+
