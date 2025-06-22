@@ -39,7 +39,6 @@ while not queue.empty():
 race condition условная гонка
 deadlock взаимные блокировки
 starvation голодание
-приоритеты
 """
 
 from multiprocessing import Process
