@@ -1,4 +1,5 @@
 """
+threading
 для чего нужны:
 параллелизм
 реактивность
@@ -37,7 +38,7 @@ Thread - класс, реализующий поток исполнения ко
         Работает = .run()
         Завершен 
 Lock
-    lock.acquire() - захватить блокировку, если она свободна
+    lock.acquire(blocking=True, timeout=-1) - захватить блокировку, если она свободна
     lock.release() - освободить блокировку
 with lock:
     # код, который нужно защитить
@@ -87,7 +88,7 @@ import time
 
 def slow_task(name):
     print(f'Начал выполнение задачи {name}')
-    time.sleep(1)
+    time.sleep(0.1)
     print(f'Завершил выполнение задачи {name}')
 
 threads = []
@@ -100,3 +101,69 @@ for t in threads:
     t.join()
 
 print('Все потоки завершили работу')
+
+from threading import Lock
+
+counter = 0
+lock = Lock()
+
+def increment():
+    global counter
+    for _ in range(1000000):
+        with lock:
+            global counter
+            counter += 1
+
+threads = [Thread(target=increment) for _ in range(2)]
+
+[t.start() for t in threads]
+[t.join() for t in threads]
+
+print(f'counter = {counter}')
+
+"""if lock.acquire(timeout=1.5):
+    try:
+        # критическая секция
+    finally:
+        lock.release()
+else:
+    print('не удалось захватить ресурс')"""
+
+from threading import RLock
+lock = RLock()
+
+def recursive(n):
+    if n <= 0:
+        return
+
+    with lock:
+        print(f'захват на глубине {n}')
+        recursive(n - 1)
+
+recursive(3)
+
+lock1 = Lock()
+lock2 = Lock()
+
+def thread1():
+    with lock1:
+        print('захват lock1')
+        time.sleep(1)
+        print('пытаемся захватить lock2')
+        with lock2:
+            print('захватил lock2')
+
+def thread2():
+    with lock2:
+        print('захват lock2')
+        time.sleep(1)
+        print('пытаемся захватить lock1')
+        with lock1:
+            print('захватил lock1')
+
+t = Thread(target=thread1)
+t.start()
+
+t2 = Thread(target=thread2)
+t2.start()
+
