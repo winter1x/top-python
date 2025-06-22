@@ -37,6 +37,9 @@ Thread - класс, реализующий поток исполнения ко
         Запущен = start()
         Работает = .run()
         Завершен 
+
+ThreadPool
+
 Lock
     lock.acquire(blocking=True, timeout=-1) - захватить блокировку, если она свободна
     lock.release() - освободить блокировку
@@ -44,13 +47,24 @@ with lock:
     # код, который нужно защитить
 
 RLock - рекурсивный замок
+
 Semaphore(value) - для нескольких потоков можно использовать семафоры, 
     которые ограничивают количество одновременно выполняющихся потоков
+
+    acquire(blocking=True, timeout=None) - попытка захватить семафор, уменьшая счетчик внутреннего состояния
+    release() - освобождение семафора, увеличивая счетчик
+
+    with semaphore:
+
+BoundedSemaphore() - счетчик должен быть больше нуля
+
 Event - сигнализация между потоками
     .wait() - ожидание сигнала. Блокируется поток до тех пор, пока сигнал не будет установлен
     .set() - установка сигнала. Разблокирует все ожидающие потоки
     .clear() - сброс сигнала. Потоки снова будут заблокированы
+
 Condition - расширенный механизм ожидания
+
 Timer - запуск потока через заданный интервал времени
 
 threading.current_thread() - возвращает текущий поток (объект)
@@ -145,6 +159,8 @@ recursive(3)
 lock1 = Lock()
 lock2 = Lock()
 
+"""
+deadlock
 def thread1():
     with lock1:
         print('захват lock1')
@@ -165,5 +181,59 @@ t = Thread(target=thread1)
 t.start()
 
 t2 = Thread(target=thread2)
-t2.start()
+t2.start()"""
 
+from threading import Semaphore
+sema = Semaphore(2)
+
+def worker(num):
+    print(f"поток {num} ждет доступ ")
+    with sema:
+        print(f"поток {num} получил доступ")
+        time.sleep(2)
+        print(f"поток {num} освободил доступ")
+
+threads = [Thread(target=worker, args=(i, )) for i in range(5)]
+
+[t.start() for t in threads]
+[t.join() for t in threads]
+
+"""from threading import BoundedSemaphore
+
+sema = BoundedSemaphore(2)
+sema.acquire()
+sema.release()
+sema.release()"""
+
+import random
+
+download_sema = Semaphore(3)
+
+def download_file(file_id):
+    print(f"Файл {file_id}: ожидание слота")
+    with download_sema:
+        print(f"Файл {file_id}: скачивается")
+        time.sleep(random.randint(1, 3))
+        print(f"Файл {file_id}: скачался")
+
+threads = [Thread(target=download_file, args=(i, )) for i in range(10)]
+
+[t.start() for t in threads]
+[t.join() for t in threads]
+
+"""
+1 параллельная печать с блокировкой
+5 потоков, печатают от 1 до 3. Поток в критичческой секции, защищен Lock
+
+2 рекурсивная блокировка
+поток, вызывает функцию внутри функции (рекурсивный вызов). обе используют одну и ту же блокировку
+
+3 ограничение количества одновременных подключений
+запустите 10 потоков, работают по 2 секу. Не более 3 потоков одновременно
+
+4 контроль использования ресурса
+создать BoundedSemaphore(2), попробовать вызвать release() больше чем acquire() раз. Обработка ошибок
+
+5 сравнение Lock и Semaphore
+сделать принтер. использовать с lock, semaphore3
+"""
