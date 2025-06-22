@@ -20,7 +20,12 @@ starvation голодание
 синхронизация потоков:
 Lock - примитив синхронизации для управления доступом к общим ресурсам
 Rlock, Semaphore, Condition, Event - для координации работы потоков
-Queue - потокобезная очередь для обмена данными между потоками
+queue.Queue - потокобезная очередь для обмена данными между потоками
+    put(item, block=True, timeout=None) - добавить элемент в очередь
+    get(block=True, timeout=None) - получить элемент из очереди
+    task_done() - сообщает очереди, что текущая задача выполнена
+    join() - ожидание завершения всех потоков
+    empty(), full(), qsize() - информация об очереди. Небезопасны
 
 Thread - класс, реализующий поток исполнения кода
     передать целевую функцию через параметр target=
@@ -39,6 +44,7 @@ Thread - класс, реализующий поток исполнения ко
         Завершен 
 
 ThreadPool
+Barrier
 
 Lock
     lock.acquire(blocking=True, timeout=-1) - захватить блокировку, если она свободна
@@ -62,8 +68,11 @@ Event - сигнализация между потоками
     .wait() - ожидание сигнала. Блокируется поток до тех пор, пока сигнал не будет установлен
     .set() - установка сигнала. Разблокирует все ожидающие потоки
     .clear() - сброс сигнала. Потоки снова будут заблокированы
+    .is_set() - проверка состояния сигнала
 
 Condition - расширенный механизм ожидания
+    wait() - ожидание сигнала. Блокируется поток до тех пор, пока сигнал не будет установлен
+    notify() / notify_all() - уведомление ожидающих потоков
 
 Timer - запуск потока через заданный интервал времени
 
@@ -198,8 +207,8 @@ threads = [Thread(target=worker, args=(i, )) for i in range(5)]
 [t.start() for t in threads]
 [t.join() for t in threads]
 
-"""from threading import BoundedSemaphore
-
+from threading import BoundedSemaphore
+"""
 sema = BoundedSemaphore(2)
 sema.acquire()
 sema.release()
@@ -224,16 +233,176 @@ threads = [Thread(target=download_file, args=(i, )) for i in range(10)]
 """
 1 параллельная печать с блокировкой
 5 потоков, печатают от 1 до 3. Поток в критичческой секции, защищен Lock
+"""
+lock = Lock()
+def print_numbers(name):
+    for i in range(1, 4):
+        with lock:
+            print(f"поток {name}: {i}")
+        time.sleep(0.2)
 
+threads = []
+
+for i in range(5):
+    t = Thread(target=print_numbers, args=(f"поток-{i}", ))
+    threads.append(t)
+    t.start()
+
+for t in threads:
+    t.join()
+
+"""
 2 рекурсивная блокировка
 поток, вызывает функцию внутри функции (рекурсивный вызов). обе используют одну и ту же блокировку
+"""
+rlock = RLock()
 
+def inner():
+    with rlock:
+        print('внутренняя функция')
+
+def outer():
+    with rlock:
+        print('внешняя функция')
+        inner()
+
+t = Thread(target=outer)
+t.start()
+t.join()
+"""
 3 ограничение количества одновременных подключений
 запустите 10 потоков, работают по 2 секу. Не более 3 потоков одновременно
+"""
+sem = Semaphore(3)
+def worker(n):
+    with sem:
+        print(f"поток {n} захватил ресурс")
+        time.sleep(2)
+        print(f"поток {n} освободил ресурс")
 
+threads = []
+for i in range(10):
+    t = Thread(target=worker, args=(i,))
+    threads.append(t)
+    t.start()
+
+[t.join() for t in threads]
+
+"""
 4 контроль использования ресурса
 создать BoundedSemaphore(2), попробовать вызвать release() больше чем acquire() раз. Обработка ошибок
+"""
+sem = BoundedSemaphore(2)
 
+sem.acquire()
+sem.acquire()
+try:
+    sem.release()
+    sem.release()
+    sem.release()
+except ValueError as e:
+    print(f'ошибка {e}')
+
+"""
 5 сравнение Lock и Semaphore
 сделать принтер. использовать с lock, semaphore3
 """
+printer_lock = Lock()
+printer_sem = Semaphore(3)
+
+def lock_user(n):
+    with printer_lock:
+        print(f"[Lock] Поток {n} использует принтер")
+        time.sleep(1)
+
+def sem_user(n):
+    with printer_sem:
+        print(f"[Semaphore] Поток {n} использует принтер")
+        time.sleep(1)
+
+print('Запуск потоков с Lock')
+threads = [Thread(target=lock_user, args=(i, )) for i in range(5)]
+for t in threads: t.start()
+for t in threads: t.join()
+
+print('Запуск потоков с Semaphore')
+threads = [Thread(target=sem_user, args=(i, )) for i in range(5)]
+for t in threads: t.start()
+for t in threads: t.join()
+
+from threading import Condition
+
+condition = Condition
+
+with condition:
+    condition.wait()
+
+with condition:
+    condition.notify()
+    
+#while not <condition>: condition.wait()
+
+from threading import Event
+event = Event()
+event.set()
+event.clear()
+if event.is_set():
+    print("можно продолжить")
+event.wait(timeout=None)
+
+
+event = Event()
+
+def worker():
+    print("поток ожидает события")
+    event.wait()
+    print("поток получил событие")
+
+t = Thread(target=worker)
+t.start
+
+time.sleep(2)
+print("посылаю сигнал")
+event.set()
+
+t.join()
+
+
+event = Event()
+
+def ready_worker(i):
+    print(f"поток {i} ждет запуска")
+    event.wait()
+    print(f"поток {i} стартует")
+
+threads = [Thread(target=ready_worker, args=(i, )) for i in range(5)]
+for t in threads: t.start()
+
+time.sleep(2)
+print("стартуем все потоки")
+event.set()
+
+from queue import Queue
+q = Queue()
+q = Queue(maxsize=10) # ограничение на кол-во элементов в очереди
+
+
+def producer(q):
+    for i in range(5):
+        print("производитель отправляет данные")
+        q.put(i)
+        time.sleep(1)
+
+def consumer(q):
+    while True:
+        item = q.get()
+        print(f"получено: {item}")
+        q.task_done()
+
+q = Queue()
+t1 = Thread(target=producer, args=(q,))
+t2 = Thread(target=consumer, args=(q,))
+t1.start()
+t2.start()
+t1.join()
+q.join()
