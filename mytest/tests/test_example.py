@@ -9,3 +9,5 @@ def test_reverse_for_empty_string():
 
 def test_reverse_for_None():
     assert reverse(None) == None
+
+print("all tests passed!")
