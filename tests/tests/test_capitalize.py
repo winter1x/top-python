@@ -11,5 +11,6 @@ if capitalize(None) != None:
 
 assert capitalize("hello") == "Hello"
 assert capitalize("") == ""
+assert capitalize(None) == None
 
 print("all tests passed!")

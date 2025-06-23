@@ -8,7 +8,7 @@ uv init
 
 uv add --dev pytest
 
-скопировать и добавить папки src, tests
+#скопировать и добавить папки src, app, tests
 
 uv run pytest
 
