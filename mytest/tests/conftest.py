@@ -1,9 +1,13 @@
 """
 @pytest.fixture
-def df(scope='session'):
+def db(scope='session'):
     conn = connect('sqlite:///memory')
     return conn
 
+def test_database(db):
+    assert db.execute('select 1').fetchone()[0] == 1
+    assert is_connected(db) is True
+    
 @pytest.fixture(scope='session')
 def connection():
     engine = create_engine(

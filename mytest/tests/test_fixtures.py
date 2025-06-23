@@ -14,9 +14,7 @@ class:  для каждого класса тестов, который ее и�
 module:  для каждого модуля тестов, который ее использует.
 package:  для каждого пакета тестов, который ее использует.
 session:  для всего сеанса тестирования.
-"""
-"""
-фикстуры
+
 Функциональная область видимости (function): Фикстура будет выполнена для каждой тестовой функции, в которой она используется. Это область видимости по умолчанию.
 Классовая область видимости (class): Фикстура будет выполнена для каждого метода в классе, в котором она используется.
 Модульная область видимости (module): Фикстура будет выполнена один раз для каждого модуля, в котором она используется.
@@ -52,6 +50,14 @@ def test_second_example(now):
 def coll():
     return [1, 2, 3, 4]
 
+def test_third_example(coll):
+    coll.append(5)
+    assert coll == [1, 2, 3, 4, 5]
+
+def test_fourth_example(coll):
+    coll.pop()
+    assert coll == [1, 2, 3]
+
 @pytest.fixture
 def coll2():
     return [1, 2, 3, 4]
@@ -72,14 +78,6 @@ def admins():
 def all(users, admins):
     return users + admins
 
-def test_third_example(coll):
-    coll.append(5)
-    assert coll == [1, 2, 3, 4, 5]
-
-def test_fourth_example(coll):
-    coll.pop()
-    assert coll == [1, 2, 3]
-
 def test_fifth_example(all, admins):
     expected_admins = get_admins(all, admins)
     assert admins == expected_admins
@@ -96,16 +94,16 @@ def test_seventh_example(coll2):
 
 """
 @pytest.fixture(scope='session')
-def df():
+def db():
     ...
 
 @pytest.fixture()
 def user():
     return {'id': 1, 'name': 'John'}
 
-def test_example(df, user):
-    save_to_db(df, user)
-    expected_user = get_from_db(df, id=user['id'])
+def test_example(db, user):
+    save_to_db(db, user)
+    expected_user = get_from_db(db, id=user['id'])
     assert expected_user == user
 """
 
@@ -137,11 +135,3 @@ def test_output(capsys):
     assert captured.out == 'Hello, world!\n'
 
 
-# import pytest
-
-@pytest.fixture
-def result():
-    return sum([5, 9])
-
-def test_sum(result):
-    assert result == 14

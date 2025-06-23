@@ -2,7 +2,7 @@
 
 def test_first():
     user['first'] = 'john'
-
+    pass
 
 def test_last():
     assert user['last'] == 'smith'
