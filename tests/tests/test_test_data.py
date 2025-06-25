@@ -18,12 +18,24 @@ html = """
 """links = extract_links(html)
 print(links)"""
 from bs4 import BeautifulSoup
-
+import os
 def extract_links(html):
     soup = BeautifulSoup(html, 'html.parser')
     return [link.get('href') for link in soup.find_all('a')]
 
-# __file__
+"""def test_extract_links():
+    with_links_path = 'test_data/withLinks.html'
+    with open(with_links_path, 'r', encoding='utf-8') as file:
+        html = file.read()
+        links = extract_links(html)
+        assert len(links) == 2"""
+# __file__ - путь к файлу, в котором вызывается функция
+"""
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+before_html = open(os.path.join(current_dir, '..', 'test_data', 'before.txt'), 'r').read()
+result = open(os.path.join(current_dir, '..', 'test_data', 'result.txt'), 'r').read()
+"""
 
 from pathlib import Path
 
@@ -53,7 +65,9 @@ html = """
 """
 
 """links = extract_links(html)
-assert len(links) == 5"""
+assert len(links) == 5
+assert links == ['/home', '/about', '/contacts', '/terms', 'https://external.com']
+"""
 
 """
 if send_greeting_email(user):
@@ -71,15 +85,31 @@ assert send_greeting_email(user) is True
 
 log = Logger('development.log')
 log('first message')
-log('second message')"""
+#'development.log'
+#'first message'
+log('second message')
+#'development.log'
+#'first message'
+#'second message'
 
-"""from mailer import send_email
+"""
+
+"""
+params = {
+    'email': 'lala@example.com',
+    'password': 'qwerty',
+}
+
+# register_user(params)
+
+
+from mailer import send_email
 mailer.test = True
 
 def register_user(send=send_email, **params):
     user = User(**params)
     user.save()
-    send("registration", user)
+    send_email("registration", user)
     return user.id
 
 def fake_send_email(*args, **kwargs):
@@ -91,7 +121,7 @@ def test_register_user():
     assert user.name == 'Mike'
     
 """
-
+#C:\Users\Ефимов\AppData\Local\
 def test_create_file(tmp_path):
     d = tmp_path / 'sub'
     d.mkdir()

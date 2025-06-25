@@ -77,6 +77,10 @@ def get_private_fork_names(username):
     repos = client.get_user(username).get_repos(type='private')
     return [repo.name for repo in repos if repo.fork]
 
+"""def test_get_private_fork_names():
+    names = get_private_fork_names("tsenturion")
+    assert 'Appxkk/top-python' in names"""
+    
 def test_get_private_fork_names2(monkeypatch):
     def fake_get_repos(self, *args, **kwargs):
         return [
@@ -126,7 +130,8 @@ def test_get_private_fork_names():
 
 @pytest.mark.vcr
 def test_get_private_fork_names():
-    assert get_private_fork_names('tsenturion') == ['one']
+    print(get_private_fork_names('tsenturion'))
+    assert get_private_fork_names('tsenturion') == ['diagram-gpt', 'html--basik', 'naumen.scala.course.2022.spring', 'react-d3-graph', 'testing-python-apps', 'Weather']
 """class EmailSender:
     def send(self, message):
         print(f'Отправка email: {message}')
