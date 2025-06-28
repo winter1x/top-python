@@ -4,46 +4,29 @@ from concurrent.futures import ThreadPoolExecutor
 import requests
 from queue import Queue
 from threading import Barrier
+import random
+from concurrent.futures import as_completed
 
-NUM_TASKS = 10
-NUM_CONSUMERS = 3
+def fetch(url):
+    delay = random.uniform(0.5, 2.0)
+    print(f"[Start] Загрузка {url} с задержкой {delay:.2f} секунд")
+    time.sleep(delay)
 
-task_queue = Queue()
+    if random.random() < 0.2:
+        raise Exception(f"Ошибка загрузки {url}")
 
-def producer():
-    for i in range(NUM_TASKS):
-        task_name = f"task-{i}"
-        print(f"[Producer] добавляем задачу {task_name}")
-        task_queue.put(task_name)
-        time.sleep(0.1)
-    
-    for _ in range(NUM_CONSUMERS):
-        task_queue.put(None)
+    print(f"[End] Загрузка {url} завершена")
+    return f"Результат загрузки {url}"
 
-def consumer(thread_id):
-    while True:
-        task = task_queue.get()
-        if task is None:
-            print(f"[Consumer {thread_id}] получили сигнал о завершении")
-            task_queue.task_done()
-            break
-        print(f"[Consumer {thread_id}] обработка задачи {task}")
-        time.sleep(0.5)
-        print(f"[Consumer {thread_id}] задача {task} завершена")
-        task_queue.task_done()
+urls = [f"http://site{i}.com" for i in range(1, 11)]
 
-producer_thread = Thread(target=producer)
-producer_thread.start()
+with ThreadPoolExecutor(max_workers=4) as executor:
+    futures = {executor.submit(fetch, url): url for url in urls}
 
-consumer_threads = []
-for i in range(NUM_CONSUMERS):
-    t = Thread(target=consumer, args=(i,))
-    t.start()
-    consumer_threads.append(t)
-
-task_queue.join()
-producer_thread.join()
-for t in consumer_threads:
-    t.join()
-
-print("Все задачи обработаны")
+    for future in as_completed(futures):
+        url = futures[future]
+        try:
+            result = future.result()
+            print(f"Результат загрузки {url}: {result}")
+        except Exception as exc:
+            print(f"Ошибка загрузки {url}: {exc}")
