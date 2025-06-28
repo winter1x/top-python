@@ -43,8 +43,14 @@ Thread - класс, реализующий поток исполнения ко
         Работает = .run()
         Завершен 
 
-ThreadPool
-Barrier
+from concurrent.futures import ThreadPoolExecutor
+    ThreadPool - многопоточная очередь задач
+
+ProcessPoolExecutor - многопроцессорная очередь задач CPU
+
+Barrier - синхронизация потоков, когда все потоки должны дождаться друг друга
+    wait(timeout=None) - ожидание завершения всех потоков
+    BrokenBarrierError - исключение, когда все потоки не успели дождаться друг друга
 
 Lock
     lock.acquire(blocking=True, timeout=-1) - захватить блокировку, если она свободна
@@ -406,3 +412,223 @@ t1.start()
 t2.start()
 t1.join()
 q.join()
+
+q = Queue(maxsize=3)
+
+def producer():
+    for i in range(5):
+        print("производитель отправляет данные")
+        q.put(i)
+        print(f"{i} отправлен")
+
+def consumer():
+    while True:
+        item = q.get()
+        print(f"получено: {item}")
+        time.sleep(2)
+        q.task_done()
+
+Thread(target=producer).start()
+Thread(target=consumer, deamon=True).start()
+
+q = Queue()
+
+def producer():
+    for i in range(5):
+        q.put(f"data {i}")
+
+def consumer():
+    while True:
+        item = q.get()
+        print(f"получено: {item}")
+        q.task_done()
+
+for _ in range(2):
+    Thread(target=consumer).start()
+
+for _ in range(3):
+    Thread(target=producer, deamon=True).start()
+
+
+"""
+t = Timer(interval, function, args=None, kwargs=None)
+interval - время задержки в секундах
+function - функция, которую нужно запустить
+args - аргументы для функции список
+kwargs - аргументы для функции словарь
+
+t.start()
+t.cancel()
+"""
+
+from threading import Timer
+
+def say_hello():
+    print('таймер сработал')
+
+t = Timer(3, say_hello)
+t.start()
+
+def print_msg(msg):
+    print(f"[{time.strftime('%X')}] {msg}")
+
+print(f"[{time.strftime('%X')}] старт")
+t = Timer(3, print_msg, args=("сообщение через 3 секунды",))
+t.start()
+print(f"[{time.strftime('%X')}] основной поток работает дальше")
+
+def repeat():
+    print(f"сейчас {time.strftime('%X')}")
+    t = Timer(2, repeat)
+    t.start()
+
+repeat()
+
+def timeout():
+    print("время вышло")
+
+t = Timer(2, timeout)
+t.start()
+
+anwer = input("введите ответ за 2 с: ")
+t.cancel()
+print(f"ответ: {answer}")
+
+counter = 0
+lock = Lock()
+
+def increase():
+    global counter
+    with lock:
+        counter += 1
+        print(f"счетчик: {counter}")
+
+t = Timer(2, increase)
+t.start()
+t.join()
+
+from concurrent.futures import ThreadPoolExecutor
+
+executor = ThreadPoolExecutor(max_workers=5)
+
+# 1 submit(fn, *args, **kwargs) - отправить задачу на выполнение
+future = executor.submit(my_func, arg1, arg2)
+
+result = future.result()
+"""
+Future
+future.done() - проверяет завершена ли задача
+future.result() - возвращает результат выполнения задачи
+future.exception() - возвращает исключение, если оно было
+future.add_done_callback(fn) - добавить функцию, которая будет вызвана после завершения задачи
+"""
+# 2 map(fn, *iterables) - выполнить функцию на нескольких элементах
+
+results = executor.map(my_func, list_of_args)
+
+
+def task(n):
+    time.sleep(1)
+    return n * 2
+
+with ThreadPoolExecutor(max_workers=3) as executor:
+    results = executor.map(task, range(5))
+
+# без with 
+# executor.shutdown(wait=True)
+ 
+for r in results:
+    print(r)
+
+futures = []
+
+for i in range(10):
+    futures.append(executor.submit(my_func, i))
+
+for f in futures:
+    print(f.result())
+
+
+def download(url):
+    print(f"Скачиваем {url}")
+    resp = requests.get(url)
+    return len(resp.content)
+
+urls = [
+    "https://www.python.org",
+    "https://www.google.com",
+    "https://www.yandex.ru"
+]
+
+with ThreadPoolExecutor(max_workers=3) as executor:
+    results = executor.map(download, urls)
+
+for size in results:
+    print(f"размер ответа: {size}")
+
+
+def worker(q):
+    while not q.empty():
+        item = q.get()
+        print(f"получено: {item}")
+        q.task_done()
+
+q = Queue()
+for i in range(20):
+    q.put(i)
+
+with ThreadPoolExecutor(max_workers=4) as executor:
+    for _ in range(4):
+        executor.submit(worker, q)
+
+from threading import Barrier
+
+barrier = Barrier(parties=3, timeout=3)
+# barrier.broken
+def worker():
+    print("До барьера")
+    barrier.wait()
+    print("После барьера")
+
+def worker():
+    for phase in range(5):
+        print(f"Поток {threadid.current_thread().name} в фазе {phase}")
+        barrier.wait()
+
+i = barrier.wait(timeout=3)
+if i == 0:
+    print("я последний и главный поток, начинаю финальную фазу")
+
+
+barrier = Barrier(parties=3, timeout=3)
+
+def worker(n):
+    print(f"Поток {n} работа до барьера")
+    time.sleep(n)
+    print(f"Поток {n} подошел к барьеру")
+    barrier.wait()
+    print(f"Поток {n} продолжил выполнение")
+
+threads = []
+
+for i in range(3):
+    t = Thread(target=worker, args=(i,))
+    threads.append(t)
+    t.start()
+
+for t in threads:
+    t.join()
+
+
+"""
+from queue import Queue
+многопоточная обработка заданий из очереди 
+producer - добавляет элементы в очередь
+    task-1
+    task-2
+    task-N
+
+несколько consumers - берут элементы из очереди и обрабатывают time.sleep(1)
+основной поток ждет
+завершение по сигналу (None/STOP)
+"""
