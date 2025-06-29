@@ -1,33 +1,15 @@
-from threading import Timer, Lock, Thread
-import time
-from concurrent.futures import ThreadPoolExecutor
-import requests
-from queue import Queue
-from threading import Barrier
-import random
-from concurrent.futures import as_completed
+import asyncio
 
-NUM_THREADS = 5
 
-barrier = Barrier(NUM_THREADS)
+async def task(name, delay):
+    await asyncio.sleep(delay)
+    return f"{name} завершен"
 
-def worker(thread_id):
-    for phase in range(1, 4):
-        time.sleep(random.uniform(0.5, 2.0))
-        print(f"[Поток {thread_id}] завершил фазу {phase}, ждет")
+async def main():
+    tasks = [asyncio.create_task(task(f"задача {i}", i)) for i in range(5)]
+    done, pending = await asyncio.wait(tasks)
 
-        barrier.wait()
+    for d in done:
+        print(d.result())
 
-        if phase < 3:
-            print(f"[Поток {thread_id}] переходит к фазе {phase + 1}")
-
-threads = []
-for i in range(NUM_THREADS):
-    t = Thread(target=worker, args=(i + 1,))
-    threads.append(t)
-    t.start()
-
-for t in threads:
-    t.join()
-
-print("Все потоки завершили работу")
+asyncio.run(main())
