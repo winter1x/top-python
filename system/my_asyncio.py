@@ -25,6 +25,27 @@ cancel - отменяет задачу
     asyncio.CancelledError
 
 asyncio.shield - защита от отмены
+
+asyncio.Queue - очередь задач
+    await queue.put(item) - добавить в очередь
+    item = await queue.get() - получить из очереди
+    queue.qsize() - размер очереди
+    queue.empty() - очередь пуста
+    queue.full() - очередь полна
+    queue.task_done() - задача выполнена
+
+asyncio.Lock - блокировка
+
+asyncio.Semaphore - семафор
+asyncio.BoundedSemaphore - ограниченный семафор
+
+asyncio.Condition - условие
+
+asyncio.Event - событие
+asyncio.Barrier - барьер
+
+LifoQueue - стек
+PriorityQueue - очередь с приоритетами
 """
 import asyncio
 async def hello():
@@ -178,7 +199,7 @@ async def main():
         print("завершена задача", task.result())
 
 
-asyncio.run(main())
+#asyncio.run(main())
 """
 
 
@@ -210,3 +231,109 @@ task.cancel()
 обработать ошибки
 показать время выполения
 """
+
+import time
+import random
+
+async def ping_server(name: str) -> str:
+    delay = random.uniform(0.5, 2)
+    await asyncio.sleep(delay)
+    if random.randint(1, 4) == 1:
+        raise Exception(f"ошибка сервера {name}")
+    return f"ответ сервера {name} получен"
+
+
+async def main():
+    servers = ["server1", "server2", "server3", "server4"]
+
+    start = time.monotonic()
+
+    tasks = [asyncio.create_task(ping_server(server)) for server in servers]
+    results = await asyncio.gather(*tasks, return_exceptions=True)
+
+    for name, result in zip(servers, results):
+        if isinstance(result, Exception):
+            print(f"ошибка сервера {name}: {result}")
+        else:
+            print(result)
+
+    end = time.monotonic()
+    print(f"время выполнения: {end - start:.2f} секунд")
+
+
+#asyncio.run(main())
+
+async def producer(queue):
+    for i in range(5):
+        await queue.put(i)
+        print(f"продукт {i} добавлен в очередь")
+        await asyncio.sleep(0.1)
+
+async def consumer(queue):
+    while True:
+        item = await queue.get()
+        print(f"продукт {item} получен из очереди")
+        queue.task_done()
+
+queue = asyncio.Queue()
+
+async def main():
+    await asyncio.gather(
+        producer(queue),
+        consumer(queue),
+        consumer(queue),
+    )
+
+#asyncio.run(main())
+
+lock = asyncio.Lock()
+counter = 0
+
+async def increment():
+    global counter
+    async with lock:
+        tmp = counter
+        await asyncio.sleep(0.1)
+        counter = tmp + 1
+
+
+sem = asyncio.Semaphore(3)
+async def limited_worker(id):
+    async with sem:
+        print(f"рабочий {id} начал работу")
+        await asyncio.sleep(1)
+        print(f"рабочий {id} закончил работу")
+
+condition = asyncio.Condition()
+items = []
+
+async def producer():
+    async with condition:
+        items.append("item")
+        condition.notify()
+
+async def consumer():
+    async with condition:
+        await condition.wait()
+        print("получено", items.pop())
+
+event = asyncio.Event()
+async def waiter():
+    print("ожидание")
+    await event.wait()
+    print("продолжение")
+
+async def trigger():
+    await asyncio.sleep(1)
+    event.set()
+
+await asyncio.gather(waiter(), trigger())
+
+
+queue = asyncio.PriorityQueue()
+await queue.put((1, "низкий приоритет"))
+await queue.put((0, "высокий приоритет"))
+
+item = await queue.get()
+
+
