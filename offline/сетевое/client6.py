@@ -1,31 +1,55 @@
 import socket
 import os
 
-# Функция для отправки строки с переводом строки
-#
-#
+def send_line(sock, line):
+    sock.sendall(f"{line}\n".encode('utf-8'))
 
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client_socket.connect(('127.0.0.1', 8888))
+client_socket.connect(('127.0.0.1', 9000))
 
-# запросить у пользователя команду (UPLOAD или DOWNLOAD) и имя файла
-# command = ...
-# filename = ...
+command = input("Введите команду (UPLOAD / DOWNLOAD): ").strip().upper()
+filename = input("Введите имя файла: ").strip()
 
-# Отправляем команду и имя файла
-# send_line(client_socket, command)
-# send_line(client_socket, filename)
+send_line(client_socket, command)
+send_line(client_socket, filename)
 
-# Здесь обработать команды
-# Если команда UPLOAD:
-#   - Проверить существует ли файл
-#   - Если существует: открыть файл и отправить содержимое
-#   - Получить и вывести ответ от сервера
+if command == "UPLOAD":
+    if not os.path.exists(filename):
+        print("Файл не найден.")
+        client_socket.close()
+    else:
+        with open(filename, 'rb') as f:
+            while chunk := f.read(1024):
+                client_socket.sendall(chunk)
 
-# Если команда DOWNLOAD:
-#   - Принять файл от сервера и сохранить его с префиксом "загружено_"
+        client_socket.shutdown(socket.SHUT_WR)  # Сообщаем серверу, что данные отправлены
 
-# Если команда неизвестна:
-#   - Вывести сообщение об ошибке
+        response = b''
+        while True:
+            part = client_socket.recv(1024)
+            if not part:
+                break
+            response += part
+
+        print("Ответ сервера:", response.decode('utf-8'))
+
+elif command == "DOWNLOAD":
+    is_error = False
+    with open(f"загружено_{filename}", 'wb') as f:
+        while True:
+            data = client_socket.recv(1024)
+            if not data:
+                break
+            if data.startswith("ОШИБКА:".encode()):
+                print(data.decode('utf-8'))
+                is_error = True
+                break
+            f.write(data)
+    if not is_error:
+        print(f"Файл успешно сохранён как загружено_{filename}")
+
+
+else:
+    print("Неизвестная команда.")
 
 client_socket.close()
