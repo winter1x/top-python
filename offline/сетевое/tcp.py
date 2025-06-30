@@ -20,7 +20,21 @@ tcp transmission control protocol
 сервер - слушаем
 клиент - подключение
 
+try:
+    clint_sock.connect(('localhost', 8000))
+except ConnectionRefusedError:
+    print('сервер не отвечает')
 
+enconde - кодировка
+decode - декодирование
+
+методы socket:
+bind - связать
+listen - слушать
+accept - принять
+connect - подключиться
+send - отправить
+recv - получить
 """
 
 
