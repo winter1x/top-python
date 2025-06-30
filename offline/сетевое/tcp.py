@@ -35,6 +35,11 @@ accept - принять
 connect - подключиться
 send - отправить
 recv - получить
+
+трехстороннее рукопожатие
+клиент послыает SYN
+сервер отвечает SYN+ACK
+клиент получает ACK
 """
 
 
@@ -44,3 +49,30 @@ recv - получить
 если UPLOAD - передает файл
 если DOWNLOAD - сервер ищет файл и возвращает его содержимое
 """
+
+# tcp/ip
+"""
+socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+ip-address
+port
+dns
+"""
+
+"""
+ConnectionRefusedError - не отвечает
+NetworkUnreachableError - ip недоступен
+GetHostByNameError - dns не может преобразовать ip
+
+ping <ip>
+tracert / traceroute
+netstat
+telnet <ip> <port>
+"""
+
+# задание 2:
+"""
+сервер - вывод ip каждого клиента (слушает ip port), одновременные подключения 
+клиент - узнает ip по dns (получает и выводит ответ от сервера)
+tcp передача
+логирование ip + port входящих клиентов
+только socket
