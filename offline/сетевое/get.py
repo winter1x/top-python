@@ -1,3 +1,15 @@
+"""
+get
+не изменяют данные на сервере
+вся информация передается в url
+
+кэшируемость
+идемпонентность
+
+<2000 - символов
+не безопасно (не безопасно для передачи паролей)
+безопасность (не меняет данные на сервере)
+"""
 # ?search=python
 """
 https://api.github.com/data?type=student&id=123
@@ -9,11 +21,98 @@ id=123
 301 запрашиваемый ресурс перенесен на другой адрес
 404 не найдена
 500 внутренняя ошибка сервера
+
+пример сырого запроса
+GET /products?sort=price&order=asc HTTP/1.1
+Host: api.example.com
+User-Agent: curl/7.64.1
+Accept: text/html
+
+пример ответа
+HTTP/1.1 200 OK
+Content-Type: text/html
+Content-Length: 123
+
+<html></html>
+
+
+/api/products
+
+<button id="load-products">Загрузить товары</button>
+<script>
+    document.getElementById('load-products').addEventListener('click', () => {
+        fetch('/api/products')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            });
+    });
+</script>
 """
+
 import requests
 
-"""response = requests.get("https://api.github.com")
+url = "https://api.example.com/products"
+params = {'sort': 'price', 'order': 'asc'}
+
+try:
+    response = requests.get(url, params=params)
+    response.raise_for_status()
+    data = response.json()
+    print(data)
+except requests.exceptions.RequestException as err:
+    print(f"ошибка {err}")
+"""
+params = {
+    'course': 'networking',
+    'task': 'get_request'
+}
+
+response = requests.get("https://api.example.com/products", params=params)
+
+if response.status_code == 200:
+    products = response.json()
+    print('получены задания', products)"""
+
+
+"""response = requests.get('https://example.com/search?q=python')
+print(response.text)"""
+
+"""response = requests.get('https://api.agify.io/?name=alex')
+data = response.json()
+print(data)"""
+
+"""params = {
+    'name': 'anna',
+    'county_id': "US"
+}
+
+response = requests.get('https://api.agify.io/', params=params) #?name=anna&county_id=US
+data = response.json()
+print(data)"""
+
+"""response = requests.get('https://example.com/search?q=python')
+
+if response.status_code == 200:
+    print('все хорошо')
+else:
+    print(f"ошибка {response.status_code}")
+
+try:
+    response = requests.get('https://example.com/search?q=python')
+    response.raise_for_status()
+except requests.exceptions.HTTPError as err:
+    print(f"http ошибка {err}")"""
+
+"""response = requests.get('https://example.com/image.jpg')
+
+with open('image.jpg', 'wb') as f:
+    f.write(response.content)"""
+
+"""
+response = requests.get("https://api.github.com/users")
 print(response.status_code)
+print(response.headers)
 print(response.text)
 
 payload = {"q": 'python', 'sort': 'stars'}
