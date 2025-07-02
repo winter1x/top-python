@@ -55,7 +55,17 @@ recv - получить
 socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 ip-address
 port
-dns
+dns domain name system
+https://en.wikipedia.org/wiki/Domain_Name_System
+socket.gethostbyname('google.com')
+
+dns сервер
+доменное имя -> ip адрес
+
+google 8.8.8.8
+cloudflare 1.1.1.1
+яндекс 77.88.8.8
+opendns 208.67.222.222
 """
 
 """
@@ -69,10 +79,11 @@ netstat
 telnet <ip> <port>
 """
 
-# задание 2:
+# задание 2: file9
 """
 сервер - вывод ip каждого клиента (слушает ip port), одновременные подключения 
 клиент - узнает ip по dns (получает и выводит ответ от сервера)
 tcp передача
 логирование ip + port входящих клиентов
 только socket
+"""
