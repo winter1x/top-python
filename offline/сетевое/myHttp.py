@@ -62,3 +62,36 @@ get http://api.agify.io?name=<вееденное имя>
 try except
 обработка корректного ввода имени
 """
+print('-' * 50)
+#import requests
+
+import requests  
+
+name = input("Введите имя: ").strip()
+
+if not name:
+    print("Имя не должно быть пустым.")
+    exit()
+
+
+params = {
+    'name': name  
+}
+
+try:
+    response = requests.get('https://api.agify.io', params=params)
+
+    if response.status_code != 200:
+        print(f"Ошибка при выполнении запроса: {response.status_code}")
+        exit()
+
+    data = response.json()
+
+    name_from_api = data.get('name', 'Неизвестно')
+    age = data.get('age', '—')  
+    count = data.get('count', 0)
+
+    print(f"Имя: {name_from_api}, Предполагаемый возраст: {age}, Кол-во людей в выборке: {count}")
+
+except requests.exceptions.RequestException as e:
+    print(f"Ошибка при выполнении запроса: {e}")
