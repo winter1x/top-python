@@ -721,3 +721,21 @@ https://api.thecatapi.com/v1
 2 limit в параметках. 5 случайных изображений кошек, выводить только список ссылок
 3 корректный код (timeout ошибки...)
 """
+#import requests
+
+url = "https://api.thecatapi.com/v1/images/search"
+params = {"limit": 5}
+
+try:
+    response = requests.get(url, params=params, timeout=5)
+
+    if response.status_code == 200:
+        data = response.json()
+        print("Ссылки на изображения:")
+        for item in data:
+            print(item["url"])
+    else:
+        print("Ошибка сервера. Код ответа:", response.status_code)
+
+except requests.exceptions.RequestException as e:
+    print("Ошибка запроса:", e)
