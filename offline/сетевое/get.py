@@ -372,3 +372,352 @@ def count_redirects(url: str) -> int:
     except requests.exceptions.RequestException as e:
         print(f"ошибка запроса {e}")
         return -1
+
+
+"""
+указываем url
+отправляем запрос
+получаем ответ
+"""
+
+response = requests.get("https://httpbin.org/get")
+print(response.text)
+
+"""
+параметры 
+query string
+начинается со знака ?
+далее "ключ=значение", разделенные &
+https://example.com/search?query=python&page=2
+/search - ресурс
+два параметра
+    q=python - строка поиска
+    page=2 - номер страницы
+
+параметры с несколькими значениями
+tags=python&tags=backend&tags=go
+
+параметры с пробелами(%20 или +) и спецсимволами
+"learn python now!"
+
+пустые значения и логика по умолчания
+params = {"debug": ""}
+
+динамическая генерация параметров
+
+слияние параметров и ручная сборка URL - ПЛОХО, ТАК НЕ ДЕЛАЕМ 
+url = f"https://httpbin.org/get?q={query}&page={page}" - не безопасно
+правильно - params
+
+проверка отправленых параметров
+response.url
+response.json()['args']
+
+сочетается и используется вместе с другими возможностями (headers, cookies, session)
+
+расширенные параметры (вложенные словари/структуры)
+
+
+параметры и кэширование
+https://example.com/api/items?page=1
+https://example.com/api/items?page=2
+"""
+
+params = {'q', 'python', 'page': 2}
+response = requests.get("https://httpbin.org/get", params=params)
+#https://httpbin.org/get?q=python&page=2
+print(response.url)
+
+"""
+параметры с несколькими значениями
+tags=python&tags=backend&tags=go
+"""
+
+params = {'tags': ['python', 'backend', 'go']}
+response = requests.get("https://httpbin.org/get", params=params)
+print(response.url)
+#https://httpbin.org/get?tags=python&tags=backend&tags=go
+
+"""
+параметры с пробелами(%20 или +) и спецсимволами
+"learn python now!"
+https://httpbin.org/get?q=learn+python+now%21
+"""
+
+params = {'q': 'learn python now!'}
+response = requests.get("https://httpbin.org/get", params=params)
+print(response.url)
+#https://httpbin.org/get?q=learn+python+now%21
+
+"""
+пустые значения и логика по умолчания
+params = {"debug": ""}
+"""
+
+params = {'debug': ''}
+response = requests.get("https://httpbin.org/get", params=params)
+print(response.url)
+#https://httpbin.org/get?debug=
+
+"""
+динамическая генерация параметров
+"""
+
+def search_books(title: str, page=1, limit=10):
+    params = {'title': title, 'page': page, 'limit': limit}
+    response = requests.get("https://httpbin.org/get", params=params)
+    return response.json()
+
+result = search_books("python", page=2)
+print(result['args'])
+#{'limit': '10', 'page': '2', 'title': 'python'}
+
+"""
+расширенные параметры (вложенные словари/структуры)
+"""
+
+params = {
+    'filter[category]': 'python',
+    'filter[theme][title]': 'advanced'
+}
+
+#https://httpbin.org/get?filter%5Bcategory%5D=python&filter%5Btheme%5D%5Btitle%5D=advanced
+response = requests.get("https://httpbin.org/get", params=params)
+if response.status_code == 200:
+
+
+# работа с заголовками
+"""
+http заголовки - метаинформация 
+.get
+.post
+.put
+
+ключи=заголовки значения=содержимое
+
+User-Agent - кто мы такие
+Accept - что мы хотим получить
+    application/json
+    text/html
+    application/xml
+Authorization - авторизация (токены, пароли и тд)
+Content-Type - тип контента (актуален для POST и PUT и PATCH)
+    application/json
+    text/html
+    application/xml
+    application/octet-stream - файл (возможно)
+
+при работе с Session
+s.headers.update({"User-Agent": "my-app/0.0.1"})
+s.headers.pop("User-Agent")
+
+шаблонный словарь заголовков
+"""
+headers = {
+    "User-Agent": "my-app/0.0.1", #кто мы такие
+    "Accept": "application/json", #что мы хотим получить
+}
+
+response = requests.get("https://httpbin.org/get", headers=headers)
+print(response.json())
+#{'args': {}, 'headers': {'Accept': 'application/json', 'Accept-Encoding': 'gzip, deflate', 'Host': 'httpbin.org', 'User-Agent': 'my-app/0.0.1', 'X-Amzn-Trace-Id': 'Root=1-687530c5-546131611cbb4adb2f2a599b'}, 'origin': '45.144.54.184', 'url': 'https://httpbin.org/get'}
+
+s = requests.Session()
+r = s.get("https://httpbin.org/headers")
+print(r.json())
+#{'headers': {'Accept': '*/*', 'Accept-Encoding': 'gzip, deflate', 'Host': 'httpbin.org', 'User-Agent': 'python-requests/2.31.0', 'X-Amzn-Trace-Id': 'Root=1-6875333d-651ee5bc002a23fe3b5e6b04'}}
+
+"""
+шаблонный словарь заголовков
+"""
+
+DEFAULT_HEADERS = {
+    "User-Agent": "my-app/0.0.1", #кто мы такие
+    "Accept": "application/json", #что мы хотим получить
+}
+
+def get_data(url, token=None):
+    headers = DEFAULT_HEADERS.copy()
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    return response.get(url, headers=headers)
+
+#обработка ответа
+"""
+удался ли запрос
+200 или .raise_for_status() - завершился ли запрос с ошибкой? 4xx 5xx
+.json - преобразовать в json
+
+следуем редиректам
+301 запрашиваемый ресурс перенесен на другой адрес
+302 тоже редирект
+можно отключить
+allow_redirects=False
+"""
+if response.status_code == 200:
+    print('ok')
+else:
+    print('error', response.status_code)
+
+try:
+    data = response.json()
+except ValueError:
+    print('error json')
+
+data = response.json()
+if not data.get('results'):
+    print('нет результатов')
+
+for r in reponse.history:
+    print(r.status_code, r.url)
+
+response = requests.get("https://httpbin.org/get")
+print("status code:", response.status_code)
+print("text:", response.text[:100])
+print('headers:', response.headers)
+
+url = "https://httpbin.org/get"
+params = {'q': 'python', 'page': 1}
+headers = {
+    'Accept': 'application/json',
+    "User-Agent": "my-app/0.0.1",
+}
+
+try:
+    response = requests.get(url, params=params, headers=headers)
+    response.raise_for_status()
+    data = response.json()
+    print(data['args'])
+except requests.RequestException as e:
+    print('ошибка', e)
+except ValueError:
+    print('ошибка json')
+
+# обработка ошибок
+"""
+сервер не отвечает
+неверный url
+истек тайамут
+ошибка соединения
+4xx 5xx
+ошибка в ответе
+
+.raise_for_status() чтобы ловить 404 или 500 например
+
+
+requests.exceptions.RequestException - родитель
+ConnectionError - ошибка соединения - сервер не существует/неправильный домент/нет интернета
+
+Timeout - истек таймаут при timeout=
+HTTPError - ошибка http при .raise_for_status()
+TooManyRedirects - слишком много редиректов - если больше 30 редиректов
+
+    логирование
+    print() с ошибкой
+    print() с кодом ответа
+    print() с url
+    print() с телом ответа
+"""
+try:
+    response = requests.get("https://httpbin.org/status/404", timeout=5)
+    response.raise_for_status()
+    response = requests.get("https://this-domain-does-not-exist.com", timeout=5)
+except requests.exceptions.HTTPError as http_err:
+    print(f"ошибка HTTP {http_err}")
+except requests.exceptions.ConnectionError as conn_err:
+    print(f"ошибка соединения {conn_err}")
+except requests.exceptions.Timeout as timeout_err:
+    print(f"таймаут {timeout_err}")
+except requests.exceptions.RequestException as err:
+    print(f"другая ошибка {err}")
+
+# повторные попытки retry
+import time
+
+for i in range(3):
+    try:
+        response = requests.get("https://httpbin.org/status/500")
+        response.raise_for_status()
+        break
+    except requests.exceptions.RequestException:
+        print("попытка", i + 1, "неудачна")
+        time.sleep(1)
+else:
+    print("все попытки неудачны")
+#таймауты
+"""
+timeout=(3.0, 7.0)
+connect_timeout=3.0 - сколько ждать подключения к серверу
+read_timeout=7.0 - сколько ждать ответа от сервера
+"""
+try:
+    response = requests.get("https://httpbin.org/delay/10", timeout=3)
+except requests.exceptions.Timeout as err:
+    print(f"сервер долго не отвечает {err}")
+
+try:
+    response = requests.get("https://httpbin.org/delay/10", timeout=(3.0, 7.0))
+except requests.exceptions.Timeout as err:
+    print(f"сервер долго не отвечает {err}")
+
+# кеширование
+import requests_cache
+requests_cache.install_cache('my_cache', expire_after=60)  # кеширование в файл sqllite. 60 секунд
+#                                       , expire_after=timedelta(hours=60)
+#далее все вызовы будут кешироваться
+
+requests_cache.install_cache(backend='memory') #кеширование только в памяти
+
+requests_cache.clear() #очистить кеш
+# rm my_cache.sqlite
+
+with requests_cache.disabled():
+    response = requests.get("https://httpbin.org/get")
+
+response = requests.get(
+    "https://httpbin.org/get",
+    params={'a': 1},
+    expire_after=30
+)
+
+from requests_cache import CachedSession
+
+session = CachedSession('my_cache', expire_after=60)
+
+response = session.get('https://httpbin.org/get')
+print(response.from_cache)
+# cookies
+
+cookies = {'session_id': '1234567890'}
+response = requests.get('https://httpbin.org/cookies', cookies=cookies)
+print(response.json())
+
+# Session
+
+s = requests.Session()
+s.headers.update({"User-Agent": "my-app/0.0.1"})
+
+response1 = s.get("https://httpbin.org/headers")
+response2 = s.get("https://httpbin.org/cookies/set?mycookie=value")
+response3 = s.get("https://httpbin.org/cookies")
+
+print(response3.json())
+
+#стриминг
+
+response = requests.get("https://httpbin.org/stream/20", stream=True)
+for line in response.iter_lines():
+    print(line)
+
+"""
+1 часть
+https://api.thecatapi.com/v1
+получить случайное изображение кошки
+    get https://api.thecatapi.com/v1/image/search
+    статус код 
+    полученные данные
+    только ссылку на изображение из json ответа - список с одним словарем, внутри "url"
+
+2 limit в параметках. 5 случайных изображений кошек, выводить только список ссылок
+3 корректный код (timeout ошибки...)
+"""

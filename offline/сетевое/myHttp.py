@@ -13,17 +13,23 @@ requests
 status_code - код ответа
 200 - успешно
 301 запрашиваемый ресурс перенесен на другой адрес
+302 тоже редирект
+401 не авторизован
+403 - доступ запрещен
 404 не найдена
 500 внутренняя ошибка сервера
 
-get methods
-.headers - заголовки ответа
-.text - текст ответа
+get methods у объекта Response
+.status_code - код ответа
+.headers - заголовки ответа (CaseInsensitiveDict)
+.text - текст ответа str
 .url - фактический юрл (вдруг был редирект)
 .encoding - кодировка
 .elapsed - время выполнения запроса
 .json - преобразовать в json
-.content - бинарные данные
+.content - бинарные данные bytes
+.history - история редиректов
+.from_cache - получен ли из кеша True/False
 """
 import requests
 response = requests.get("http://google.com/")
