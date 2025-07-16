@@ -1,9 +1,81 @@
+"""
+для отправки/передачи данных на сервер
+
+данные передаются в теле запроса (request body), а не в url
+обычно изменяет состояние сервера
+не кэшируется
+не должен быть повторен автоматически
+безопаснее
+не идемпотентный
+сопровождаются заголовком Content-Type
+    Content-Type: application/x-www-form-urlencoded
+    Content-Type: application/json
+    Content-Type: multipart/form-data
+Authorization - токен авторизации
+User-Agent - описание клиента
+
+
+используется когда:
+    - нужно передать данные на сервер
+    - нужно обновить состояние сервера
+    - создать новый объект
+    - отправить данные формы
+    - загрузить файл
+    - отправить json-данные 
+
+request body:
+    - json
+    - ключи/значения
+    - бинарные данные
+    - потоковые данные 
+
+
+
+
+получить
+GET /notes
+
+создать
+POST /notes
+Body:
+    {
+        "title": "Buy milk",
+        "completed": false
+    }
+
+обновить
+PUT /notes/1
+Body:
+    {
+        "title": "Buy milk",
+        "completed": true
+    }
+
+удалить
+DELETE /notes/1
+
+
+<form action="/submit" method="post">
+    <input name="username">
+    <input name="password" type="password">
+    <button type="submit">Submit</button>
+</form>
+
+
+"""
+
 import requests
 
-"""url = 'https://httpbin.org/post'
-data = {'username': "alice", 'password': 'secret'}
+"""
+url = 'https://httpbin.org/post'
+data = {
+    'username': "alice", 
+    'password': 'secret'
+}
+
 # username=alice&password=secret - application/x-www-form-urlencoded
 response = requests.post(url, data=data)
+print(response.status_code)
 print(response.text)
 
 json_data = {'username': "alice", 'password': 'secret'}

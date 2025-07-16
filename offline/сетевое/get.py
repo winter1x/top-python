@@ -1,6 +1,11 @@
 """
 get
-не изменяют данные на сервере
+все параметры передаются в url (query string, не безопасно)
+кэшируется браузером и прокси
+
+
+
+не изменяют данные на сервере (индемпотентность - не влияет на состояние сервера)
 вся информация передается в url
 
 кэшируемость
@@ -822,10 +827,67 @@ session = requests.Session()
 session.headers.update({"User-Agent": "my-app/0.0.1"})
 session.get("https://httpbin.org/headers", headers={"User-Agent": "my-app/0.0.2"})
 #стриминг
+"""
+stream=True - включает стриминг
+тогда
+response.content
+response.text
+response.json()
+будут пустыми
 
+работаем с
+response.raw прямой доступ к сырым данным (в виде потока)
+response.iter_lines() чтение потока по строкам
+response.iter_content(chunk_size) чтение потока по байтам
+
+response.close() - закрыть соединение
+Content-Length: - заголовок с указанием размера файла
+
+"""
 response = requests.get("https://httpbin.org/stream/20", stream=True)
 for line in response.iter_lines():
     print(line)
+
+url = "https://nbg1-speed.hetzner.com/100MB.bin"
+
+with requests.get(url, stream=True) as response:
+    response.raise_for_status()
+    # if response.status_code != 200:
+    with open("100MB.bin", "wb") as file:
+        for chunk in response.iter_content(chunk_size=8192):
+            if chunk:
+                file.write(chunk)
+
+print('done')
+
+url = 'https://httpbin.org/stream/5'
+
+response = requests.get(url, stream=True)
+for line in response.iter_lines():
+    if line:
+        print(line.decode('utf-8'))
+
+url = "https://nbg1-speed.hetzner.com/100MB.bin"
+
+with requests.get(url, stream=True) as response:
+    total_size = int(response.headers.get('content-length', 0))
+    downloaded = 0
+
+    with open("100MB.bin", "wb") as file:
+        for chunk in response.iter_content(chunk_size=8192):
+            if chunk:
+                file.write(chunk)
+                downloaded += len(chunk)
+                percent = downloaded * 100 / total_size
+                print(f"Downloaded {downloaded} bytes ({percent:.2f}%)", end='\r')
+
+print('done')
+
+"""r = requests.get(url, stream=True)
+try:
+    ...
+finally:
+    r.close()"""
 
 """
 1 часть
@@ -867,3 +929,19 @@ with requests.Session() as session:
     добавить заголовки в сессию
 
 """
+
+#import requests
+
+with requests.Session() as session:
+    session.cookies.set("token", "1234567890")
+
+    session.headers.update({
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    })
+
+    cookies_response = session.get("https://httpbin.org/cookies")
+    print(cookies_response.json())
+
+    headers_response = session.get("https://httpbin.org/headers")
+    print(headers_response.json()['headers'])
