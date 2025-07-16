@@ -11,7 +11,10 @@
     Content-Type: application/x-www-form-urlencoded
     Content-Type: application/json
     Content-Type: multipart/form-data
-Authorization - токен авторизации
+авторизация
+    Basic Auth
+    Token Auth (Bearer) - Authorization - токен авторизации
+CSRF (Cross-Site Request Forgery)
 User-Agent - описание клиента
 
 
@@ -61,7 +64,9 @@ DELETE /notes/1
     <button type="submit">Submit</button>
 </form>
 
-
+POST /login - получаем
+POST /data - отправляем
+POST /logout - аннулируем
 """
 
 import requests
@@ -100,7 +105,59 @@ files = {'file': open('example.txt', 'rb')}
 #multipart/form-data
 response = requests.post(url, files=files)
 print(response.text)"""
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
+import requests
 
+session = requests.Session()
+
+retries = Retry(
+    total=3,
+    backoff_factor=0.5,
+    status_forcelist=[500, 502, 503, 504]
+)
+
+adapter = HTTPAdapter(max_retries=retries)
+session.mount("http://", adapter)
+session.mount("https://", adapter)
+
+response = session.post("https://httpbin.org/status/500", data={}, timeout=3)
+print(response.status_code)
+
+
+from requests.auth import HTTPBasicAuth
+
+url = "https://httpbin.org/basic-auth/user/pass"
+r = requests.post(url, auth=HTTPBasicAuth('user', 'pass'))
+
+print(r.status_code)
+print(r.text)
+
+
+r = requests.post('https://example.com/api/token', json={'username': 'admin', 'password': '123456'})
+token = r.json().get('token')
+
+headers = {
+    "Authorization": token
+}
+
+r = requests.post("https://httpbin.org/post", headers=headers, data={"a": 1, "b": 2})
+print(r.text)
+
+
+auth_data = {'username': 'admin', 'password': 'admin'}
+r = requests.post('https://httpbin.org/post', json=auth_data)
+
+token = 'my_example_token'
+
+headers = {
+    'Authorization': 'Bearer ' + token
+}
+data = {"text": "Hello, world!"}
+r2 = requests.post('https://httpbin.org/post', headers=headers, json=data)
+
+print(r2.status_code)
+print(r2.text)
 """
 payload = {"q": 'python', 'sort': 'stars'}
 response = requests.get(url="https://api.github.com/search/repositories", params=payload)

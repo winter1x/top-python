@@ -26,7 +26,7 @@ get methods у объекта Response
 .url - фактический юрл (вдруг был редирект)
 .encoding - кодировка
 .elapsed - время выполнения запроса
-.json - преобразовать в json
+.json - преобразовать в json (возможная ошибка json.decoder.JSONDecodeError)
 .content - бинарные данные bytes
 .history - история редиректов
 .from_cache - получен ли из кеша True/False
