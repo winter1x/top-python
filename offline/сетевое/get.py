@@ -687,13 +687,100 @@ session = CachedSession('my_cache', expire_after=60)
 response = session.get('https://httpbin.org/get')
 print(response.from_cache)
 # cookies
+"""
+response.cookies
+<RequestsCookieJar[]>
+get_dict() - чтобы получить словарь
+requests.get(url, cookies=cookies) - передача вручную
+requests.Session() - работа с сессией и cookies
+pickle - хранение cookies между запусками
+session.cookies.clear() - удаление cookies
+
+заголовки 
+print(response.request.headers.get('Cookie'))
+print(response.headers.get('Set-Cookie'))
+для установки и передачи cookies
+
+session.cookies.update - для передачи несколько cookies
+"""
+response = requests.get("https://httpbin.org/cookies/set?theme=light&user=test")
+response = requests.get("https://httpbin.org/cookies/") # не передает cookie потому что она не запомнилась
+print(response.cookies)  # -> {}
+print(response.cookies.get_dict())
+
+url = "https://httpbin.org/cookies"
+cookies = {'session_id': '1234567890', "user": "test"}
+response = requests.get(url, cookies=cookies)
+print(response.json())
+print(response.cookies.get_dict())
 
 cookies = {'session_id': '1234567890'}
 response = requests.get('https://httpbin.org/cookies', cookies=cookies)
 print(response.json())
 
-# Session
+session = requests.Session()
+session.cookies.set("token", "1234567890")
+response = session.get("https://httpbin.org/cookies")
+print(response.json())
 
+session = requests.Session()
+session.get('https://httpbin.org/cookies/set/sessionid/1234567890')
+response = session.get('https://httpbin.org/cookies')
+print(response.json())  # -> {'sessionid': '1234567890'}
+
+session.cookies.set('lang', 'ru', domain='httpbin.org', path='/cookies')
+
+session.cookies.clear() # полная очистка
+session.cookies.clear(domain='httpbin.org', path='/cookies', name='lang') 
+
+
+print(response.request.headers.get('Cookie'))
+print(response.headers.get('Set-Cookie'))
+
+
+import pickle
+session = requests.Session()
+session.get('https://httpbin.org/cookies/set/sessionid/1234567890')
+
+with open('cookies.pkl', 'wb') as f:
+    pickle.dump(session.cookies, f)
+
+with open('cookies.pkl', 'rb') as f:
+    session.cookies.update(pickle.load(f))
+
+response = session.get('https://httpbin.org/cookies')
+print(response.json())
+
+# Session
+"""
+хранить и переиспользовать cookies
+автоматически передавать заголовки, параметры и другие настройки
+сохранять соединение с сервером 
+сессия сохранят информацию
+
+session.close() - закрыть сессию
+
+with requests.Session() as session:
+    response = session.get('https://httpbin.org/get')
+    print(response.json())
+# сессия закрыта
+
+сравнение           без session     с session
+                        get - одинаковые
+передача cookies    каждый раз      хранятся автоматически
+общие заголовки     каждый раз      один раз задаются session.headers
+авторизации/настро  сами            сессия запоминает
+сохранение соединен|новое соединени|одно соединение повторно
+
+в сессии не сохраняется
+js
+
+session.headers["User-Agent"] = None - ошибка
+session.headers.update(...)          - верно
+
+
+используем один объект session
+"""
 s = requests.Session()
 s.headers.update({"User-Agent": "my-app/0.0.1"})
 
@@ -703,6 +790,37 @@ response3 = s.get("https://httpbin.org/cookies")
 
 print(response3.json())
 
+
+# session + headers
+session = requests.Session()
+session.headers.update({
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    'Accept-Language': 'ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3',
+})
+
+print(session.get('https://httpbin.org/headers', headers={'Accept': 'application/json'}).json())
+
+session = requests.Session()
+login_data = {
+    'username': 'admin',
+    'password': '1234567890',
+}
+session.post('https://httpbin.org/post', data=login_data)
+
+response = session.get('https://httpbin.org/profile')
+print(response.json())
+
+
+session = requests.Session()
+form_data = {"name": "John", "email": "john@example.com"}
+session.post("https://httpbin.org/post", data=form_data)
+response = session.get("https://httpbin.org/get")
+
+
+session = requests.Session()
+session.headers.update({"User-Agent": "my-app/0.0.1"})
+session.get("https://httpbin.org/headers", headers={"User-Agent": "my-app/0.0.2"})
 #стриминг
 
 response = requests.get("https://httpbin.org/stream/20", stream=True)
@@ -739,3 +857,13 @@ try:
 
 except requests.exceptions.RequestException as e:
     print("Ошибка запроса:", e)
+
+
+
+"""
+with requests.Session() as session:
+    создать сессию и установить cookie
+    отпавить запрос и убедиться, что передается
+    добавить заголовки в сессию
+
+"""
