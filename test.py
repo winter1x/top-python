@@ -1,6 +1,5 @@
 import os
 
-# 🔒 Константы для фильтрации
 IGNORED_DIRS = {'.git', '.vscode', '__pycache__'}
 IGNORED_FILE_EXTENSIONS = {'.user'}
 
