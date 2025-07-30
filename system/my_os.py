@@ -117,3 +117,22 @@ os.path.getsize(), open(), os.path.basename(), os.path.splitext()
 Выведите PID текущего процесса.
 os.name, os.environ.get(), os.getpid()
 """
+
+import os
+
+def create_backup_folder(path):
+    # Создание папки и переход в неё
+    pass
+
+def list_files(path):
+    # Получение списка только файлов
+    pass
+
+def simulate_backup(files, dest_folder):
+    # "Копирование" файлов в папку
+    pass
+
+def show_system_info():
+    # Вывод информации об ОС и окружении
+    pass
+
