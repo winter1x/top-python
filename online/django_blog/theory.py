@@ -16,4 +16,20 @@ shell - работа с базой через интерактивную обо�
 createsuperuser - создание суперпользователя для админки
 test - запуск тестов
 startapp - генерация приложений
+
+
+{% if user.is_authenticated %}
+    <p>Привет, {{ user.username }}!</p>
+{% else %}
+    <p>Пожалуйста, <a href="{% url 'login' %}">войдите</a> или <a href="{% url 'register' %}">зарегистрируйтесь</a>.</p>
+{% endif %}
+
+<ul>
+    {% for article in articles %}
+        <li><a href="{% url 'article_detail' article.id %}">{{ article.title }}</a></li>
+    {% endfor %}
+</ul>
+
+django.template.context_processors.request - добавляет переменную request в контекст шаблона
+django.template.context_processors.debug - добавляет переменную DEBUG в контекст шаблона
 """
