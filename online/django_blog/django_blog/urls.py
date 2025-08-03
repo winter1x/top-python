@@ -18,10 +18,19 @@ from django.contrib import admin
 from django.urls import path, include
 from django_blog import views
 from django_blog.views import IndexView
+#from django.views.generic import TemplateView
+from django.views.generic.base import TemplateView
 
+class HomePageView(TemplateView):
+    template_name = 'index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['who'] = 'world'
+        return context
 
 urlpatterns = [
-    path('', IndexView.as_view()),
+    path('', HomePageView.as_view()),
     path('admin/', admin.site.urls),
     path('about/', views.about),
     path('articles/', include('django_blog.article.urls')),
