@@ -7,6 +7,7 @@ uv run django-admin startproject django_blog .
 uv run django-admin version
 uv run manage.py runserver
 uv run manage.py migrate
+django-admin startapp article
 
 runserver - запуск сервера ращработки
 migrate - применение миграций
