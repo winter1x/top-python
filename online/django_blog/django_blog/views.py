@@ -8,7 +8,7 @@ def index(request):
     )
 
 def about(request):
-    tags = ['tag1', 'tag2', 'tag3']
+    tags = ['программировние', 'tag2', 'tag3']
     return render(
         request, 
         'about.html', 

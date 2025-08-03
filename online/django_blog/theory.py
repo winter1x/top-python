@@ -32,4 +32,5 @@ startapp - генерация приложений
 
 django.template.context_processors.request - добавляет переменную request в контекст шаблона
 django.template.context_processors.debug - добавляет переменную DEBUG в контекст шаблона
+
 """

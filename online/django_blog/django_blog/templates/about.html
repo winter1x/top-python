@@ -1,3 +1,7 @@
-<h1>О блоге</h1>
-<p>Здесь будет информация о блоге</p>
-<p>{{ tags|join:", " }}</p>
+{% extends "base.html" %}
+{% block title %}О нас{% endblock %}
+{% block content %}
+    <h2>О компании</h2>
+    <p>Это пример сайта, созданного с помощью Django.</p>
+    <p>{{ tags|join:", " }}</p>
+{% endblock %}

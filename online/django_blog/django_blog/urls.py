@@ -23,5 +23,5 @@ urlpatterns = [
     path('', views.index),
     path('admin/', admin.site.urls),
     path('about/', views.about),
-    path('article/', include('django_blog.article.urls')),
+    path('articles/', include('django_blog.article.urls')),
 ]
