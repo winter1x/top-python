@@ -33,4 +33,25 @@ startapp - генерация приложений
 django.template.context_processors.request - добавляет переменную request в контекст шаблона
 django.template.context_processors.debug - добавляет переменную DEBUG в контекст шаблона
 
+def login_view(request):
+    if request.method == 'GET':
+        return render(request, 'login.html')
+    elif request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        # Проверка логина и пароля
+        return HTTPResponse('Логин и пароль введены верно')
+
+from django.views.decorators.http import require_http_methods
+
+@require_http_methods(['GET', 'POST'])
+def login_view(request):
+    ...
+
+from django.http import HttpResponse
+from django.views import View
+
+class IndexView(View):
+    def get(self, request, *args, **kwargs):
+        return HttpResponse('Hello, world!')
 """
