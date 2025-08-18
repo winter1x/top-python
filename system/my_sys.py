@@ -1,41 +1,85 @@
 import sys
-# python myscript.py input.txt output.txt
+"""
+1 можем контролировать аргументы командной строки
+    sys.argv - список аргументов
+
+2 завершать выполнение программы
+    sys.exit - завершение
+
+3 позволяет общаться с интерпретатором python
+    sys.platform - платформа
+    win32 - Windows
+    linux - Linux
+    darwin - MacOS
+
+4 получать информацию о платформе
+    sys.version - версия python
+    sys.version_info - версия python в виде кортежа
+
+5 управлять путями поиска модулей
+    sys.modules - загруженные модули
+    sys.path
+
+6 манипулировать вводом и выводом
+    sys.stdin ввод
+    sys.stdout вывод
+    sys.stderr ошибки
+    input()
+    print()   
+
+7 получать размер объектов в памяти
+    sys.getsizeof() - возвращает размер объекта в байтах
+
+8 управлять ограничениями и параметрами интерпретатора
+    sys.setrecursionlimit() - устанавливает максимальное количество рекурсивных вызовов
+
+9 флаги запуска интерпретатора
+    sys.flags - флаги
+
+10 выходные потоки и перенаправление
+    sys.stdout
+"""
+# 1 python myscript.py input.txt output.txt 
 print(sys.argv) # ['myscript.py', 'input.txt', 'output.txt']
 
-"""input_file = sys.argv[1]
+"""
+input_file = sys.argv[1]
 output_file = sys.argv[2]"""
 
 """if len(sys.argv) < 3:
     print("Please provide input and output files.")
-    sys.exit(1)"""
+    2 sys.exit(1)"""
 
 
 """if not valid_data:
     print('Please provide valid data.')
     sys.exit(1)"""
-
+# 3
 print(sys.platform)
 if sys.platform.startswith('win'):
     print('windows')
 
+if sys.platform == 'win32':
+    print('вы используете windows')
 
-print(sys.version)
-print(sys.version_info)
+#4
+print(sys.version) #3.11.5 (tags/v3.11.5:cce6ba9, Aug 24 2023, 14:38:34) [MSC v.1936 64 bit (AMD64)
+print(sys.version_info) #sys.version_info(major=3, minor=11, micro=5, releaselevel='final', serial=0)
 
 if sys.version_info[1] < 12:
     print('Your version is too low.')
 else:
     print('Your version is high.')
 
-
+#5
 import math
 print('math' in sys.modules)
 
 print(sys.path)
 for path in sys.path:
     print(path)
-# sys.path.append('/home/kenny090607/')
-
+# sys.path.append('/home/kenny090607/') - для добавления пути к модулю
+#6
 """
 sys.stdin ввод
 sys.stdout вывод
@@ -44,26 +88,34 @@ input()
 print()
 """
 
-"""text = sys.stdin.readline()
-sys.stdout.write(text)
-sys.stderr.write('Error')"""
 
+
+"""
+text = sys.stdin.readline()
+sys.stdout.write(text)
+sys.stderr.write('Error')
+
+
+text = sys.stdin.readline()
+sys.stdout.write('вы ввели: ' + text)
+sys.stderr.write('Произошла ошибка')
+"""
+#7
 a = [1, 2, 3, 4]
 print(sys.getsizeof(a))
-
+#8
 print(sys.getrecursionlimit())
 sys.setrecursionlimit(2000)
 print(sys.getrecursionlimit())
-
+#9
 print(sys.flags.optimize)
-
+#10
 """with open('log.txt', 'w') as log_file:
     sys.stdout = log_file
     print('это печатается в файл')"""
 
 """
-file_filder.py
-
+file_filter.py
 принимает два аргумента командной строки
     путь к папке, в которой будут искаться файлы
     расширение файлов, которые нужно найти (.txt)
@@ -78,11 +130,21 @@ file_filder.py
     общее количества таких файлов и размер
 
 обработка ошибок
-    выводим сообщение об ошибке в sys.stderr и завершаем с 0
+    выводим сообщение об ошибке в sys.stderr и завершаем с 1
 
-
+sys.argv
+os.path
 os.walk()
+os.path.join()
+sys.exit
+sys.stderr.write
+os.path.getsize
+os.path.isdir
+os.path.exists
 """
+
+#запуск python file_filter.py ./md .md
+
 
 import os
 import sys
@@ -131,3 +193,22 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# утилита сис админа
+"""
+analyzer.py
+
+принимать путь к папке из аргументов командной строки. sys.argv если аргументов нет - сообщение об ошибке и выход с кодом 1
+проверять существование os.path.exists и является ли путь директорией. Если неверный - заверить с 2
+выводить список файлов с их размерами. os.listdir os.path.join os.path.getsize os.path.isfile
+позволяет дополнительно отфильтровать файлы по расширению (только .txt например) если пользователь передал второй аргумент os.path.splitext
+показывает общую информацию о среде выполения os.name os.getcwd os.environ.get sys.version
+    ос
+    рабочая dir
+    PATH
+    sys.version
+
+sys.exit
+
+"""
