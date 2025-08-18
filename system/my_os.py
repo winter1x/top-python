@@ -118,21 +118,77 @@ os.path.getsize(), open(), os.path.basename(), os.path.splitext()
 os.name, os.environ.get(), os.getpid()
 """
 
-import os
+#import os
 
 def create_backup_folder(path):
-    # Создание папки и переход в неё
-    pass
+    current_dir = os.getcwd()
+    backup_path = os.path.join(current_dir, 'backup')
+    
+    if not os.path.exists(backup_path):
+        os.mkdir(backup_path)
 
-def list_files(path):
-    # Получение списка только файлов
-    pass
+    return backup_path
+
+def list_only_files(path):
+    all_entries = os.listdir(path)
+    files = []
+    
+    for entry in all_entries:
+        full_path = os.path.join(path, entry)
+        if os.path.isfile(entry_path):
+            files.append(entry)
+            
+    return files
 
 def simulate_backup(files, dest_folder):
-    # "Копирование" файлов в папку
-    pass
+    for file_path in files:
+        filename = os.path.basename(file_path)
+        name, ext = os.path.splitext(filename)
+        backup_name = f'{name}_backup{ext}'
+        backup_path = os.path.join(dest_folder, backup_name)
+
+        size = os.path.getsize(file_path)
+        print(f'Файл {filename} ({size} байт) будет скопирован в {backup_path}')
+
+        with open(file_path, 'w') as f:
+            f.write('')
+    
 
 def show_system_info():
-    # Вывод информации об ОС и окружении
-    pass
+    print("\n--- Информация о системе ---")
+    print(f"ОС: {os.name}")
+    
+    home = os.environ.get('HOME') or os.environ.get('USERPROFILE')
+    print(f"Домашняя директория: {home}")
 
+    pid = os.getpid()
+    print(f"ID текущего процесса: {pid}")
+
+
+def walk_directory_tree(path, level=0):
+    indent = '  ' * level
+
+    for root, dirs, files in os.walk(path):
+        print(f"{indent}Папка: {os.path.basename(root)}")
+
+        for file in files:
+            file_path = os.path.join(root, file)
+            size = os.path.getsize(file_path)
+            print(f"{indent}  Файл: {file} ({size} байт)")
+        
+        break
+
+
+backup_dir = create_backup_folder()
+print(f"Создана папка для бэкапа: {backup_dir}")
+
+current_dir = os.getcwd()
+files = list_only_files(current_dir)
+print(f"Найдено файлов для бэкапа: {len(files)}")
+
+simulate_backup(files, backup_dir)
+
+show_system_info()
+
+print("\n--- Просмотр дерева директорий ---")
+walk_directory_tree(current_dir)
