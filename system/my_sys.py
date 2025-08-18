@@ -212,3 +212,51 @@ analyzer.py
 sys.exit
 
 """
+
+#import os
+#import sys
+
+def main():
+    if len(sys.argv) < 2:
+        print("Необходимо передать путь к папке.")
+        sys.exit(1)
+
+    folder_path = sys.argv[1]
+    ext_filter = sys.argv[2] if len(sys.argv) > 2 else None
+
+    if not os.path.exists(folder_path):
+        print(f"Ошибка: Путь '{folder_path}' не существует.")
+        sys.exit(2)
+
+    if not os.path.isdir(folder_path):
+        print(f"Ошибка: Путь '{folder_path}' не является директорией.")
+        sys.exit(2)
+
+    print(f"\nСодержимое папки '{folder_path}':\n")
+    all_entries = os.listdir(folder_path)
+    files = []
+
+    for entry in all_entries:
+        full_path = os.path.join(folder_path, entry)
+        if os.path.isfile(full_path):
+            if ext_filter:
+                name, ext = os.path.splitext(entry)
+                if ext != ext_filter:
+                    continue
+
+            size = os.path.getsize(full_path)
+            files.append((entry, size))
+
+    if not files:
+        print('Файлы не найдены.')
+    else:
+        for filename, size in files:
+            print(f"{filename} - ({size} байт)")
+
+    print("\nОбщая информация о системе:")
+    print(f"Операционная система: {os.name}")
+    print(f"Текущий рабочий директория: {os.getcwd()}")
+    print(f"PATH: {os.environ.get('PATH')}")
+    print(f"Python версия: {sys.version}")
+    
+    sys.exit(0)
