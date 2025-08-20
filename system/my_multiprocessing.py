@@ -1,8 +1,22 @@
 """
 multiprocessing - для работы с процессами
-GIL
+    если задача вычислительно тяжелая 
 
-Process - отдельный процесс
+time.perf_counter() - время в секундах
+
+GIL - Global Interpreter Lock
+
+Process - отдельный/независимый процесс
+    .start() - запуск процесса
+    .join() - ожидание завершения процесса
+    args=() - аргументы запуска процесса
+    .pid PID - идентификатор процесса
+    .name - имя процесса
+    .is_alive() - проверка на активность процесса (не безопасно)
+    .terminate() - резкое завершение процесса принудительно
+    значения не пересекаются между процессами напрямую
+    if __name__ == '__main__':
+
 Queue - очередь (IPC) (FIFO) (Pipe, Lock, Semaphore, Thread)
     не используем когда
     процессы должны параллельно менять общую структуру
@@ -43,8 +57,76 @@ deadlock взаимные блокировки
 starvation голодание
 """
 
+
+
+
+
 from multiprocessing import Process
 import time
+
+def worker(n):
+    print(f"процесс {n} начал работу")
+    time.sleep(5)
+    x = 2
+    print(f"процесс {n} закончил работу")
+
+"""
+p1 = Process(target=worker)
+p1.start()
+p1.join()
+
+создан (после p = Process(...))
+запущен (после p.start())
+ожидает завершения / ожидаемый (после p.join() - блокирует, пока не завершится)
+завершен (после завршения функции)
+"""
+
+
+from multiprocessing import Queue
+
+def producer(queue):
+    queue.put("Привет, я из процесса")
+
+def consumer(queue):
+    msg = queue.get()
+    print(f"получено: {msg}")
+
+"""
+q = Queue()
+p1 = Process(target=producer, args=(q,))
+p2 = Process(target=consumer, args=(q,))
+
+p1.start()
+p2.start()
+
+p1.join()
+p2.join()
+"""
+
+
+from multiprocessing import Pool
+
+def square(x):
+    return x * x
+
+# with Pool(4) as pool:
+#     results = pool.map(square, range(10))
+#     print(results)
+
+
+"""def task(arg):
+    pass
+
+if __name__ == '__main__':
+    processes = []
+    for i in range(4):
+        p = Process(target=task, args=(i,))
+        p.start()
+        processes.append(p)
+
+    for p in processes:
+        p.join()"""
+
 
 def say_hello():
     print()
@@ -53,13 +135,31 @@ def say_hello():
     print("конец")
     print()
 
+# if __name__ == '__main__':
+#     p = Process(target=say_hello)
+#     p.start()
+#     p.join()
+
+
 def print_square(x):
     print("квадрат числа {0} равен {1}".format(x, x*x))
+
+
+# if __name__ == '__main__':
+#     p = Process(target=print_square, args=(5,))
+#     p.start()
+#     p.join()
 
 def show_info():
     from multiprocessing import current_process
     print("текущий процесс", current_process().name)
     print("идентификатор процесса", current_process().pid)
+
+# if __name__ == '__main__':
+#     p = Process(target=show_info, name="Процесс-1")
+#     p.start()
+#     p.join()
+
 
 class MyProcess(Process):
     def __init__(self, text):
@@ -67,28 +167,38 @@ class MyProcess(Process):
         self.text = text
 
     def run(self):
-        print(f"процесс получил {self.text}")
+        print(f"процесс получил текст {self.text}")
 
-def worker(n):
-    print(f"процесс {n} начал работу")
-    time.sleep(5)
-    print(f"процесс {n} закончил работу")
-
-"""
-создан (после p = Process(...))
-запущен (после p.start())
-ожидает завершения / ожидаемый (после p.join() - блокирует, пока не завершится)
-завершен (после завршения функции)
-"""
-
+# if __name__ == '__main__':
+#     p = MyProcess("Процесс-1")
+#     p.start()
+#     #завершен
+#     p.join()
 
     
+def worker2(n):
+    print(f"процесс {n} начал работу")
+    time.sleep(1)
+    print(f"процесс {n} закончил работу")
+
+# if __name__ == '__main__':
+#     processes = []
+#     for i in range(4):
+#         p = Process(target=worker2, args=(i,))
+#         p.start()
+#         processes.append(p)
+
+#     for p in processes:
+#         p.join()
+
 """
+
 запуск 5 процессов, работа через sleep
 логирование
 
 каждый процесс получает разное/случайное [1-5]c. время работы
-использовать args
+использовать Process
+использовать args=
 использовать join
 """
 # from multiprocessing import Process
@@ -125,29 +235,29 @@ def sum_of_squares(start, end):
     t2 = time.time()
     print(f"сумма квадратов от {start} до {end} равна {result} (время работы {t2 - t1} сек)")
 
-"""if __name__ == '__main__':
-    ranges = [
-        (1, 250_000),
-        (250_001, 500_000),
-        (500_001, 750_000),
-        (750_001, 1_000_000)
-    ]
+# if __name__ == '__main__':
+#     ranges = [
+#         (1, 250_000),
+#         (250_001, 500_000),
+#         (500_001, 750_000),
+#         (750_001, 1_000_000)
+#     ]
 
-    processes = []
+#     processes = []
 
-    start_time = time.time()
+#     start_time = time.time()
 
-    for r in ranges:
-        p = Process(target=sum_of_squares, args=r)
-        processes.append(p)
-        print("процесс запущен для диапазона", r)
-        p.start()
+#     for r in ranges:
+#         p = Process(target=sum_of_squares, args=r)
+#         processes.append(p)
+#         print("процесс запущен для диапазона", r)
+#         p.start()
 
-    for p in processes:
-        p.join()
+#     for p in processes:
+#         p.join()
 
-    print("все процессы завершены")
-    print("общее время работы", time.time() - start_time)"""
+#     print("все процессы завершены")
+#     print("общее время работы", time.time() - start_time)
 
 # добавить в задание 2. Задать каждому процессу имя и показать
 # имя процесса
@@ -167,24 +277,24 @@ def task_with_info(start, end):
     t2 = time.time()
     print(f"{proc.name} завершился. Сумма {total} (время работы {t2 - t1:.2f} сек)")
 
-"""if __name__ == '__main__':
-    ranges = [
-        (1, 250_000),
-        (250_001, 500_000),
-        (500_001, 750_000),
-        (750_001, 1_000_000)
-    ]
+# if __name__ == '__main__':
+#     ranges = [
+#         (1, 250_000),
+#         (250_001, 500_000),
+#         (500_001, 750_000),
+#         (750_001, 1_000_000)
+#     ]
 
-    processes = []
+#     processes = []
 
-    for i, r in enumerate(ranges, start=1):
-        p = Process(target=task_with_info, args=r, name=f"Процесс-{i}")
-        processes.append(p)
-        print("процесс запущен для диапазона", r)
-        p.start()
+#     for i, r in enumerate(ranges, start=1):
+#         p = Process(target=task_with_info, args=r, name=f"Процесс-{i}")
+#         processes.append(p)
+#         print("процесс запущен для диапазона", r)
+#         p.start()
 
-    for p in processes:
-        p.join()"""
+#     for p in processes:
+#         p.join()
 
 """
 создать 3 процесса, которые считают сумму квадратов, но один из них должен выполняться слишком долго time.sleep(100)
@@ -206,26 +316,26 @@ def long_task(index):
         time.sleep(1)
     print(f"Задача {index} завершена")
 
-"""if __name__ == '__main__':
-    processes = []
+# if __name__ == '__main__':
+#     processes = []
 
-    for i in range(1, 4):
-        p = Process(target=long_task, args=(i,))
-        processes.append(p)
-        print(f"Запущена задача {i}")
-        p.start()
+#     for i in range(1, 4):
+#         p = Process(target=long_task, args=(i,))
+#         processes.append(p)
+#         print(f"Запущена задача {i}")
+#         p.start()
 
-    time.sleep(2)
+#     time.sleep(2)
 
-    for p in processes:
-        if p.is_alive():
-            print(f"Прерываю процесс {p}")
-            p.terminate()
+#     for p in processes:
+#         if p.is_alive():
+#             print(f"Прерываю процесс {p}")
+#             p.terminate()
 
-    for p in processes:
-        p.join()
+#     for p in processes:
+#         p.join()
 
-    print("Все процессы завершены")"""
+#     print("Все процессы завершены")
 
 
 """
@@ -253,29 +363,34 @@ class SquareSumProcess(Process):
         t2 = time.time()
         print(f"{self.name}: сумма квадратов от {self.start_num} до {self.end_num} равна {result} (время работы {t2 - t1} сек)")
 
-"""if __name__ == '__main__':
-    ranges = [
-        (1, 250_000),
-        (250_001, 500_000),
-        (500_001, 750_000),
-        (750_001, 1_000_000)
-    ]
+# if __name__ == '__main__':
+#     ranges = [
+#         (1, 250_000),
+#         (250_001, 500_000),
+#         (500_001, 750_000),
+#         (750_001, 1_000_000)
+#     ]
 
-    processes = []
+#     processes = []
 
-    for i, r in enumerate(ranges, start=1):
-        p = SquareSumProcess(start=r[0], end=r[1], name=f"Процесс-{i}")
-        processes.append(p)
-        p.start()
+#     for i, r in enumerate(ranges, start=1):
+#         p = SquareSumProcess(start=r[0], end=r[1], name=f"Процесс-{i}")
+#         processes.append(p)
+#         p.start()
 
-    for p in processes:
-        p.join()"""
+#     for p in processes:
+#         p.join()
+
+"""
+1
+запускать два процесса
+первый считает от 1 до 10, печатает числа
+второй считает от 10 до 1, печатает числа
+каждый выводит результат с задержкой в 0.5 сек
 
 
-
-
-
-
+2
+"""
 #Queue - очередь (IPC) (FIFO)
 from multiprocessing import Queue
 q = Queue()
@@ -1715,23 +1830,23 @@ def update_all(shared_list, shared_dict, name):
     shared_list.append(name)
     shared_dict[name] = len(name)
 
-if __name__ == '__main__':
-    manager = Manager()
-    shared_list = manager.list()
-    shared_dict = manager.dict()
+# if __name__ == '__main__':
+#     manager = Manager()
+#     shared_list = manager.list()
+#     shared_dict = manager.dict()
 
-    process_names = [f'процесс_{i}' for i in range(5)]
-    processes = [
-        Process(target=update_all, args=(shared_list, shared_dict, name))
-        for name in process_names
-    ]
+#     process_names = [f'процесс_{i}' for i in range(5)]
+#     processes = [
+#         Process(target=update_all, args=(shared_list, shared_dict, name))
+#         for name in process_names
+#     ]
 
-    for p in processes:
-        p.start()
+#     for p in processes:
+#         p.start()
 
-    for p in processes:
-        p.join()
+#     for p in processes:
+#         p.join()
 
-    print("Список имен:", list(shared_list))
-    print("Словарь:", dict(shared_dict))
+#     print("Список имен:", list(shared_list))
+#     print("Словарь:", dict(shared_dict))
     
