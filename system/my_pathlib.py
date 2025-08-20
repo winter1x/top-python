@@ -165,3 +165,50 @@ Path.glob('*.txt'), Path.stat()
 рекурсивный обход директорий
 Path.rglob("*")
 """
+
+#from pathlib import Path
+import os
+
+def create_reports_folder():
+    current_dir = Path.cwd()
+    reports_path = current_dir / 'reports'
+
+    reports_path.mkdir(exist_ok=True)
+    os.chdir(reports_path)
+
+    return reports_path
+
+def write_summary(path: Path):
+    summary_file = path / 'summary.txt'
+
+    files = [p.name for p in path.iterdir() if p.is_file()]
+    content = '\n'.join(files)
+
+    summary_file.write_text(content, encoding='utf-8')
+    return summary_file
+
+def read_summary(summary_path: Path):
+    content = summary_path.read_text(encoding='utf-8')
+    print("Содержимое summary.txt:\n", content)
+
+def list_txt_files(path: Path):
+    print("Список файлов с расширением .txt:\n")
+    for txt_file in path.glob('*.txt'):
+        size = txt_file.stat().st_size
+        print(f"- {txt_file.name} ({size} байт)")
+
+def walk_tree(path: Path):
+    print("Структура директорий:")
+    for item in path.rglob('*'):
+        if item.is_dir():
+            print(item)
+        else:
+            size = item.stat().st_size
+            print(f"- {item.name} ({size} байт)")
+
+
+reports_path = create_reports_folder()
+summary_path = write_summary(reports_path)
+read_summary(summary_path)
+list_txt_files(reports_path)
+walk_tree(reports_path)
