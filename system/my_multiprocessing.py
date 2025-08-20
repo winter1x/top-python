@@ -17,7 +17,7 @@ Process - отдельный/независимый процесс
     значения не пересекаются между процессами напрямую
     if __name__ == '__main__':
 
-Queue - очередь (IPC) (FIFO) (Pipe, Lock, Semaphore, Thread)
+Queue - потокобезопасная очередь (IPC - inter-process communication) (FIFO) (Pipe, Lock, Semaphore, Thread)
     не используем когда
     процессы должны параллельно менять общую структуру
     когда объем данных достаточно большой
@@ -387,28 +387,153 @@ class SquareSumProcess(Process):
 первый считает от 1 до 10, печатает числа
 второй считает от 10 до 1, печатает числа
 каждый выводит результат с задержкой в 0.5 сек
+"""
+# from multiprocessing import Process
+# import time
 
+def count_up():
+    for i in range(1, 11):
+        print(f"Счет вверх: {i}")
+        time.sleep(0.5)
+
+def count_down():
+    for i in range(10, 0, -1):
+        print(f"Счет вниз: {i}")
+        time.sleep(0.5)
+
+# if __name__ == '__main__':
+#     p1 = Process(target=count_up)
+#     p2 = Process(target=count_down)
+
+#     p1.start()
+#     p2.start()
+
+#     p1.join()
+#     p2.join()
+"""
 2
 список из 5 чисел, два процесса
 первый вычисляет квадраты чисел и печатает их
 второй вычисляет кубы чисел и печатает их
+"""
+# from multiprocessing import Process
 
+def squares(numbers):
+    for n in numbers:
+        print(f"Квадрат числа {n} равен {n ** 2}")
+
+def cubes(numbers):
+    for n in numbers:
+        print(f"Куб числа {n} равен {n ** 3}")
+
+# if __name__ == '__main__':
+#     numbers = [1, 2, 3, 4, 5]
+
+#     p1 = Process(target=squares, args=(numbers,))
+#     p2 = Process(target=cubes, args=(numbers,))
+
+#     p1.start()
+#     p2.start()
+
+#     p1.join()
+#     p2.join()
+"""
 3
 два процесса
 первый "таймер", каждую секунду печатает, сколько времени прошло
-второй "работа", который за 5 секунд выполняет задачу (например сумма от 1 до 1кк)
+второй "работа", который за 5 секунд выполняет задачу (например сумма от 1 до 10кк)
+"""
+# from multiprocessing import Process
+# import time
 
+def timer():
+    sec = 0
+    while True:
+        time.sleep(1)
+        sec += 1
+        print(f"Прошло {sec} секунд")
+
+def heavy_work():
+    s = 0
+    for i in range(1, 10_000_000):
+        s += i
+    print(f"Сумма от 1 до 10_000_000 равна {s}")
+
+# if __name__ == '__main__':
+#     t = Process(target=timer)
+#     w = Process(target=heavy_work)
+
+#     t.start()
+#     w.start()
+
+#     w.join()
+#     t.terminate()
+#     print("Работа завершена")
+"""
 4
 запускает три процесса, каждый из которых проверяет, есть ли простые числа в своем диапазоне
 1 от 2 до 10000
 2 от 10001 до 20000
 3 от 20001 до 30000
 каждый процесс выводит количество найденных простых чисел
+"""
+# from multiprocessing import Process
+def is_prime(n):
+    if n <= 2:
+        return False
+    for i in range(2, int(n ** 0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
 
+def count_primes(start, end):
+    count = 0
+    for i in range(start, end + 1):
+        if is_prime(i):
+            count += 1
+    print(f"Процесс в диапазоне {start}-{end} нашел {count} простых чисел")
+
+# if __name__ == '__main__':
+#     p1 = Process(target=count_primes, args=(2, 10000))
+#     p2 = Process(target=count_primes, args=(10001, 20000))
+#     p3 = Process(target=count_primes, args=(20001, 30000))
+
+#     p1.start()
+#     p2.start()
+#     p3.start()
+
+#     p1.join()
+#     p2.join()
+#     p3.join()
+"""
 5
 два процесса, бесконечный цикл, каждый печатает что работает
 главный процесс ждет 3 секунды и завершает 1 процесс, через еще 3 секунды завершает второй
 """
+# from multiprocessing import Process
+# import time
+
+def worker3(name):
+    while True:
+        print(f"Процесс {name} работает")
+        time.sleep(1)
+
+if __name__ == '__main__':
+    p1 = Process(target=worker3, args=("A",))
+    p2 = Process(target=worker3, args=("B",))
+
+    p1.start()
+    p2.start()
+
+    time.sleep(3)
+    print("Завершаю процесс A")
+    p1.terminate()
+
+    time.sleep(3)
+    print("Завершаю процесс B")
+    p2.terminate()
+
+
 #Queue - очередь (IPC) (FIFO)
 from multiprocessing import Queue
 q = Queue()
