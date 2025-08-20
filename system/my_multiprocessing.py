@@ -17,7 +17,22 @@ Process - отдельный/независимый процесс
     значения не пересекаются между процессами напрямую
     if __name__ == '__main__':
 
-Queue - потокобезопасная очередь (IPC - inter-process communication) (FIFO) (Pipe, Lock, Semaphore, Thread)
+Queue - потокобезопасная очередь (IPC - inter-process communication) (FIFO) (Pipe, Lock, Semaphore, Thread, pickle)
+    q = Queue() - очередь
+    q = Queue(maxsize=5) - очередь с ограничением на размер
+    put(item) - добавляет элемент в очередь. Если очередь заполнена, то блокируется
+    get(timeout=5) - извлекает элемент из очереди (удаляет из очереди). Если очередь пуста, то блокируется
+    put_nowait(item) - добавляет элемент в очередь, если очередь не заполнена
+    get_nowait() - извлекает элемент из очереди (удаляет из очереди), если очередь не пуста
+    empty() - возвращает True, если очередь пуста (небезопасно)
+    full() - возвращает True, если очередь заполнена (maxsize) (небезопасно)
+
+    используем когда
+    очередь задач (пул задач) с несколькими исполнителями
+    продюсер-консьюмер
+    логирование 
+    передача результата
+
     не используем когда
     процессы должны параллельно менять общую структуру
     когда объем данных достаточно большой
@@ -518,20 +533,20 @@ def worker3(name):
         print(f"Процесс {name} работает")
         time.sleep(1)
 
-if __name__ == '__main__':
-    p1 = Process(target=worker3, args=("A",))
-    p2 = Process(target=worker3, args=("B",))
+# if __name__ == '__main__':
+#     p1 = Process(target=worker3, args=("A",))
+#     p2 = Process(target=worker3, args=("B",))
 
-    p1.start()
-    p2.start()
+#     p1.start()
+#     p2.start()
 
-    time.sleep(3)
-    print("Завершаю процесс A")
-    p1.terminate()
+#     time.sleep(3)
+#     print("Завершаю процесс A")
+#     p1.terminate()
 
-    time.sleep(3)
-    print("Завершаю процесс B")
-    p2.terminate()
+#     time.sleep(3)
+#     print("Завершаю процесс B")
+#     p2.terminate()
 
 
 #Queue - очередь (IPC) (FIFO)
@@ -553,29 +568,29 @@ q = Queue()
 q.put("один")
 # print(q.get())
 
-def producer(q):
+def producer1(q):
     for i in range(5):
         print(f"Производитель кладет {i}")
         q.put(i)
         time.sleep(0.5)
 
-def consumer(q):
+def consumer1(q):
     while True:
         item = q.get()
         print(f"потребитель получил {item}")
         if item == 4:
             break 
 
-"""if __name__ == '__main__':
-    q = Queue()
-    p1 = Process(target=producer, args=(q,))
-    p2 = Process(target=consumer, args=(q,))
+# if __name__ == '__main__':
+#     q = Queue()
+#     p1 = Process(target=producer1, args=(q,))
+#     p2 = Process(target=consumer1, args=(q,))
 
-    p1.start()
-    p2.start()
+#     p1.start()
+#     p2.start()
 
-    p1.join()
-    p2.join()"""
+#     p1.join()
+#     p2.join()
 
 #get(timeout=5) - извлекает элемент из очереди (удаляет из очереди). Если очередь пуста, то блокируется
 from queue import Empty
@@ -586,26 +601,26 @@ except Empty:
     print("очередь пуста")"""
 
 
-def producer(q):
+def producer2(q):
     for i in range(3):
         print(f"Производитель кладет {i}")
         q.put(i)
 
-def consumer(q):
+def consumer2(q):
     for _ in range(3):
         item = q.get()
         print(f"потребитель получил {item}")
 
-"""if __name__ == '__main__':
-    q = Queue()
-    p1 = Process(target=producer, args=(q,))
-    p2 = Process(target=consumer, args=(q,))
+# if __name__ == '__main__':
+#     q = Queue()
+#     p1 = Process(target=producer2, args=(q,))
+#     p2 = Process(target=consumer2, args=(q,))
 
-    p1.start()
-    p2.start()
+#     p1.start()
+#     p2.start()
 
-    p1.join()
-    p2.join()"""
+#     p1.join()
+#     p2.join()
     
 #from queue import Empty
 from queue import Full
@@ -688,7 +703,7 @@ Queue
 import random
 import math
 
-def is_prime(n):
+def is_prime3(n):
     if n <= 1:
         return False
     if n <= 2:
@@ -700,7 +715,7 @@ def is_prime(n):
             return False
     return True
 
-def producer(q, count):
+def producer3(q, count):
     for _ in range(count):
         num = random.randint(1, 100)
         print(f"[{current_process().name}] Производитель создал задание {num}")
@@ -709,42 +724,47 @@ def producer(q, count):
     q.put(None)
     print(f"[{current_process().name}] Производитель отправил сигнал завершения")
 
-def consumer(q):
+def consumer3(q):
     while True:
         num = q.get()
         if num is None:
             q.put(None)
             print(f"[{current_process().name}] Потребитель получил сигнал завершения")
             break
-        result = is_prime(num)
+        result = is_prime3(num)
         print(f"[{current_process().name}] Потребитель обработал задание {num}, результат {result}")
 
-"""if __name__ == '__main__':
-    q = Queue()
-    producers = [
-        Process(target=producer, args=(q, 10), name="Производитель 1"),
-        Process(target=producer, args=(q, 10), name='Производитель 2'),
-    ]
+# if __name__ == '__main__':
+#     q = Queue()
+#     producers = [
+#         Process(target=producer3, args=(q, 10), name="Производитель 1"),
+#         Process(target=producer3, args=(q, 10), name='Производитель 2'),
+#     ]
 
-    consumers = [
-        Process(target=consumer, args=(q,), name=f"Потребитель {i+1}")
-        for i in range(3)
-    ]
+#     consumers = [
+#         Process(target=consumer3, args=(q,), name=f"Потребитель {i+1}")
+#         for i in range(3)
+#     ]
 
-    for p in producers:
-        p.start()
+#     for p in producers:
+#         p.start()
 
-    for c in consumers:
-        c.start()
+#     for c in consumers:
+#         c.start()
 
-    for p in producers:
-        p.join()
+#     for p in producers:
+#         p.join()
 
-    for c in consumers:
-        c.join()
+#     for c in consumers:
+#         c.join()
     
-    print("Все процессы завершены")"""
+#     print("Все процессы завершены")
 
+"""
+производитель кладет от 1 до 10
+потребитель берет числа из очереди и печатает их квадра
+когда производитель закончит, кладет STOP
+"""
 #from multiprocessing import Queue, Process
 
 def worker(data, queue):
