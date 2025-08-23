@@ -54,7 +54,7 @@ from django.views import View
 class IndexView(View):
     def get(self, request, *args, **kwargs):
         return HttpResponse('Hello, world!')
-        
+
 конвертеры для динамических URL
 int - целое число
 str - строка без слешей
@@ -62,5 +62,10 @@ slug - строка из латинских букв и цифр и дефисо
 uuid - уникальный идентификатор формата uuid
 path - строка может содержать слеши
 
-
+Сделайте так, чтобы django_blog.article.views.index принимала строковый параметр "tags" 
+и целочисленный параметр "article_id" из пути /articles/tags/article_id и выводила текст в виде Статья номер 42. Тег python
+Назначьте django_blog.article.views.index имя "article"
+Сделайте так, чтобы открытие "домашней страницы" делало перенаправление на /articles/python/42. 
+Для этого используйте django.shortcuts.redirect и django.urls.reverse. Не задавайте URL напрямую, 
+используйте обратный маршрут
 """

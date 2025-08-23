@@ -32,10 +32,12 @@ class HomePageView(TemplateView):
 urlpatterns = [
     path('', HomePageView.as_view()),
     path('admin/', admin.site.urls),
+    #path('auth/', include('django.contrib.auth.urls')),
     path('about/', views.about), # статический маршрут
     path('articles/', include('django_blog.article.urls')),
     #path("users/<int:user_id>/", views.user_profile), # динамический маршрут
     #path("users/<int:user_id>/pets/<int:pet_id>/med_info/", views.med_info_view),
     # глубокий динамический маршрут  /users/42/pets/101/med_info/
-    path('users/', include('django_blog.users.urls')),
+    path('users/', include('django_blog.users.urls')), # вложенный маршрут
 ]
+
