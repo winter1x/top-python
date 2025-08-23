@@ -9,6 +9,13 @@ uv run manage.py runserver
 uv run manage.py migrate
 django-admin startapp article
 
+python manage.py makemigrations
+python manage.py migrate
+python manage.py sqlmigrate article 0001
+
+python manage.py migrate article 0001 - отменит миграции после 0001 (откат)
+python manage.py migrate article zero - откат
+
 runserver - запуск сервера ращработки
 migrate - применение миграций
 makemigrations - создание миграций 
@@ -16,6 +23,7 @@ shell - работа с базой через интерактивную обо�
 createsuperuser - создание суперпользователя для админки
 test - запуск тестов
 startapp - генерация приложений
+sqlmigrate - вывод миграций в формате SQL
 
 
 {% if user.is_authenticated %}
@@ -68,4 +76,12 @@ path - строка может содержать слеши
 Сделайте так, чтобы открытие "домашней страницы" делало перенаправление на /articles/python/42. 
 Для этого используйте django.shortcuts.redirect и django.urls.reverse. Не задавайте URL напрямую, 
 используйте обратный маршрут
+
+таблица users с id, name, email
+SELECT * FROM users
+SELECT id, name, email FROM users
+
+User.objects.all()
+
+django.db.models.Model
 """
