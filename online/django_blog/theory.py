@@ -16,6 +16,8 @@ python manage.py sqlmigrate article 0001
 python manage.py migrate article 0001 - отменит миграции после 0001 (откат)
 python manage.py migrate article zero - откат
 
+uv run manage.py shell
+
 runserver - запуск сервера ращработки
 migrate - применение миграций
 makemigrations - создание миграций 
@@ -84,4 +86,110 @@ SELECT id, name, email FROM users
 User.objects.all()
 
 django.db.models.Model
+
+PS C:\Users\Ефимов\pythonProjects\top-python\online\django_blog> python manage.py migrate
+Operations to perform:
+  Apply all migrations: admin, article, auth, contenttypes, sessions
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying admin.0001_initial... OK
+  Applying admin.0002_logentry_remove_auto_add... OK
+  Applying admin.0003_logentry_add_action_flag_choices... OK
+  Applying article.0001_initial... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying auth.0010_alter_group_name_max_length... OK
+  Applying auth.0011_update_proxy_permissions... OK
+  Applying auth.0012_alter_user_first_name_max_length... OK
+  Applying sessions.0001_initial... OK
+PS C:\Users\Ефимов\pythonProjects\top-python\online\django_blog> python manage.py sqlmigrate article 0001
+BEGIN;
+--
+-- Create model Article
+--
+CREATE TABLE "article_article" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "name" varchar(200) NOT NULL, "body" text NOT NULL, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL);
+COMMIT;
+PS C:\Users\Ефимов\pythonProjects\top-python\online\django_blog> uv run manage.py shell
+7 objects imported automatically (use -v 2 for details).
+
+Python 3.13.3 (main, Apr  9 2025, 04:04:49) [MSC v.1943 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>> from django_blog.article.models import (
+... Article,
+... )
+>>> a = Article()
+>>> a.name = 'first article'
+>>> a.body = 'first body article'
+>>> a
+<Article: Article object (None)>
+>>> a.id
+>>> a.name
+'first article'
+>>> a.body
+'first body article'
+>>> a.save()
+>>> a = Article.objects.create(name="second article", body="second body article")
+>>> a
+<Article: Article object (2)>
+>>> a.id
+2
+>>> a.name
+'second article'
+>>> a.body
+'second body article'
+>>> a.created_at
+datetime.datetime(2025, 8, 23, 9, 19, 41, 228658, tzinfo=datetime.timezone.utc)
+>>> a.updated_at
+datetime.datetime(2025, 8, 23, 9, 19, 41, 228787, tzinfo=datetime.timezone.utc)
+>>> a.name = 'second article updated'
+>>> a.name
+'second article updated'
+>>> a.save()
+>>> a.id
+2
+>>> a = Article.object.get(id=1)
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+AttributeError: type object 'Article' has no attribute 'object'. Did you mean: 'objects'?
+>>> a = Article.objects.get(id=1)
+>>> a.id
+1
+>>> a.name
+'first article'
+>>> a = Article.objects.get(id=3) 
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+  File "C:\Users\Ефимов\pythonProjects\top-python\online\django_blog\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method  
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ефимов\pythonProjects\top-python\online\django_blog\.venv\Lib\site-packages\django\db\models\query.py", line 633, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+django_blog.article.models.Article.DoesNotExist: Article matching query does not exist.
+>>> a = Article.objects.filter(name="first article")
+>>> a.id
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+AttributeError: 'QuerySet' object has no attribute 'id'
+>>> a
+<QuerySet [<Article: Article object (1)>]>
+>>> Article.objects.filter(id__gt=1).first().body
+'second body article'
+>>> a = Article.objects.all()
+>>> a
+<QuerySet [<Article: Article object (1)>, <Article: Article object (2)>]>
+>>> a = Article.objects.get(id=2)
+>>> a.delete()
+(1, {'article.Article': 1})
+>>> Article.objects.all()
+<QuerySet [<Article: Article object (1)>]>
+>>>
 """
