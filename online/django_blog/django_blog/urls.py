@@ -15,11 +15,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, reverse
 from django_blog import views
 from django_blog.views import IndexView
 #from django.views.generic import TemplateView
 from django.views.generic.base import TemplateView
+from django.shortcuts import redirect
 
 class HomePageView(TemplateView):
     template_name = 'index.html'
@@ -30,7 +31,7 @@ class HomePageView(TemplateView):
         return context
 
 urlpatterns = [
-    path('', HomePageView.as_view()),
+    path('', lambda request: redirect(reverse('article', kwargs={'tags': 'python', 'article_id': 42}))),
     path('admin/', admin.site.urls),
     #path('auth/', include('django.contrib.auth.urls')),
     path('about/', views.about), # статический маршрут
