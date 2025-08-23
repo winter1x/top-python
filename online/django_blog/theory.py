@@ -54,4 +54,13 @@ from django.views import View
 class IndexView(View):
     def get(self, request, *args, **kwargs):
         return HttpResponse('Hello, world!')
+        
+конвертеры для динамических URL
+int - целое число
+str - строка без слешей
+slug - строка из латинских букв и цифр и дефисов и подчеркиваний
+uuid - уникальный идентификатор формата uuid
+path - строка может содержать слеши
+
+
 """

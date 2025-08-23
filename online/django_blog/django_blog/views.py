@@ -23,3 +23,6 @@ def about(request):
         request, 
         'about.html', 
         context={'tags': tags})
+
+# def med_info_view(request, user_id, pet_id):
+#     ...
