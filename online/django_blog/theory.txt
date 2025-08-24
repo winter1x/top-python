@@ -23,6 +23,8 @@ uv add python-dotenv
 
 uv run manage.py createsuperuser
 django.contrib.auth
+
+uv run manage.py test
 runserver - запуск сервера ращработки
 migrate - применение миграций
 makemigrations - создание миграций 
