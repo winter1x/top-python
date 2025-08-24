@@ -18,7 +18,11 @@ python manage.py migrate article zero - откат
 uv run manage.py shell
 
 pip install python-dotenv
+pip install dotenv
+uv add python-dotenv
 
+uv run manage.py createsuperuser
+django.contrib.auth
 runserver - запуск сервера ращработки
 migrate - применение миграций
 makemigrations - создание миграций 
