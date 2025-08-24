@@ -1,4 +1,3 @@
-"""
 uv init django_blog
 cd django_blog
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
@@ -17,6 +16,8 @@ python manage.py migrate article 0001 - отменит миграции посл
 python manage.py migrate article zero - откат
 
 uv run manage.py shell
+
+pip install python-dotenv
 
 runserver - запуск сервера ращработки
 migrate - применение миграций
@@ -192,4 +193,24 @@ AttributeError: 'QuerySet' object has no attribute 'id'
 >>> Article.objects.all()
 <QuerySet [<Article: Article object (1)>]>
 >>>
-"""
+
+DATABASE_URL=postgres://user:password@127.0.0.1:5432/mydb
+import dj-database-url
+Ansible, Kubernetes, Docker, Terraform 
+- это инструменты для автоматизации и управления инфраструктурой. 
+Они позволяют создавать и управлять инфраструктурой в облаке, на локальной машине или в виртуальных окружениях. 
+Ansible - это инструмент для автоматизации и управления конфигурацией, 
+Kubernetes - это система управления контейнерами, 
+Docker - это инструмент для создания и управления контейнерами, 
+Terraform - это инструмент для автоматизации и создания инфраструктуры. 
+
+Vault - это инструмент для управления секретами
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
