@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.urls import reverse
+from .models import User
 
 def users_view(request):
-    return HttpResponse("Users list (from project app)")
+    users = User.objects.all()
+    return render(request, 'users_list.html', context={'users': users})
     
 def pet_med_info_view(request, user_id, pet_id):
     return render(
