@@ -1042,9 +1042,42 @@ def delayed_square_worker(conn):
 
 """
 отправитель отправляет от 1 до 5 
-приемник получает через Pipe и печатет их квадрта
+приемник получает через Pipe и печатет их квадрат
 когда отправитель закончит, он отправит специальное сообщение "STOP" и применик завершит работу
 """
+#from multiprocessing import Pipe, Process
+#import time
+
+def sender2(conn):
+    for i in range(1, 6):
+        print(f"Отправка числа {i} в дочерний процесс")
+        conn.send(i)
+        time.sleep(0.5)
+
+    conn.send("STOP")
+    conn.close()
+    print("Отправитель завершил работу")
+
+def receiver2(conn):
+    while True:
+        data = conn.recv()
+        if data == "STOP":
+            break
+        print(f"Полученное число: {data}, квадрат: {data ** 2}")
+    conn.close()
+    print("Приемник завершил работу")
+
+# if __name__ == '__main__':
+#     parent_conn, child_conn = Pipe()
+
+#     s = Process(target=sender2, args=(parent_conn,))
+#     r = Process(target=receiver2, args=(child_conn,))
+
+#     s.start()
+#     r.start()
+
+#     s.join()
+#     r.join()
 
 #from multiprocessing import Queue, Process
 #import time
