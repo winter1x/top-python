@@ -38,7 +38,14 @@ Queue - потокобезопасная очередь (IPC - inter-process com
     когда объем данных достаточно большой
 
 JoinableQueue
-    используем когда
+    task_done() - вручную вызывать, когда задача выполнена
+    join() - ожидать завершения всех задач
+
+    используем когда:
+    построение пайплайнов
+    пул процессов
+    с лентами задач
+    в реализациях MapReduce
     много задач
     нужно убедиться что все задачи выполнены
     контроль порядка и завершения
@@ -62,7 +69,16 @@ Pipe - канал
     ограничения:
     .recv(), .send() - блокируют поток
 
-Pool - для работы с группой процессов (Process, Queue)
+Pool - для работы с группой процессов (Process, Queue). Повторно использовать группу рабочих процессов
+    map(func, iterable) - многопроцессная версия map
+    starmap - аналогично map, но с возможностью передачи нескольких аргументов в функцию
+    apply(func, args) - Вызывает func(*args). Блокирует выполнение до завершения работы процесса. 
+    apply_async(func, args) - Вызывает func(*args) асинхронно, не блокируя выполнение. Возвращает AsyncResult
+    AsyncResult - объект, который содержит результат работы функции
+    imap(func, iterable) - аналогичен map(), но возвращает результаты по мере их готовности. Возвращает итератор
+    close() - закрывает доступ к очереди для добавления новых элементов
+    join() - ждет завершения всех процессов в пуле
+
 Value, Array, Manager - механизмы для общего доступа к данным между процессами
 
 ProcessPoolExecutor - многопроцессорная очередь задач CPU
@@ -1354,7 +1370,7 @@ def child(conn):
 
 # JoinableQueue
 """
-tasl_done()
+task_done()
 join()
 """
 from multiprocessing import JoinableQueue
@@ -1364,7 +1380,7 @@ from multiprocessing import JoinableQueue
 for i in range(10):
     queue.put(i)"""
 
-def worker(q):
+def worker6(q):
     while True:
         item = q.get()
         if item is None:
@@ -1374,27 +1390,27 @@ def worker(q):
         time.sleep(0.3)
         q.task_done()
         
-"""if __name__ == '__main__':
-    queue = JoinableQueue()
+# if __name__ == '__main__':
+#     queue = JoinableQueue()
 
-    processes = []
-    for _ in range(2):
-        p = Process(target=worker, args=(queue,))
-        processes.append(p)
-        p.start()
+#     processes = []
+#     for _ in range(2):
+#         p = Process(target=worker6, args=(queue,))
+#         processes.append(p)
+#         p.start()
 
-    for i in range(5):
-        queue.put(f"задача {i}")
+#     for i in range(5):
+#         queue.put(f"задача {i}")
 
-    for _ in processes:
-        queue.put(None)
+#     for _ in processes:
+#         queue.put(None)
 
-    queue.join()
+#     queue.join()
 
-    for p in processes:
-        p.join()
+#     for p in processes:
+#         p.join()
         
-    print("Все задания выполнены")"""
+#     print("Все задания выполнены")
 
 
 """item = queue.get()
@@ -1436,7 +1452,6 @@ def worker(q):
         Process(target=worker, args=(q,))
         for _ in range(2)
     ]
-
     for w in workers:
         w.start()
 
@@ -1524,6 +1539,12 @@ if __name__ == '__main__':
 
     print('Все результаты получены')"""
 
+"""
+производитель, кладет в JoinableQueue список чисел
+потребитель, берет из JoinableQueue список чисел, квадрат, выводит результат
+после обработки каждой задачи потребитель вызывает task_done()
+join()
+"""
 
 
 from multiprocessing import Pool
