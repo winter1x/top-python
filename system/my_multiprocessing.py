@@ -44,11 +44,23 @@ JoinableQueue
     контроль порядка и завершения
 
 Pipe - канал
-    не используем когда
+    Pipe(duplex=False) - 1 канал
+
+    conn = Connection()
+    conn.send(obj) - отправить объект в другой конец канала. должен быть pickle - сериализуемый
+    conn.recv() - получить объект из канала
+    conn.close() - закрыть канал
+    conn.fileno() - вернуть дескриптор файла канала
+    conn.poll(timeout=None) - проверить, доступен ли объект в канале в течение заданного времени
+
+    не используем когда:
     больше 2 процесса
     очередь задач с несколькими исполнителями
-    нужна безопасность
+    нужна потокобезопасность
     когда объем данных достаточно большой
+
+    ограничения:
+    .recv(), .send() - блокируют поток
 
 Pool - для работы с группой процессов (Process, Queue)
 Value, Array, Manager - механизмы для общего доступа к данным между процессами
@@ -59,17 +71,18 @@ Lock - блокировка, одна задача выполняется одн
 RLock - рекурсивная блокировка
 
 активное ожидание busy waiting
-while not queue.empty():
+while not queue.empty(): - антипаттерн
     item = queue.get()
 (-)
 нагрузка на CPU
 нет гарантии точности
 проблемы с масштабированием
 
-конкурентная среда
+конкурентная среда - одновременная работа/обращение к общим ресурсам
 race condition условная гонка
 deadlock взаимные блокировки
 starvation голодание
+низкий приоритет (инверсия)
 """
 
 
@@ -762,43 +775,82 @@ def consumer3(q):
 
 """
 производитель кладет от 1 до 10
-потребитель берет числа из очереди и печатает их квадра
+потребитель берет числа из очереди и печатает их квадрат
 когда производитель закончит, кладет STOP
 """
 #from multiprocessing import Queue, Process
+#import time
 
-def worker(data, queue):
+def producer4(queue):
+    for i in range(1, 11):
+        print(f"Производитель кладет {i}")
+        queue.put(i)
+        time.sleep(0.3)
+
+    queue.put("STOP")
+    print("Производитель закончил")
+
+def consumer4(queue):
+    while True:
+        item = queue.get()
+        if item == "STOP":
+            print("Потребитель закончил")
+            break
+        else:
+            print(f"Потребитель получил {item} и печатает квадрат {item ** 2}")
+
+# if __name__ == '__main__':
+#     queue = Queue()
+#     p = Process(target=producer4, args=(queue,))
+#     c = Process(target=consumer4, args=(queue,))
+
+#     p.start()
+#     c.start()
+
+#     p.join()
+#     c.join()
+
+#     q.close()
+#     q.join_thread()
+
+def worker4(data, queue):
     result = sum(x ** 2 for x in data)
     queue.put(result)
 
-"""if __name__ == '__main__':
-    q = Queue()
-    chunks = [
-        [1, 2, 3],
-        [4, 5, 6],
-        [7, 8, 9]
-    ]
+# if __name__ == '__main__':
+#     q = Queue()
+#     chunks = [
+#         [1, 2, 3],
+#         [4, 5, 6],
+#         [7, 8, 9]
+#     ]
 
-    processes = []
+#     processes = []
 
-    for chunk in chunks:
-        p = Process(target=worker, args=(chunk, q))
-        processes.append(p)
-        p.start()
+#     for chunk in chunks:
+#         p = Process(target=worker4, args=(chunk, q))
+#         processes.append(p)
+#         p.start()
 
-    results = []
+#     results = []
+#     for _ in range(len(processes)):
+#         result = q.get(timeout=5)
+#         #if result is None:
+#             #завершения += 1
+#         results.append(result)
 
-    for _ in range(len(processes)):
-        result = q.get(timeout=5)
-        #if result is None:
-            #завершения += 1
-        results.append(result)
+#     # from queue import Empty
+#     # try:
+#     #     item = q.get_nowait()
+#     # except Empty:
+#     #     print("Queue is empty")
 
-    for p in processes:
-        p.join()
 
-    print(results)
-    print(sum(results))"""
+#     for p in processes:
+#         p.join()
+
+#     print(results)
+#     print(sum(results))
 
 
 def worker(q):
@@ -827,18 +879,38 @@ def increment():
         time.sleep(0.001)
         counter += 1
 
-"""if __name__ == '__main__':
+# if __name__ == '__main__':
 
-    t1 = threading.Thread(target=increment)
-    t2 = threading.Thread(target=increment)
+#     t1 = threading.Thread(target=increment)
+#     t2 = threading.Thread(target=increment)
 
-    t1.start()
-    t2.start()
+#     t1.start()
+#     t2.start()
 
-    t1.join()
-    t2.join()
+#     t1.join()
+#     t2.join()
 
-    print(counter)"""
+#     print(counter)
+
+counter = 0
+lock = threading.Lock()
+def increment():
+    global counter
+    for _ in range(10):
+        with lock:
+            counter += 1
+
+# if __name__ == '__main__':
+#     t1 = threading.Thread(target=increment)
+#     t2 = threading.Thread(target=increment)
+
+#     t1.start()
+#     t2.start()
+
+#     t1.join()
+#     t2.join()
+
+#     print(counter)
 
 
 from multiprocessing import Pipe
@@ -849,39 +921,45 @@ conn.close() - закрыть канал
 conn.fileno() - вернуть дескриптор файла канала
 conn.poll(timeout=None) - проверить, доступен ли объект в канале в течение заданного времени
 """
-def worker(conn):
+def worker5(conn):
     conn.send('привет от дочернего процесса')
     conn.close()
 
-"""if __name__ == '__main__':
-    parent_conn, child_conn = Pipe(duplex=False)
+# if __name__ == '__main__':
+#     parent_conn, child_conn = Pipe(duplex=False)
 
-    p = Process(target=worker, args=(child_conn,))
-    p.start()
+#     p = Process(target=worker5, args=(child_conn,))
+#     p.start()
 
-    if parent_conn.poll(1):
-        print(parent_conn.recv())
-    else:
-        print('нет данных')
-    p.join()
+#     if parent_conn.poll(1):
+#         print(parent_conn.recv())
+#     else:
+#         print('нет данных')
+#     p.join()
+
+"""
+if parent_conn.poll(1):
+    print(parent_conn.recv())
+else:
+    print('нет данных')
 """
 
-def child(conn):
+def child2(conn):
     msg = conn.recv()
     print(f'получено сообщение: {msg}')
     conn.send('привет от дочернего процесса')
     conn.close()
 
-"""if __name__ == '__main__':
-    parent_conn, child_conn = Pipe()
-    p = Process(target=child, args=(child_conn,))
-    p.start()
+# if __name__ == '__main__':
+#     parent_conn, child_conn = Pipe()
+#     p = Process(target=child2, args=(child_conn,))
+#     p.start()
 
-    parent_conn.send('привет от родительского процесса')
-    msg = parent_conn.recv()
-    print(f'получено сообщение main: {msg}')
+#     parent_conn.send('привет от родительского процесса')
+#     msg = parent_conn.recv()
+#     print(f'получено сообщение main: {msg}')
 
-    p.join()"""
+#     p.join()
 
 """
 Pipe
@@ -903,16 +981,16 @@ def send_datetime(conn):
     conn.close()
 
 
-"""if __name__ == '__main__':
-    parent_conn, child_conn = Pipe()
+# if __name__ == '__main__':
+#     parent_conn, child_conn = Pipe()
 
-    p = Process(target=send_datetime, args=(child_conn,))
-    p.start()
+#     p = Process(target=send_datetime, args=(child_conn,))
+#     p.start()
 
-    message = parent_conn.recv()
-    print(f"Получено сообщение от дочернего процесса: {message}")
+#     message = parent_conn.recv()
+#     print(f"Получено сообщение от дочернего процесса: {message}")
 
-    p.join()"""
+#     p.join()
 
 def square_worker(conn):
     number = conn.recv()
@@ -920,20 +998,20 @@ def square_worker(conn):
     conn.send(result)
     conn.close()
 
-"""if __name__ == '__main__':
-    parent_conn, child_conn = Pipe()
+# if __name__ == '__main__':
+#     parent_conn, child_conn = Pipe()
 
-    p = Process(target=square_worker, args=(child_conn,))
-    p.start()
+#     p = Process(target=square_worker, args=(child_conn,))
+#     p.start()
 
-    number_to_send = 7
-    print(f"Отправка числа {number_to_send} в дочерний процесс")
-    parent_conn.send(number_to_send)
+#     number_to_send = 7
+#     print(f"Отправка числа {number_to_send} в дочерний процесс")
+#     parent_conn.send(number_to_send)
     
-    result = parent_conn.recv()
-    print(f"Получен результат: {result}")
+#     result = parent_conn.recv()
+#     print(f"Получен результат: {result}")
 
-    p.join()"""
+#     p.join()
 
 #import time
 
@@ -944,24 +1022,29 @@ def delayed_square_worker(conn):
     conn.send(result)
     conn.close()
 
-"""if __name__ == '__main__':
-    parent_conn, child_conn = Pipe()
+# if __name__ == '__main__':
+#     parent_conn, child_conn = Pipe()
 
-    p = Process(target=delayed_square_worker, args=(child_conn,))
-    p.start()
+#     p = Process(target=delayed_square_worker, args=(child_conn,))
+#     p.start()
 
-    number_to_send = 8
-    print(f"Отправка числа {number_to_send} в дочерний процесс")
-    parent_conn.send(number_to_send)
+#     number_to_send = 8
+#     print(f"Отправка числа {number_to_send} в дочерний процесс")
+#     parent_conn.send(number_to_send)
 
-    if parent_conn.poll(3):
-        result = parent_conn.recv()
-        print(f"Получен результат: {result}")
-    else:
-        print("Время ожидания истекло")
+#     if parent_conn.poll(3):
+#         result = parent_conn.recv()
+#         print(f"Получен результат: {result}")
+#     else:
+#         print("Время ожидания истекло")
 
-    p.join()"""
+#     p.join()
 
+"""
+отправитель отправляет от 1 до 5 
+приемник получает через Pipe и печатет их квадрта
+когда отправитель закончит, он отправит специальное сообщение "STOP" и применик завершит работу
+"""
 
 #from multiprocessing import Queue, Process
 #import time
