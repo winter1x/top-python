@@ -1546,6 +1546,41 @@ if __name__ == '__main__':
 join()
 """
 
+def producer5(queue, numbers):
+    for number in numbers:
+        print(f"добавлен элемент {number}")
+        queue.put(number)
+        time.sleep(0.5)
+
+    queue.put(None)
+    print("производитель завершил работу")
+
+def consumer5(queue):
+    while True:
+        item = queue.get()
+        if item is None:
+            queue.task_done()
+            break
+        print(f"получен элемент {item}, квадрат: {item ** 2}")
+        time.sleep(0.5)
+        queue.task_done()
+    print("потребитель завершил работу")
+
+if __name__ == '__main__':
+    numbers = [1, 2, 3, 4, 5]
+    queue = JoinableQueue()
+
+    producer = Process(target=producer5, args=(queue, numbers))
+    consumer = Process(target=consumer5, args=(queue,))
+
+    producer.start()
+    consumer.start()
+
+    queue.join()
+    producer.join()
+    consumer.join()
+
+    print("Все задачи выполнены")
 
 from multiprocessing import Pool
 
