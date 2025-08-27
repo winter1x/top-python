@@ -92,6 +92,29 @@ Value, Array используют shared_memory
     фиксированный набор числовых данных
     нужна производительность
 
+Manager - серверный процесс для доступа к обычным структурам
+    manager.list() - общий список
+    manager.dict() - общий словарь
+    manager.Queue() - общая очередь
+    manager.Value() 
+    manager.Namespace() - для произвольных атрибутов
+
+    когда используем:
+    если нужно общие данные между процессами
+    не подходит Value, Array
+    нужен читаемый и простой код
+
+    когда не используем:
+    нужна производительность
+    огромные объемы данных
+
+
+Event
+Condition
+Semaphore
+BoundedSemaphore
+Barrier
+
 ProcessPoolExecutor - многопроцессорная очередь задач CPU
 
 Lock - блокировка, одна задача выполняется одновременно
@@ -112,7 +135,6 @@ Lock - блокировка, одна задача выполняется одн
 
 RLock - рекурсивная блокировка. Рекурсивная версия Lock
     для рекурсивных функций, чтобы захватывать несколько раз подряд
-
 
 активное ожидание busy waiting
 while not queue.empty(): - антипаттерн
@@ -2064,22 +2086,22 @@ def increase_odd(arr, lock, counter):
                 arr[i] += 20
                 counter.value += 1
 
-if __name__ == '__main__':
-    arr = Array('i', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-    counter = Value('i', 0)
-    lock = Lock()
+# if __name__ == '__main__':
+#     arr = Array('i', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+#     counter = Value('i', 0)
+#     lock = Lock()
 
-    p1 = Process(target=increase_even, args=(arr, lock, counter))
-    p2 = Process(target=increase_odd, args=(arr, lock, counter))
+#     p1 = Process(target=increase_even, args=(arr, lock, counter))
+#     p2 = Process(target=increase_odd, args=(arr, lock, counter))
 
-    p1.start()
-    p2.start()
+#     p1.start()
+#     p2.start()
 
-    p1.join()
-    p2.join()
+#     p1.join()
+#     p2.join()
 
-    print("Результат:", list(arr))
-    print("Общее количество операций:", counter.value)
+#     print("Результат:", list(arr))
+#     print("Общее количество операций:", counter.value)
 
 """
 общий счетчик и массив результатов
@@ -2136,64 +2158,64 @@ manager.Namespace() - для произвольных атрибутов
 
 from multiprocessing import Manager
 
-def worker(shared_list, name):
+def worker9(shared_list, name):
     shared_list.append(f"привет от {name}")
 
-"""if __name__ == '__main__':
-    manager = Manager()
-    result_list = manager.list()
+# if __name__ == '__main__':
+#     manager = Manager()
+#     result_list = manager.list()
 
-    processes = [
-        Process(target=worker, args=(result_list, f"процесс {i}"))
-        for i in range(5)
-    ]
+#     processes = [
+#         Process(target=worker9, args=(result_list, f"процесс {i}"))
+#         for i in range(5)
+#     ]
 
-    for p in processes:
-        p.start()
+#     for p in processes:
+#         p.start()
 
-    for p in processes:
-        p.join()
+#     for p in processes:
+#         p.join()
 
-    print("Результат:", list(result_list))"""
+#     print("Результат:", list(result_list))
 
 def add_data(shared_dict, key, value):
     shared_dict[key] = value
 
-"""if __name__ == '__main__':
-    manager = Manager()
-    data_dict = manager.dict()
+# if __name__ == '__main__':
+#     manager = Manager()
+#     data_dict = manager.dict()
 
-    processes = [
-        Process(target=add_data, args=(data_dict, f"ключ_{i}", i*10))
-        for i in range(4)
-    ]
+#     processes = [
+#         Process(target=add_data, args=(data_dict, f"ключ_{i}", i*10))
+#         for i in range(4)
+#     ]
 
-    for p in processes:
-        p.start()
+#     for p in processes:
+#         p.start()
 
-    for p in processes:
-        p.join()
+#     for p in processes:
+#         p.join()
 
-    print("Результат:", dict(data_dict))"""
+#     print("Результат:", dict(data_dict))
 
 
-def worker(ns):
+def worker10(ns):
     ns.value += 1
 
-"""if __name__ == '__main__':
-    manager = Manager()
-    ns = manager.Namespace()
-    ns.value = 0
+# if __name__ == '__main__':
+#     manager = Manager()
+#     ns = manager.Namespace()
+#     ns.value = 0
 
-    processes = [Process(target=worker, args=(ns,)) for _ in range(5)]
+#     processes = [Process(target=worker10, args=(ns,)) for _ in range(5)]
 
-    for p in processes:
-        p.start()
+#     for p in processes:
+#         p.start()
 
-    for p in processes:
-        p.join()
+#     for p in processes:
+#         p.join()
 
-    print("Результат:", ns.value)"""
+#     print("Результат:", ns.value)
 
 """
 работа с общими объектами с помощью Manager
@@ -2299,4 +2321,13 @@ def update_all(shared_list, shared_dict, name):
 
 #     print("Список имен:", list(shared_list))
 #     print("Словарь:", dict(shared_dict))
-    
+
+
+"""
+Общий словарь частот слов
+список строк
+каждый процесс обрабатывает свою часть списка строк и считает сколько раз каждое слово встречается в списке
+общий результат в словарь Manager
+Lock
+
+"""
