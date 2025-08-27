@@ -2089,7 +2089,41 @@ Value - хранит общее количество операций/колич
 Lock 
 """
 
-def worker(numbers, result_array, counter, lock, start_index):
+def worker8(numbers, result_array, counter, lock, start_index):
+    for i, n in enumerate(numbers):
+        square = n ** 2
+        time.sleep(0.1)
+        with lock:
+            result_array[start_index + i] = square
+            counter.value += 1
+            print(f"Процесс {start_index//len(numbers) + 1}: число {n} -> квадрат {square}, общее количество операций: {counter.value}")
+
+# if __name__ == '__main__':
+#     data = [1, 2, 3, 4, 5, 6]
+#     n = len(data)
+
+#     result_array = Array('i', n)
+#     counter = Value('i', 0)
+#     lock = Lock()
+
+#     part1 = data[0:2]
+#     part2 = data[2:4]
+#     part3 = data[4:6]
+
+#     p1 = Process(target=worker8, args=(part1, result_array, counter, lock, 0))
+#     p2 = Process(target=worker8, args=(part2, result_array, counter, lock, 2))
+#     p3 = Process(target=worker8, args=(part3, result_array, counter, lock, 4))
+
+#     p1.start()
+#     p2.start()
+#     p3.start()
+
+#     p1.join()
+#     p2.join()
+#     p3.join()
+
+#     print("Результат:", list(result_array))
+#     print("Общее количество операций:", counter.value)
 
 """
 Manager - серверный процесс для доступа к обычным структурам
