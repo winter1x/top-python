@@ -2329,5 +2329,43 @@ def update_all(shared_list, shared_dict, name):
 каждый процесс обрабатывает свою часть списка строк и считает сколько раз каждое слово встречается в списке
 общий результат в словарь Manager
 Lock
-
 """
+import os
+
+def worker11(sentences, shared_dict, lock):
+    for sentence in sentences:
+        words = sentence.lower().split()
+        for word in words:
+            time.sleep(0.1)
+            with lock:
+                if word in shared_dict:
+                    shared_dict[word] += 1
+                else:
+                    shared_dict[word] = 1
+                print(f"Процесс {os.getpid()}... добавил слово '{word}' -> {shared_dict[word]}")
+                
+if __name__ == '__main__':
+    texts = [
+        "Привет, как дела?",
+        "Привет, как дела?",
+        "Привет, как дела?",
+        "Привет, как дела?",
+    ]
+
+    with Manager() as manager:
+        shared_dict = manager.dict()
+        lock = Lock()
+
+        part1 = texts[0:2]
+        part2 = texts[2:4]
+
+        p1 = Process(target=worker11, args=(part1, shared_dict, lock))
+        p2 = Process(target=worker11, args=(part2, shared_dict, lock))
+
+        p1.start()
+        p2.start()
+
+        p1.join()
+        p2.join()
+
+        print("Результат:", dict(shared_dict))
