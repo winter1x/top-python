@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from .models import User
+from django.views.generic.edit import UpdateView
 
 def users_view(request):
     users = User.objects.all()
@@ -13,3 +14,9 @@ def pet_med_info_view(request, user_id, pet_id):
         'med_info.html',
         context={'user_id': user_id, 'pet_id': pet_id, 'type': f'{reverse("pet_med_info", kwargs={"user_id": user_id, "pet_id": pet_id})}'},
     )
+
+class UserUpdateView(UpdateView):
+    model = User
+    fields = ['username', 'email']
+    template_name = 'user_update.html'
+    success_url = reverse_lazy('index')
