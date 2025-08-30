@@ -6,8 +6,11 @@ from .models import User
 #User = get_user_model()
 
 class UsersTest(TestCase):
+    fixtures = ["users.json"]
+
     def setUp(self):
-        self.user = User.objects.create(username='testuser', email='9V7B0@example.com')
+        self.user = User.objects.get(username='testuser')
+        #self.user = User.objects.create(username='testuser', email='9V7B0@example.com')
 
     def test_users_list(self):
         response = self.client.get(reverse('index'))
@@ -21,6 +24,5 @@ class UsersTest(TestCase):
         self.client.post(update_url, {'username': 'newtestuser', 'email': self.user.email})
 
         response = self.client.get(list_url)
-
         self.assertContains(response, 'newtestuser')
         self.assertFalse(User.objects.filter(username='testuser').exists())

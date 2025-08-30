@@ -25,6 +25,9 @@ uv run manage.py createsuperuser
 django.contrib.auth
 
 uv run manage.py test
+
+uv run manage.py dumpdata 
+
 runserver - запуск сервера ращработки
 migrate - применение миграций
 makemigrations - создание миграций 
