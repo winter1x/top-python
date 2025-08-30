@@ -1,0 +1,12 @@
+<h1>Комментарии к статье: {{ article.name }}</h1>
+
+<ul>
+    {% for comment in comments %}
+    <li>
+        <b>{{ comment.author.username }}</b>: {{ comment.text }} <br>
+        <small>{{ comment.created_at }}</small>
+    </li>
+    {% empty %}
+        <li>Комментариев нет</li>
+    {% endfor %}
+</ul>
