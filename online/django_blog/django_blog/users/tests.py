@@ -1,16 +1,13 @@
 from django.test import TestCase
 from django.urls import reverse
-from django_blog.users.models import User
-#from django.contrib.auth import get_user_model
-
-#User = get_user_model()
+from django_blog.users.models import BlogUser
 
 class UsersTest(TestCase):
     fixtures = ["users.json"]
 
     def setUp(self):
-        self.user = User.objects.get(username='testuser')
-        #self.user = User.objects.create(username='testuser', email='9V7B0@example.com')
+        self.user = BlogUser.objects.get(username='testuser')
+        #self.user = BlogUser.objects.create(username='testuser', email='9V7B0@example.com')
 
     def test_users_list(self):
         response = self.client.get(reverse('index'))
@@ -25,4 +22,4 @@ class UsersTest(TestCase):
 
         response = self.client.get(list_url)
         self.assertContains(response, 'newtestuser')
-        self.assertFalse(User.objects.filter(username='testuser').exists())
+        self.assertFalse(BlogUser.objects.filter(username='testuser').exists())

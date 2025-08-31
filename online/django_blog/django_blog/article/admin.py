@@ -25,3 +25,4 @@ class CommentAdmin(admin.ModelAdmin):
     list_filter = (
         ('created_at', DateFieldListFilter),
     )
+

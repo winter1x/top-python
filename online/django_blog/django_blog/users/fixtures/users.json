@@ -1,6 +1,6 @@
 [
     {
-        "model": "users.user",
+        "model": "users.bloguser",
         "pk": 1,
         "fields": {
             "username": "first_test_user",
@@ -10,7 +10,7 @@
         }
     },
     {
-        "model": "users.user",
+        "model": "users.bloguser",
         "pk": 2,
         "fields": {
             "username": "second_test_user",
@@ -19,7 +19,7 @@
         }
     },
     {
-        "model": "users.user",
+        "model": "users.bloguser",
         "pk": 3,
         "fields": {
             "username": "testuser",

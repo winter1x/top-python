@@ -1,5 +1,6 @@
 from django.db import models
-from django_blog.users.models import User
+from django_blog.users.models import BlogUser
+from django.contrib.auth import get_user_model
 
 class Article(models.Model):
     name = models.CharField(max_length=200)
@@ -17,11 +18,11 @@ class Comment(models.Model):
         related_name='comments',
     )
     author = models.ForeignKey(
-        User,
+        get_user_model(),
         on_delete=models.CASCADE,
         related_name='comments',
     )
-    text = models.TextField()
+    text = models.CharField("text", max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
