@@ -108,15 +108,6 @@ Manager - серверный процесс для доступа к обычн�
     нужна производительность
     огромные объемы данных
 
-
-Event
-Condition
-Semaphore
-BoundedSemaphore
-Barrier
-
-ProcessPoolExecutor - многопроцессорная очередь задач CPU
-
 Lock - блокировка, одна задача выполняется одновременно
     lock.acquire() - захватить замок, если он свободен, иначе ожидать его освобождения.
     lock.release() - освободить замок
@@ -135,6 +126,32 @@ Lock - блокировка, одна задача выполняется одн
 
 RLock - рекурсивная блокировка. Рекурсивная версия Lock
     для рекурсивных функций, чтобы захватывать несколько раз подряд
+
+Event - переключатель (событие)
+    clear - состояние сброса, флаг равен False
+    set - состояние установки, флаг равен True
+    event.set() - установить состояние
+    event.clear() - сбросить состояние
+    event.is_set() - проверить состояние
+    event.wait(timeout=None) - ожидание состояния
+
+    используем когда:
+    координация запуска процессов
+    остановка/прерывание процессов по сигналу
+    согласованная работа нескольких процессов
+    сигнал об ошибке или завершении работы
+
+
+Condition
+Semaphore
+BoundedSemaphore
+Barrier
+
+ProcessPoolExecutor - многопроцессорная очередь задач CPU
+
+
+
+
 
 активное ожидание busy waiting
 while not queue.empty(): - антипаттерн
@@ -2344,28 +2361,76 @@ def worker11(sentences, shared_dict, lock):
                     shared_dict[word] = 1
                 print(f"Процесс {os.getpid()}... добавил слово '{word}' -> {shared_dict[word]}")
                 
-if __name__ == '__main__':
-    texts = [
-        "Привет, как дела?",
-        "Привет, как дела?",
-        "Привет, как дела?",
-        "Привет, как дела?",
-    ]
+# if __name__ == '__main__':
+#     texts = [
+#         "Привет, как дела?",
+#         "Привет, как дела?",
+#         "Привет, как дела?",
+#         "Привет, как дела?",
+#     ]
 
-    with Manager() as manager:
-        shared_dict = manager.dict()
-        lock = Lock()
+#     with Manager() as manager:
+#         shared_dict = manager.dict()
+#         lock = Lock()
 
-        part1 = texts[0:2]
-        part2 = texts[2:4]
+#         part1 = texts[0:2]
+#         part2 = texts[2:4]
 
-        p1 = Process(target=worker11, args=(part1, shared_dict, lock))
-        p2 = Process(target=worker11, args=(part2, shared_dict, lock))
+#         p1 = Process(target=worker11, args=(part1, shared_dict, lock))
+#         p2 = Process(target=worker11, args=(part2, shared_dict, lock))
 
-        p1.start()
-        p2.start()
+#         p1.start()
+#         p2.start()
 
-        p1.join()
-        p2.join()
+#         p1.join()
+#         p2.join()
 
-        print("Результат:", dict(shared_dict))
+#         print("Результат:", dict(shared_dict))
+
+
+from multiprocessing import Event
+# import time
+# from multiprocessing import Process
+
+def worker12(event):
+    print('рабочий процесс ждет сигнал')
+    event.wait()
+    print('рабочий процесс получил сигнал')
+    time.sleep(1)
+    print('рабочий процесс завершен')
+
+# if __name__ == '__main__':
+#     event = Event()
+#     p = Process(target=worker12, args=(event,))
+#     p.start()
+
+#     time.sleep(1)
+#     print('основной процесс отправляет сигнал')
+#     event.set()
+
+#     p.join()
+
+
+# from multiprocessing import Event
+# import time
+# from multiprocessing import Process
+
+def worker13(stop_event):
+    while not stop_event.is_set():
+        print('Процесс работает')
+        time.sleep(0.5)
+    print('Процесс завершен')
+
+# if __name__ == '__main__':
+#     stop_event = Event()
+#     p = Process(target=worker13, args=(stop_event,))
+#     p.start()
+
+#     time.sleep(3)
+#     print('Основной процесс отправляет сигнал остановки')
+#     stop_event.set()
+
+#     p.join()
+
+
+# event.wait(timeout=5)
