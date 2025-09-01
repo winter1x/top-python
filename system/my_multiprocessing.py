@@ -180,9 +180,20 @@ Semaphore - контролирует количество одновременн
     моделирование
     
 BoundedSemaphore - семафор с ограничением на количество доступов
+    sema = BoundedSemaphore(3)
+
     используем когда
     ресурс физически ограничен
-Barrier
+Barrier - процессы доходят до одной и той же точки в программе и только после этого продолжают выполнение
+    barrier = Barrier(parties) - parties - количество процессов
+    barrier.wait(timeout=None) - ожидание завершения всех процессов. Если не дождались, то бросает исключение BrokenBarrierError
+    barrier.reset() - сброс барьера
+    barrier.abort() - прерывание барьера BrokenBarrierError
+
+    используем когда:
+    моделирование паралельных этапов работы 
+    этапы в научных расчетах
+    синхронизация потоков в играх
 
 ProcessPoolExecutor - многопроцессорная очередь задач CPU
 
@@ -2607,10 +2618,30 @@ def handle_client2(sema, client_id):
         time.sleep(random.randint(1, 4))
         print(f"Клиент {client_id} откл.")
 
-if __name__ == '__main__':
-    sema = BoundedSemaphore(3)
-    processes = [Process(target=handle_client2, args=(sema, i)) for i in range(10)]
-    for p in processes:
-        p.start()
-    for p in processes:
-        p.join()
+# if __name__ == '__main__':
+#     sema = BoundedSemaphore(3)
+#     processes = [Process(target=handle_client2, args=(sema, i)) for i in range(10)]
+#     for p in processes:
+#         p.start()
+#     for p in processes:
+#         p.join()
+
+
+from multiprocessing import Barrier
+
+def worker16(barrier, n):
+    print(f"Процесс {n} начинает работу")
+    time.sleep(random.randint(1, 3))
+    print(f"Процесс {n} подошел к барьеру")
+    barrier.wait()
+    print(f"Процесс {n} продолжил и завершил работу")
+
+# if __name__ == '__main__':
+#     barrier = Barrier(parties=3)
+#     processes = [Process(target=worker16, args=(barrier, i)) for i in range(6)]
+
+#     for p in processes:
+#         p.start()
+
+#     for p in processes:
+#         p.join()
