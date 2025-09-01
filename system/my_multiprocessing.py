@@ -179,7 +179,9 @@ Semaphore - контролирует количество одновременн
     работа с внешними сервисами
     моделирование
     
-BoundedSemaphore
+BoundedSemaphore - семафор с ограничением на количество доступов
+    используем когда
+    ресурс физически ограничен
 Barrier
 
 ProcessPoolExecutor - многопроцессорная очередь задач CPU
@@ -2570,18 +2572,45 @@ def worker15(event, number):
     time.sleep(1)
     print(f"Процесс {number} завершен. Результат: {result}")
 
-if __name__ == '__main__':
-    event = Event()
-    processes = [Process(target=worker15, args=(event, i)) for i in range(5)]
+# if __name__ == '__main__':
+#     event = Event()
+#     processes = [Process(target=worker15, args=(event, i)) for i in range(5)]
 
+#     for p in processes:
+#         p.start()
+
+#     print("Главный процесс ждет 3 секунды")
+#     time.sleep(3)
+#     print("Главный процесс отправляет сигнал")
+#     event.set()
+#     for p in processes:
+#         p.join()
+
+#     print("Главный процесс завершен")
+
+from multiprocessing import BoundedSemaphore
+
+"""
+sema = BoundedSemaphore(2)
+
+sema.acquire()
+sema.acquire()
+print("Два места заняты")
+sema.release()
+sema.release()
+sema.release() # ошибка ValueError
+"""
+
+def handle_client2(sema, client_id):
+    with sema:
+        print(f"Клиент {client_id} подключился")
+        time.sleep(random.randint(1, 4))
+        print(f"Клиент {client_id} откл.")
+
+if __name__ == '__main__':
+    sema = BoundedSemaphore(3)
+    processes = [Process(target=handle_client2, args=(sema, i)) for i in range(10)]
     for p in processes:
         p.start()
-
-    print("Главный процесс ждет 3 секунды")
-    time.sleep(3)
-    print("Главный процесс отправляет сигнал")
-    event.set()
     for p in processes:
         p.join()
-
-    print("Главный процесс завершен")
