@@ -141,8 +141,26 @@ Event - переключатель (событие)
     согласованная работа нескольких процессов
     сигнал об ошибке или завершении работы
 
+Condition - расширенный механизм ожидания наступления условия/условная переменная (Lock, RLock, Event, Queue)
+    condition.acquire() - захватить замок, если он свободен, иначе ожидать его освобождения.
+    condition.release() - освободить замок
+    обычно with condition
 
-Condition
+    condition.wait(timeout=None) - ожидание сигнала. Блокируется поток до тех пор, пока сигнал не будет установлен
+    condition.notify(n=1) - установка сигнала. Разблокирует n потоков
+    condition.notify_all() - установка сигнала. Разблокирует все ожидающие потоки
+
+    используем когда:
+    производитель потребитель
+    согласованная работа с очередями или списками
+    сложные протоколы обмена
+
+    используется в:
+    системах обработки данных
+    моделях параллельной симуляции
+    игры, многопользовательские приложения
+
+
 Semaphore
 BoundedSemaphore
 Barrier
@@ -2434,3 +2452,37 @@ def worker13(stop_event):
 
 
 # event.wait(timeout=5)
+
+
+from multiprocessing import Condition
+# import time
+# from multiprocessing import Process, Manager
+
+def producer6(cond, shared_list):
+    for i in range(5):
+        time.sleep(1)
+        with cond:
+            shared_list.append(i)
+            print(f"Добавлено {i}")
+            cond.notify()
+
+def consumer6(cond, shared_list):
+    for _ in range(5):
+        with cond:
+            while not shared_list:
+                cond.wait()
+            item = shared_list.pop(0)
+            print(f"Получено {item}")
+
+if __name__ == '__main__':
+    cond = Condition()
+    with Manager() as manager:
+        shared_list = manager.list()
+        p1 = Process(target=producer6, args=(cond, shared_list))
+        p2 = Process(target=consumer6, args=(cond, shared_list))
+
+        p1.start()
+        p2.start()
+
+        p1.join()
+        p2.join()
