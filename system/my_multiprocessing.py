@@ -160,8 +160,25 @@ Condition - расширенный механизм ожидания насту�
     моделях параллельной симуляции
     игры, многопользовательские приложения
 
+Semaphore - контролирует количество одновременных доступов к ресурсу
+    semaphore.acquire() - попытка захватить семафор/разрешение, если он свободен, иначе ожидать его освобождения
+        blocking=True - блокировка потока, пока семафор не освободится
+        blocking=False - Процесс не ждет, а сразу: возвращает False, если семафор не был захвачен. True - если семафор был захвачен
+        timeout=None - таймаут ожидания
+    semaphore.release() - освобождение одного семафора/запрет доступа
 
-Semaphore
+    with sema:
+        # критическая секция
+
+    используем когда:
+    подключение к базе данных
+    доступ к файлам
+    сетевая программа 
+    пул ресурсов
+    ограничение параллельности
+    работа с внешними сервисами
+    моделирование
+    
 BoundedSemaphore
 Barrier
 
@@ -2474,15 +2491,65 @@ def consumer6(cond, shared_list):
             item = shared_list.pop(0)
             print(f"Получено {item}")
 
-if __name__ == '__main__':
-    cond = Condition()
-    with Manager() as manager:
-        shared_list = manager.list()
-        p1 = Process(target=producer6, args=(cond, shared_list))
-        p2 = Process(target=consumer6, args=(cond, shared_list))
+# if __name__ == '__main__':
+#     cond = Condition()
+#     with Manager() as manager:
+#         shared_list = manager.list()
+#         p1 = Process(target=producer6, args=(cond, shared_list))
+#         p2 = Process(target=consumer6, args=(cond, shared_list))
 
-        p1.start()
-        p2.start()
+#         p1.start()
+#         p2.start()
 
-        p1.join()
-        p2.join()
+#         p1.join()
+#         p2.join()
+
+
+from multiprocessing import Semaphore
+# import time
+# from multiprocessing import Process
+
+def worker14(sema, i):
+    with sema:
+        print(f"Процесс {i} получил доступ")
+        time.sleep(1)
+        print(f"Процесс {i} освободил доступ")
+
+# if __name__ == '__main__':
+#     sema = Semaphore(2)
+#     processes = [Process(target=worker14, args=(sema, i)) for i in range(5)]
+
+#     for p in processes:
+#         p.start()
+
+#     for p in processes:
+#         p.join()
+
+
+# from multiprocessing import Semaphore, Process
+# import time, random
+
+def handle_client(sema, client_id):
+    with sema:
+        print(f"Клиент {client_id} подключился")
+        time.sleep(random.randint(1, 4))
+        print(f"Клиент {client_id} откл.")
+
+# if __name__ == '__main__':
+#     sema = Semaphore(3)
+#     processes = [Process(target=handle_client, args=(sema, i)) for i in range(10)]
+#     for p in processes:
+#         p.start()
+#     for p in processes:
+#         p.join()
+
+"""
+if sema.acquire(timeout=2):
+    try:
+        print("Получен доступ")
+        time.sleep(3)
+    finally:
+        sema.release()
+else:
+    print("Не удлось получить доступ за 2 секунды")
+"""
