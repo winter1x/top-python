@@ -195,9 +195,14 @@ Barrier - процессы доходят до одной и той же точ�
     этапы в научных расчетах
     синхронизация потоков в играх
 
-ProcessPoolExecutor - многопроцессорная очередь задач CPU
+concurrent.futures
+ProcessPoolExecutor - многопроцессорная очередь задач CPU, futures - будущие результаты выполнения задач
+    submit(fn, *args, **kwargs) - отправляет функцию fn(*args, **kwargs) на выполнение в отдельном процессе. Возвращает Future
+    map(func, *iterables, timeout=None, chunksize=1) - выполняет функцию func для каждого элемента из итераблей. Возвращает итератор Future
+    shutdown(wait=True, cancel_futures=False) - завершение работы
 
-
+    используем когда: 
+    многочисленные, независимые
 
 
 
@@ -2645,3 +2650,43 @@ def worker16(barrier, n):
 
 #     for p in processes:
 #         p.join()
+
+from concurrent.futures import ProcessPoolExecutor, as_completed
+
+def square(x):
+    return x ** 2
+
+def on_done(future):
+    print(f"Результат: {future.result()}")
+
+# if __name__ == '__main__':
+#     with ProcessPoolExecutor(max_workers=4) as executor:
+#         results = list(executor.map(square, range(10)))
+#     print(results)
+
+if __name__ == '__main__':
+    with ProcessPoolExecutor() as executor:
+        future = executor.submit(square, 5)
+        future.add_done_callback(on_done)
+
+def cube(x):
+    return x ** 3
+
+# if __name__ == '__main__':
+#     with ProcessPoolExecutor() as executor:
+#         future = executor.submit(cube, 5)
+#         result = future.result()
+#         print(result)
+
+def factorial(x):
+    result = 1
+    for i in range(1, x + 1):
+        result *= i
+    return result
+
+# if __name__ == '__main__':
+#     numbers = [5, 6, 7, 8, 9]
+#     with ProcessPoolExecutor(max_workers=3) as executor:
+#         futures = [executor.submit(factorial, n) for n in numbers]
+#         for future in as_completed(futures):
+#             print(future.result())
