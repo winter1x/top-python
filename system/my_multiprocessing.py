@@ -2561,3 +2561,27 @@ Event
 главный ждет 3 сек потом event.set()
 рабочие продолжают, выводят и выполняют простую операцию - **
 """
+
+def worker15(event, number):
+    print(f"Процесс {number} ждет сигнала")
+    event.wait()
+    print(f"Процесс {number} получил сигнал")
+    result = number ** 2
+    time.sleep(1)
+    print(f"Процесс {number} завершен. Результат: {result}")
+
+if __name__ == '__main__':
+    event = Event()
+    processes = [Process(target=worker15, args=(event, i)) for i in range(5)]
+
+    for p in processes:
+        p.start()
+
+    print("Главный процесс ждет 3 секунды")
+    time.sleep(3)
+    print("Главный процесс отправляет сигнал")
+    event.set()
+    for p in processes:
+        p.join()
+
+    print("Главный процесс завершен")
