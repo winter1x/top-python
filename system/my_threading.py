@@ -92,7 +92,8 @@ threading.enumerate() - список всех активных потоков
 threading.active_count() - количество активных потоков
 threading.current_thread().name - имя потока
 """
-from threading import Thread, current_thread
+from threading import Thread, current_thread, active_count, enumerate
+import threading
 
 def worker():
     print('работает поток', current_thread().name)
@@ -154,6 +155,33 @@ print('Все потоки завершили работу')
 дождаться завершения всех потоков
 снова показать количество активных потоков
 """
+def process_order(order_id):
+    current = current_thread()
+    print(f'[{current.name}] Начал обработку заказа {order_id}')
+    time.sleep(0.1)
+    print(f'[{current.name}] Завершил обработку заказа {order_id}')
+
+def show_info():
+    print(f"Количество активных потоков: {active_count()}")
+    print('список активных потоков')
+    for t in threading.enumerate():
+        print(f'{t.name} - {t.ident}')
+
+def main():
+    orders = list(range(1, 11))
+
+    threads = []
+    for order_id in orders:
+        t = Thread(target=process_order, args=(order_id, ))
+        threads.append(t)
+        t.start()
+
+    show_info()
+
+    for t in threads:
+        t.join()
+
+    show_info()
 
 
 from threading import Lock
