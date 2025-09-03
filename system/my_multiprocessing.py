@@ -2664,10 +2664,10 @@ def on_done(future):
 #         results = list(executor.map(square, range(10)))
 #     print(results)
 
-if __name__ == '__main__':
-    with ProcessPoolExecutor() as executor:
-        future = executor.submit(square, 5)
-        future.add_done_callback(on_done)
+# if __name__ == '__main__':
+#     with ProcessPoolExecutor() as executor:
+#         future = executor.submit(square, 5)
+#         future.add_done_callback(on_done)
 
 def cube(x):
     return x ** 3
@@ -2691,90 +2691,3 @@ def factorial(x):
 #         for future in as_completed(futures):
 #             print(future.result())
 
-"""
-компания занимается обработкой больших тексовых файлов
-вам нужно параллельно:
-загружать тексты
-делить их на части
-считать частоту слов
-сохранять результаты в общий словарь
-синхронизировать доступ к ресурсам
-модульность
-"""
-
-# import multiprocessing
-# from multiprocessing import Process, Queue, JoinableQueue, Pipe, Lock, Rlock, Event, Condition, Semaphore, BoundedSemaphore, Barrier, Value, Array, Manager
-# from concurrent.futures import ProcessPoolExecutor
-
-
-def file_loader(queue: JoinableQueue, barrier: Barrier, files: list):
-    """
-    Загружает содержимое файлов и помещает их в очередь
-    Должен дождаться остальных учтчиков через Barrier
-    :param queue: очередь для передачи данных
-    :param barrier: барьер для синхронизации старта
-    :param files: список файлов для обработки
-    """
-    pass
-
-
-def text_worker(queue: JoinableQueue, result_pipe, word_freq: dict, lock: Lock, sem: Semaphore, counter: Value, lengths: Array):
-    """
-    Извлекает тексты из очереди, обрабатывает их и отправляет промежуточные результаты по каналу.
-    :param queue: очередь с текстами
-    :param result_pipe: pipe для отправки промежуточных данных
-    :param word_freq: общий словарь (Manager.dict) для частот слов
-    :param lock: блокировка для синхронизации доступа к словарю
-    :param sem: семафор для ограничения числа параллельных процессов
-    :param counter: общий счётчик обработанных файлов (Value)
-    :param lengths: массив длин текстов (Array)
-    """
-    pass
-
-
-def result_collector(result_pipe):
-    """
-    Принимает промежуточные результаты обработки текстов через Pipe и выводит их.
-    """
-    pass
-
-
-def pool_word_count(text: str) -> dict:
-    """
-    Функция для подсчёта слов в тексте. Используется с Pool.map или ProcessPoolExecutor.
-    :param text: текстовая строка
-    :return: словарь {слово: количество}
-    """
-    pass
-
-
-def pool_callback(result: dict):
-    """
-    Callback-функция для сбора результатов работы пула.
-    """
-    pass
-
-
-def final_report(event: Event, word_freq: dict, counter: Value, lengths: Array):
-    """
-    Ждёт сигнал от Event, затем выводит финальный отчёт:
-    - частотный словарь
-    - количество обработанных файлов
-    - среднюю длину текста
-    """
-    pass
-
-
-def main():
-    """
-    Главная функция:
-    - создаёт все очереди, пайпы, события, блокировки
-    - запускает процессы
-    - использует Pool и ProcessPoolExecutor
-    - синхронизирует работу через Barrier, Event, Condition, Semaphore
-    """
-    pass
-
-
-if __name__ == "__main__":
-    main()
