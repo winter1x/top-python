@@ -1,4 +1,4 @@
-<form action="{% url 'comment_create' article_id=article.id %}" method="POST">
+<form action="{% if edit %}{% url 'comment_edit' article_id=article.id comment_id=form.instance.id %}{% else %}{% url 'comment_create' article_id=article.id %}{% endif %}" method="POST">
     {% csrf_token %}
     <div>
         <label for="{{ form.title.id_for_label }}">Заголовок</label>
@@ -24,5 +24,5 @@
         {% endif %}
     </div>
 
-    <input type="submit" value="Сохранить">
+    <input type="submit" value="{% if edit %}Изменить{% else %}Добавить{% endif %}">
 </form>

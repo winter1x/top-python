@@ -80,11 +80,28 @@ class CommentCreateView(View):
             comment.article = article
             comment.save()
             return redirect('article_comments', article_id=article.id)
-        else:
-            return render(request, "articles/create.html", context={"form": form, "article": article})
         return render(request, "articles/create.html", context={"form": form, "article": article})
 
     def get(self, request, *args, **kwargs):
         article = get_object_or_404(Article, id=kwargs['article_id'])
         form = ArticleCommentForm()
         return render(request, "articles/create.html", context={"form": form, "article": article})
+
+class CommentEditView(View):
+    def get(self, request, article_id, comment_id, *args, **kwargs):
+        comment = get_object_or_404(Comment, id=comment_id, article__id=article_id)
+        article = comment.article
+        form = ArticleCommentForm(instance=comment)
+        return render(request, "articles/create.html", context={"form": form, "article": article, "edit": True})
+
+    def post(self, request, article_id, comment_id, *args, **kwargs):
+        comment = get_object_or_404(Comment, id=comment_id, article__id=article_id)
+        article = comment.article   
+
+        form = ArticleCommentForm(request.POST, instance=comment)
+
+        if form.is_valid():
+            form.save()
+            return redirect('article_comments', article_id=article.id)
+
+        return render(request, "articles/create.html", context={"form": form, "article": article, "edit": True})
