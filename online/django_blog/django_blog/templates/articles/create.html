@@ -1,16 +1,28 @@
-{% if form.errors %}
-<div>
-    <ul>
-    {% for error in form.errors %}
-        <li><strong>{{ error|escape }}</strong></li>
-    {% endfor %}
-    </ul>
-</div>
-{% endif %}
 <form action="{% url 'comment_create' article_id=article.id %}" method="POST">
     {% csrf_token %}
-    <table border="1">
-        {{ form }}
-    </table>
+    <div>
+        <label for="{{ form.title.id_for_label }}">Заголовок</label>
+        {{ form.title }}
+        {% if form.title.errors %}
+            <ul class="errorlist">
+                {% for error in form.title.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    <div>
+        <label for="{{ form.text.id_for_label }}">Комментарий</label>
+        {{ form.text }}
+        {% if form.text.errors %}
+            <ul class="errorlist">
+                {% for error in form.text.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
     <input type="submit" value="Сохранить">
 </form>
