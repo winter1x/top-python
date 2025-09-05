@@ -1,0 +1,62 @@
+Структура папки: C:\Users\Ефимов\pythonProjects\top-python\online\django_blog\django_blog\templates\articles
+
+- comments.html
+    [Содержимое файла: comments.html]
+    {% extends "base.html" %}
+    
+    {% block content %}
+        <h1>Комментарии к статье: {{ article.title }}</h1>
+    
+        {% if comments %}
+            <ul>
+                {% for comment in comments %}
+                    <li>
+                        <strong>{{ comment.author.username }}</strong>
+                        <p>{{ comment.text }}</p>
+                        <small>Опубликован: {{ comment.created_at|date:"d.m.Y H:i" }}</small>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Комментариев пока нет.</p>
+        {% endif %}
+    {% endblock %}
+- create.html
+    [Содержимое файла: create.html]
+    {% if form.errors %}
+    <div>
+        <ul>
+        {% for error in form.errors %}
+            <li><strong>{{ error|escape }}</strong></li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    <form action="{% url 'comment_create' article_id=article.id %}" method="POST">
+        {% csrf_token %}
+        <table border="1">
+            {{ form }}
+        </table>
+        <input type="submit" value="Сохранить">
+    </form>
+- index.html
+    [Содержимое файла: index.html]
+    <h1>Список статей</h1>
+    
+    <ul>
+        {% for article in articles %}
+            <li>
+                <a href="{% url 'article_view' id=article.id %}">{{ article.name }}</a>
+            </li>
+        {% empty %}
+            <li>Статей пока нет</li>
+        {% endfor %}
+    </ul>
+- show.html
+    [Содержимое файла: show.html]
+    {% extends "base.html" %}
+    
+    {% block content %}
+        <h1>{{ article.name }}</h1>
+        <div>{{ article.body }}</div>
+    {% endblock %}

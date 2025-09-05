@@ -81,7 +81,7 @@ class CommentCreateView(View):
             comment.save()
             return redirect('article_comments', article_id=article.id)
         else:
-            return HTTPResponse(form.errors)
+            return render(request, "articles/create.html", context={"form": form, "article": article})
         return render(request, "articles/create.html", context={"form": form, "article": article})
 
     def get(self, request, *args, **kwargs):

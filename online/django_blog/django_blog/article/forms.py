@@ -17,15 +17,17 @@ from .models import Comment
 class ArticleCommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ['text']
+        fields = ['title', 'text']
         labels = {
+            'title': 'Заголовок',
             'text': 'Комментарий',
         }
         widgets = {
+            'title': forms.TextInput(attrs={'placeholder': 'Заголовок комментария'}),
             'text': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Текст комментария'}),
         }
 
-    def clean_content(self):
+    def clean_text(self):
         content = self.cleaned_data['text']
         if "спам" in content.lower():
             raise forms.ValidationError(
