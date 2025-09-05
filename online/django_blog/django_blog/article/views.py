@@ -105,3 +105,14 @@ class CommentEditView(View):
             return redirect('article_comments', article_id=article.id)
 
         return render(request, "articles/create.html", context={"form": form, "article": article, "edit": True})
+
+class ArticleDeleteView(View):
+    def get(self, request, article_id, *args, **kwargs):
+        article = get_object_or_404(Article, id=article_id)
+        return render(request, "articles/delete.html", context={"article": article})
+
+    def post(self, request, article_id, *args, **kwargs):
+        article = get_object_or_404(Article, id=article_id)
+        if article:
+            article.delete()
+        return redirect("article_index")

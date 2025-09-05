@@ -5,6 +5,7 @@ from django.contrib.admin import DateFieldListFilter
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
     list_display = (
+        'id',
         'name',
         'created_at',
     )
